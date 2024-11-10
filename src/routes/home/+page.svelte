@@ -20,9 +20,9 @@
 );
 </script>
 
-<div class="bg-[#772035] h-[100dvh] flex flex-col">
-    <div class = "flex flex-row justify-between h-10 ml-12 mr-12 mt-6 text-3xl text-[#FDFDFD] bg-gray-600">
-        <div><h1>Bank Name</h1></div>
+<div class="bg-[#772035] h-[100dvh] flex flex-col ">
+    <div class = "flex flex-row justify-between h-10 ml-12 mr-12 mt-6 text-3xl text-[#FDFDFD] bg-white">
+        <div><h1>Bank</h1></div>
         <div class="bg-[#FDFDFD] flex border-spacing-2 rounded-full w-28 justify-center items-center">
             <DropdownMenu.Root>
             <DropdownMenu.Trigger class="text-[#772035] text-1xl ">Login</DropdownMenu.Trigger>
