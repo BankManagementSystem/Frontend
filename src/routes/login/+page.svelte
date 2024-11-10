@@ -32,7 +32,7 @@
                     <div class="grid w-full items-center gap-4">
                     <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
                         <Label for="name">User ID</Label>
-                        <Input id="name" placeholder="Enter user Id" />
+                        <Input id="name" placeholder="Enter user Id"  />
                     </div>
                     <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
                         <Label for="name">Password</Label>
