@@ -1,26 +1,24 @@
 <script>
+    import { Icon } from "svelte-icons-pack";
+    import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
+  
     // Function to navigate back
     function goBack() {
       history.back();
     }
   </script>
   
-  <style>
-    /* Tailwind styles are applied directly */
-  </style>
+  <!-- Header -->
+  <div class="flex items-center justify-between bg-[#D9D9D9] text-[#772035] h-[10dvh] font-bold text-3xl w-full">
+    <div class="ml-4 cursor-pointer" on:click={goBack}>
+      <Icon src={BiSolidLeftArrow} />
+    </div>
+    <div>New Account</div>
+    <div class="mr-4"></div>
+  </div>
   
-  <div class="flex flex-col items-center min-h-screen bg-gray-100 p-5">
-    <!-- Back Arrow Button -->
-    <button on:click={goBack} class="self-start mb-4 flex items-center text-[#772035]">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
-      Back
-    </button>
-  
-    <!-- Title outside the card -->
-    <h1 class="text-3xl font-bold text-[#772035] mb-4">New Account</h1>
-  
+  <!-- Centering Container -->
+  <div class="flex items-center justify-center min-h-[90dvh]">
     <!-- Card -->
     <div class="w-full max-w-md p-6 rounded-lg shadow-lg bg-[#772035]">
       <!-- Form fields -->
@@ -78,8 +76,8 @@
         </div>
   
         <!-- Submit Button -->
-        <div class="mt-4">
-          <button type="submit" class="w-full p-2 rounded bg-gray-200 font-semibold text-[#772035]">Apply now</button>
+        <div class="flex justify-center mt-4">
+          <button type="submit" class="w-1/3 p-2 rounded bg-gray-100 font-semibold text-[#772035]">Apply now</button>
         </div>
       </form>
     </div>
