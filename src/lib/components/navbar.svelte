@@ -19,7 +19,7 @@
     <div class="flex flex-row justify-between ml-24 mr-24 mt-2 font-bold text-2xl items-center  h-[8dvh]">
         <div>Home</div>
         <div>Accounts</div>
-        <div>Transfer</div>
+        <div><a href="./Transfer-details">Transfer</a></div>
         <div><a href="./Cards">Cards</a></div>
         <div><a href="./Loans">Loans</a></div>
     </div>
