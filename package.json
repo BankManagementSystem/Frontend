@@ -40,6 +40,7 @@
 	"dependencies": {
 		"mysql2": "^3.11.4",
 		"svelte-hero-icons": "^5.2.0",
+		"svelte-icons": "^2.1.0",
 		"svelte-icons-pack": "^3.1.3"
 	}
 }

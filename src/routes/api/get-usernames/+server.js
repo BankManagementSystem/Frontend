@@ -4,7 +4,7 @@ import { db } from '$lib/db'; // Import the database connection
 export async function GET() {
     try {
         // Query all usernames from the users table
-        const [rows] = await db.execute('SELECT username,Id FROM users');
+        const [rows] = await db.execute('SELECT * FROM users');
 
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
