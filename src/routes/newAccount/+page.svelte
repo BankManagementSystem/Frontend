@@ -18,7 +18,7 @@
   </div>
   
   <!-- Centering Container -->
-  <div class="flex items-center justify-center min-h-[90dvh]">
+  <div class="flex items-center justify-center min-h-[90dvh] mt-10">
     <!-- Card -->
     <div class="w-full max-w-md p-6 rounded-lg shadow-lg bg-[#772035]">
       <!-- Form fields -->
