@@ -4,52 +4,85 @@
     import * as Select from "$lib/components/ui/select/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
+    import { onMount } from "svelte";
+
+    let userId = "";
+    let password = "";
+    let captcha = "";
+
+    async function handleLogin(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Prepare the request payload
+        const payload = {
+            username: userId,
+            password: password,
+            captcha: captcha
+        };
+
+        try {
+            // Send a POST request to your Django backend
+            const response = await fetch("/api/login/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            // Handle the response from the server
+            const result = await response.json();
+            if (result.success) {
+                alert("Login successful!");
+                // Redirect user or update UI as needed
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("An error occurred. Please try again.");
+        }
+    }
 </script>
 
 <div class="flex flex-col">
     <div class="items-center justify-center mt-6 ml-6 md-0">
         <h1 class = "text-3xl text-red-800">
-            <!---<Button class="bg-[#732B41] text-white" variant="primary" size="large">Bank Name</Button> -->
             Customer Login
         </h1>
     </div>
-    <!---
-    <div class="bg-[#732B41] flex flex-col justify-center text-[#FDFDFD]">
-        <h3>User ID</h3>
-        <input type="text">
-        <h3>Password</h3>
-    </div>
-    -->
     <div class="flex justify-center mt-10 h-[65dvh]">
         <div>
             <Card.Root class="w-[350px] bg-[#732B41]">
-                <!--<Card.Header class="text-purple-700">
-                <Card.Title>Create project</Card.Title>
-                <Card.Description>Deploy your new project in one-click.</Card.Description>
-                </Card.Header> -->
                 <Card.Content>
-                <form>
+                <form on:submit={handleLogin}>
                     <div class="grid w-full items-center gap-4">
+<<<<<<< HEAD
                     <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
                         <Label for="name">User ID</Label>
                         <Input id="name" placeholder="Enter user Id"  />
+=======
+                    <div class="flex flex-col space-y-1.5">
+                        <Label class="text-[#FDFDFD]" for="userId">User ID</Label>
+                        <Input id="userId" bind:value={userId} placeholder="Enter user Id" />
+>>>>>>> 167d7159bc44412fe9e06e0a5ec4c6aa290f6db5
                     </div>
-                    <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
-                        <Label for="name">Password</Label>
-                        <Input id="name" placeholder="Enter password" />
+                    <div class="flex flex-col space-y-1.5 ">
+                        <Label class="text-[#FDFDFD]" for="name">Password</Label>
+                        <Input id="password" bind:value={password} placeholder="Enter password" type="password"/>
                     </div>
-                    <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
-                        <Label for="framework">Verification</Label>
+                    <div class="flex flex-col space-y-1.5 ">
+                        <Label class="text-[#FDFDFD]" for="framework">Verification</Label>
                         <div>
                             <img class="h-10 rounded-lg" src="images/captcha.jpg" alt="Captcha">
                         </div>
-                        <Input id="name" placeholder="Enter Captcha" />
+                        <Input id="captcha" bind:value={captcha} placeholder="Enter Captcha" />
                     </div>
                     </div>
                 </form>
                 </Card.Content>
                 <Card.Footer class="flex flex-col text-[#732B41]">
-                <div><Button variant="outline">Login</Button></div>
+                <div><Button variant="outline" type="submit">Login</Button></div>
                 <div class="flex flex-col mt-2 justify-start space-y-1.5 text-[#FDFDFD]">
                     <h1>Forgot password?</h1>
                 </div>
