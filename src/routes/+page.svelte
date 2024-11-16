@@ -46,8 +46,9 @@
     </div>
     <div class="ml-24 flex flex-row mt-10 mr-24 h-[35dvh] justify-between ">
         <div class="w-3/6 flex flex-col bg-[#FDFDFD] gap-2 rounded-3xl ">
-                <div class="ml-4 mt-4 text-black font-bold  ">OFFERS FOR YOU!</div>
+                <div class="ml-10 mt-4 text-black font-bold  ">OFFERS FOR YOU!</div>
                 <div class="flex flex-row justify-center gap-2 ">
+                    <a href="./newAccount">
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
                         <div class="flex flex-row ml-2 items-center justify-center"><Icon src={ImUserPlus} className="h-6 w-10 fill-black"/></div>
                         <div class="flex flex-col">
@@ -56,6 +57,7 @@
                         </div>
                         
                     </div>
+                    </a>
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
                         <div class="flex flex-row ml-2 items-center justify-center"><Icon src={FaCreditCard} className="h-6 w-10 fill-black"/></div>
                         <div class="flex flex-col">
