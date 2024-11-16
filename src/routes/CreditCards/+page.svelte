@@ -78,7 +78,7 @@
             {:else}
                 <Icon src={FiEye}/>
             {/if}
-        </button>
+            </button>
         </div>
     </div>
 </div>

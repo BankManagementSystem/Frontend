@@ -79,7 +79,7 @@
     <div>Credit Card Limits</div>
     <div class="mr-4"></div>
 </div>
-<div class="flex flex-col justify-center gap-5 items-center h-screen">
+<div class="glass-background flex flex-col justify-center gap-5 items-center h-screen" >
     <div class="bg-[#FDFDFD] w-[70dvh] h-[18dvh] rounded-lg border-2 border-[#772035] flex flex-col">
         <div class="text-xl font-bold mt-3 ml-6">
             Domestic

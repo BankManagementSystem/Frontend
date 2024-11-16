@@ -10,8 +10,10 @@
   
   <!-- Header -->
   <div class="flex items-center justify-between bg-[#D9D9D9] text-[#772035] h-[10dvh] font-bold text-3xl w-full">
-    <div class="ml-4 cursor-pointer" on:click={goBack}>
+    <div class="ml-4 cursor-pointer">
+      <a href="/">
       <Icon src={BiSolidLeftArrow} />
+      </a>
     </div>
     <div>New Account</div>
     <div class="mr-4"></div>

@@ -1,51 +1,48 @@
 <script>
+    import Navbar from '$lib/components/navbar.svelte';
+    import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
+    import { Icon } from "svelte-icons-pack";
     import { Button } from "$lib/components/ui/button/index.js";
-    import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-
-    const logins = [
-    {
-        value: "Customer",
-        label: "Customer"
-    },
-    {
-        value: "Employee",
-        label: "Employee"
-    }
-    ];
-
-    let login = $state("");
-
-    const selectedFramework = $derived(
-    logins.find((f) => f.value === login)?.label ?? ""
-);
+    let accountNumber = "Enter Id to fetch";
+    let availableBalance = "Not Available";
+    let isBalanceVisible = false;
 </script>
+<Navbar/>
+<slot/>
+<div class="w-full h-[80vh] flex flex-col">
+    <div class="ml-14 mt-14 w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
+        <div class="text-sm font-light">Savings account</div>
+        <div class="text-xl font-bold mt-2">{accountNumber}</div>
+        
+        <div class="flex items-end justify-between mt-14">
+            <div>
+                <div class="text-2xl font-bold">₹ {isBalanceVisible ? availableBalance : 'X,XX,XXX'}</div>
+                <div class="text-sm font-light">Available balance</div>
+            </div>
+            <button
+            class="btn w-8 h-8 flex items-center justify-center bg-white rounded-full text-black hover:bg-gray-200 transition"
+            on:click={() => (isBalanceVisible = !isBalanceVisible)}
+            >
+            {#if isBalanceVisible}
+                <Icon src={FiEyeOff}/>
+            {:else}
+                <Icon src={FiEye}/>
+            {/if}
+            </button>
+        </div>
+    </div>
 
-<div class="bg-[#772035] h-[100dvh] flex flex-col ">
-    <div class = "flex flex-row justify-between h-10 ml-12 mr-12 mt-6 text-3xl text-[#FDFDFD] bg-white">
-        <div><h1>Bank</h1></div>
-        <div class="bg-[#FDFDFD] flex border-spacing-2 rounded-full w-28 justify-center items-center">
-            <DropdownMenu.Root>
-            <DropdownMenu.Trigger class="text-[#772035] text-1xl ">Login</DropdownMenu.Trigger>
-            <DropdownMenu.Content>
-            <DropdownMenu.Group>
-                <DropdownMenu.GroupHeading>Log on to <br>internet banking</DropdownMenu.GroupHeading>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item><a href="./login">Customer</a></DropdownMenu.Item>
-                <DropdownMenu.Item><a href="./employeelogin">Employee</a></DropdownMenu.Item>
-            </DropdownMenu.Group>
-            </DropdownMenu.Content>
-        </DropdownMenu.Root></div>
-    </div>
-    <div class="bg-gray-500 mt-16">
-        <img class="w-full h-[35dvh]" src="images/home.png" alt="Login">
-    </div>
-    <div class="ml-24 flex flex-row mt-10 mr-24 h-[30dvh] justify-between bg-green-300">
-        <div class="w-1/3 bg-[#FDFDFD]">
-            ho
-        </div>
-        <div class="w-1/3 bg-[#3d2424]">
-            hi
-        </div>
+    <div class="flex flex-col gap-8 mt-4 ml-14 justify-center items-center w-[60dvh] h-[30dvh]">
+            <div>
+                <a href="/Accounts">
+                <button class=" bg-[#FDFDFD] rounded-3xl w-[50dvh] h-[8dvh] text-black text-2xl font-semibold border-2 border-black shadow-lg hover:bg-gray-100 hover:text-[#772035]">
+                    View all accounts
+                </button></a>
+            </div>
+            <div>
+                <button class=" bg-[#FDFDFD] rounded-3xl w-[50dvh] h-[8dvh] text-black text-2xl font-semibold border-2 border-black shadow-lg hover:bg-gray-100 hover:text-[#772035]">
+                    View statements
+                </button>
+            </div>
     </div>
 </div>
-
