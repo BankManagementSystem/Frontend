@@ -21,11 +21,11 @@ const config = {
 				background: "hsl(var(--background) / <alpha-value>)",
 				foreground: "hsl(var(--foreground) / <alpha-value>)",
 				primary: {
-					DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+					DEFAULT: "#FDFDFD",
 					foreground: "hsl(var(--primary-foreground) / <alpha-value>)"
 				},
 				secondary: {
-					DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+					DEFAULT: "#772035",
 					foreground: "hsl(var(--secondary-foreground) / <alpha-value>)"
 				},
 				destructive: {
@@ -66,7 +66,8 @@ const config = {
 				sm: "calc(var(--radius) - 4px)"
 			},
 			fontFamily: {
-				sans: [...fontFamily.sans]
+				sans: [...fontFamily.sans],
+				body: ['Nunito']
 			},
 			keyframes: {
 				"accordion-down": {

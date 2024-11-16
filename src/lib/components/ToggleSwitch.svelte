@@ -14,7 +14,7 @@
     .toggle-switch {
         width: 40px;
         height: 20px;
-        background-color: #ccc;
+        background-color: #D6D6D6;
         border-radius: 9999px;
         display: flex;
         align-items: center;
@@ -23,13 +23,13 @@
     }
 
     .toggle-switch.checked {
-        background-color: #772035;
+        background-color: white;
     }
 
     .toggle-thumb {
         width: 18px;
         height: 18px;
-        background-color: white;
+        background-color: #772035;
         border-radius: 9999px;
         transform: translateX(2px);
         transition: transform 0.3s ease;

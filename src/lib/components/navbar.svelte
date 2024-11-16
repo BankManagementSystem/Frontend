@@ -7,13 +7,15 @@
 
 <div class="flex flex-col bg-[#772035] h-[20vh] text-[#FDFDFD]">
     <div class="flex flex-row justify-between ml-10 mr-10 mt-2 items-center h-[10dvh]">
-        <div class="text-2xl font-bold"><a href="./">NITTE Bank</a></div>
-        <div class="flex flex-row gap-4">
+        <div class="text-2xl font-bold"><a href="/Home">NITTE Bank</a></div>
+        <div class="flex flex-row gap-4 text-white">
             <div class="text-white"><Icon src={CgProfile} size="40" /></div> 
             <!--<div class="text-white"><Icon src={IoSettingsOutline} size="40" /></div> -->
-            <button class="bg-white rounded-full hover:bg-gray-200">
+            <div class="text-white"><a href="/Settin">
+            <button class="bg-primary rounded-full hover:bg-gray-200">
                 <Icon src={IoSettingsOutline} size="40" />
-            </button>
+            </button></a>
+            </div>
         </div>
     </div>
     <div class="flex flex-row justify-between ml-24 mr-24 mt-2 font-bold text-2xl items-center  h-[8dvh]">
