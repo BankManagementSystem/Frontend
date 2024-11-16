@@ -55,6 +55,7 @@
                         <div class="text-black font-bold">New Account</div>
                         <div class="text-black">Create your new account online</div>
                         </div>
+                        
                     </div>
                     </a>
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
