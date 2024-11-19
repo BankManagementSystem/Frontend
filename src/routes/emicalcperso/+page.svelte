@@ -8,7 +8,7 @@
     function navigateToLoanApplication() {
         goto('/Loan-application');
     }
-
+    
     // Input values
     let loanAmount = 1250000; 
     let tenure = 40; 
