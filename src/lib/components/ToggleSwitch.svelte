@@ -14,7 +14,7 @@
     .toggle-switch {
         width: 40px;
         height: 20px;
-        background-color: #D6D6D6;
+        background-color: #B3B3B3;
         border-radius: 9999px;
         display: flex;
         align-items: center;

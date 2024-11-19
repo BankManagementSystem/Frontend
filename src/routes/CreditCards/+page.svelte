@@ -10,14 +10,14 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import { onMount } from 'svelte';
 
-    let accountNumber = "1234 5678 9101 1121";
+    let accountNumber = "Fetching";
     let availableBalance = "Not Available";
     let isBalanceVisible = false;
-    let inputId = ""; // Id input from the user
+    let inputId = 1; // Id input from the user
     let card = {}; // Holds the fetched card data
 
     // Function to fetch credit card details based on Id
-    /*async function fetchCreditCardDetails() {
+    onMount(async () => {
         if (!inputId) {
             alert("Please enter a valid Id");
             return;
@@ -42,12 +42,16 @@
         } catch (error) {
             console.error("Fetch error:", error);
         }
-    }*/
+    });
 </script>
 <Navbar/>
 <slot/>
 
-<div class="flex flex-col items-center mt-12">
+<div class="text-black font-bold text-3xl ml-10 mt-6">
+    Credit Card
+</div>
+
+<div class="flex flex-col items-center">
     <!-- Input field to enter Id -->
     <!--<input
         type="number"
@@ -87,7 +91,7 @@
     </div>
 </div>
 
-<div class="flex flex-col bg-[#A91D3A] h-[29dvh] rounded-lg ml-10 mr-10 mt-10">
+<div class="flex flex-col bg-[#A91D3A] h-[29dvh] rounded-lg ml-10 mr-10 mt-6">
     <div class="flex flex-row justify-between mt-4 ">
         <div class="flex font-bold ml-10 text-2xl text-[#D9D9D9] ">
             Credit Card
@@ -107,10 +111,12 @@
             <div class="text-[#D9D9D9]">Card Controls</div>
         </div>
         </a>
-        <div class="flex flex-col justify-center items-center">
+        <a href="./SetPin">
+            <div class="flex flex-col justify-center items-center">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={CgPassword} size="30" /></div>
             <div class="text-[#D9D9D9]">Set Pin</div>
-        </div>
+            </div>  
+        </a>
         <div class="flex flex-col justify-center items-center ">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={RiDocumentArticleLine} size="30" /></div>
             <div class="text-[#D9D9D9]">Pay Bill</div>
