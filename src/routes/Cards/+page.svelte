@@ -7,7 +7,7 @@
 
 <div class="flex flex-col  text-[#772035] h-[80dvh] ml-10 mr-96">
     <div class="font-bold mt-6 text-3xl ">Debit Card</div>
-    <div class = "flex flex-col gap-2 mt-5 h-[15dvh] justify-center rounded-2xl border-solid border-2 shadow-xl border-[#772035] ">
+    <div class = "bg-primary flex flex-col gap-2 mt-5 h-[15dvh] justify-center rounded-2xl border-solid border-2 shadow-xl border-[#772035] ">
         <div class="ml-6">
             Fetch your debit card details by clicking on view cards.
         </div>

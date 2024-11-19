@@ -55,6 +55,7 @@
                         <div class="text-black font-bold">New Account</div>
                         <div class="text-black">Create your new account online</div>
                         </div>
+                        
                     </div>
                     </a>
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
@@ -75,7 +76,7 @@
                         </div>
                     </div>
                     </a>
-                    <a href="./Cards">
+                    <a href="./Home">
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
                         <div class="flex flex-row ml-2 items-center justify-center"><Icon src={BsCreditCard2Front} className="h-6 w-10 fill-black"/></div>
                         <div class="flex flex-col">

@@ -6,7 +6,7 @@
     import { Label } from "$lib/components/ui/label/index.js";
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-  col">
     <div class="items-center justify-center mt-6 ml-6 md-0">
         <h1 class = "text-3xl text-red-800">
             <!---<Button class="bg-[#732B41] text-white" variant="primary" size="large">Bank Name</Button> -->

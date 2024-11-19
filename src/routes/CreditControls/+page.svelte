@@ -70,7 +70,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSave}>
-<div class="flex items-center justify-between bg-[#D9D9D9] text-[#772035] h-[10dvh] font-bold text-3xl">
+<div class="flex items-center justify-between bg-[#FDFDFD] text-[#772035] h-[10dvh] font-bold text-3xl">
     <div class="ml-4">
         <a href="/CreditCards">
         <Icon src={BiSolidLeftArrow}/>
@@ -79,22 +79,22 @@
     <div>Credit Card Limits</div>
     <div class="mr-4"></div>
 </div>
-<div class="flex flex-col justify-center gap-5 items-center h-screen">
-    <div class="bg-[#FDFDFD] w-[70dvh] h-[18dvh] rounded-lg border-2 border-[#772035] flex flex-col">
-        <div class="text-xl font-bold mt-3 ml-6">
+<div class="glass-background flex flex-col justify-center gap-5 items-center h-screen bg-[#F9EBEE]" >
+    <div class="bg-[#772035] w-[70dvh] h-[18dvh] rounded-lg border-2 border-[#772035] flex flex-col">
+        <div class="text-xl font-bold mt-3 ml-6 text-[#FDFDFD]">
             Domestic
         </div>
         <div class="mt-4 flex flex-row justify-between">
             <div class="ml-6 flex flex-row relative" >
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">₹</span>
-                <input bind:value={Domi} type="number" class="pl-8 pr-4 py-1 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                <input bind:value={Domi} type="number" class="pl-8 pr-4 py-1 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9EBEE]" >
             </div>
-            <div class="mr-6 font-semibold">Daily Limit</div>
+            <div class="mr-6 font-semibold text-[#FDFDFD]">Daily Limit</div>
         </div>
     </div>
     
-    <div class="bg-[#FDFDFD] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
-        <div class="ml-6">
+    <div class="bg-[#772035] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
+        <div class="ml-6  text-[#FDFDFD]">
             International
         </div>
         <div class="mr-6">
@@ -102,8 +102,8 @@
         </div>
     </div>
 
-    <div class="bg-[#FDFDFD] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
-        <div class="ml-6">
+    <div class="bg-[#772035] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
+        <div class="ml-6  text-[#FDFDFD]">
             Contactless
         </div>
         <div class="mr-6">
@@ -111,8 +111,8 @@
         </div>
     </div>
 
-    <div class="bg-[#FDFDFD] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
-        <div class="ml-6">
+    <div class="bg-[#772035] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
+        <div class="ml-6  text-[#FDFDFD]">
             Online
         </div>
         <div class="mr-6">
@@ -120,8 +120,8 @@
         </div>
     </div>
 
-    <div class="bg-[#FDFDFD] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
-        <div class="ml-6">
+    <div class="bg-[#772035] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
+        <div class="ml-6 text-[#FDFDFD]">
             ATM
         </div>
         <div class="mr-6">
@@ -129,12 +129,12 @@
         </div>
     </div>
 
-    <div class="bg-[#FDFDFD] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
-        <div class="ml-6">
+    <div class="bg-[#772035] text-xl font-bold w-[70dvh] h-[10dvh] rounded-lg border-2 border-[#772035] flex items-center justify-between">
+        <div class="ml-6 text-[#FDFDFD]">
             POS & QR
         </div>
         <div class="mr-6">
-            <ToggleSwitch bind:checked={PisChecked} />
+            <ToggleSwitch bind:checked={PisChecked}/>
         </div>
     </div>
     <div>
