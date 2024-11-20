@@ -2,6 +2,22 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Navbar from "$lib/components/navbar.svelte";
+
+	// Array to store account numbers
+	let accountNumbers = [];
+
+	// Fetch account numbers (replace this with your actual database/API call)
+	onMount(async () => {
+		try {
+			// Simulating an API call to fetch account numbers
+			accountNumbers = await fetch('/api/get-account')
+			.then(res => res.json())
+			.then(data => data.accounts);
+		} catch (error) {
+			console.error('Error fetching account numbers:', error);
+		}
+		});
+
 	// Form data
 	let transactionRefName = '';
 	let transactionDate = '';

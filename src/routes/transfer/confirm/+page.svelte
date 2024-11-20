@@ -100,7 +100,7 @@
 
 <style>
 	.btn-primary {
-		padding: 10px 20px;
+		padding: 10px;
 		background-color: #772035;
 		color: white;
 		border: none;
