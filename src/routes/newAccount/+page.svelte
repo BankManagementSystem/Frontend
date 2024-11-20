@@ -131,7 +131,7 @@
               id="Gender" 
               class="w-full p-2 rounded bg-primary text-gray-900"
           >
-              <option value="" disabled selected>Select your gender</option>
+              <option value="" class="text-black" disabled selected>Select your gender</option>
               <option value="Male" class="bg-secondary text-primary">Male</option>
               <option value="Female" class="bg-secondary text-primary">Female</option>
               <option value="Other" class="bg-secondary text-primary">Other</option>

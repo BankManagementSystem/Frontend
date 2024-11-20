@@ -6,8 +6,10 @@
     import { AiOutlineCloseCircle } from "svelte-icons-pack/ai";
 
     let creditPin = '';
+    let Pin = '';
     let showPassword1 = false;
     let showPassword2 = false;
+    let showPassword3 = false;
     let confirmPIN = '';
     let successMessage = '';
 
@@ -38,15 +40,37 @@
     <div class="mr-4"></div>
 </div>
 
-<div class="flex justify-center items-center bg-gradient-to-r from-[#C73659] via-[#E4B9C2] to-[#C73659] animate-gradient-x  h-[90dvh]"> <!-- bg-gradient-to-b from-[#B33150]  to-primary via-[#C73659]--> <!--bg-secondary bg-opacity-[90%]-->
-    <div class ="flex flex-col gap-2 rounded-sm justify-center   items-center font-semibold text-lg bg-primary shadow-2xl h-[55dvh] w-[70dvh]">
-        <div class="mt-6">
-            Enter a new 4 digit PIN for your credit card
+<div class="flex justify-center items-center bg-gradient-to-b from-[#C73659] via-[#E4B9C2] to-[#C73659] h-[90dvh]"> <!-- bg-gradient-to-b from-[#B33150]  to-primary via-[#C73659]--> <!--bg-secondary bg-opacity-[90%]-->
+    <div class ="flex flex-col gap-2 rounded-sm justify-center   items-center font-semibold text-lg bg-primary shadow-2xl h-[70dvh] w-[70dvh]">
+        <div >Enter PIN</div>
+        <div class="relative">
+            <input
+                type={showPassword3 ? "text" : "password"}
+                placeholder="Enter PIN"
+                class="w-full px-4 py-2 rounded-md text-gray-900 border-2 border-secondary"
+                bind:value={Pin} 
+                maxlength="4"
+                on:input={(e) => Pin = e.target.value.replace(/[^0-9]/g, "")} 
+            />
+            <button
+                on:click={() => (showPassword3 = !showPassword3)}
+                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+            >
+            {#if showPassword3}
+                <Icon src={AiOutlineEyeInvisible} className="h-6 w-10 fill-black"/>
+            {:else}
+                <Icon src={AiOutlineEye} className="h-6 w-10 fill-black"/>
+            {/if}
+            </button>
+        </div>
+
+        <div class="mt-2">
+            Enter a new 4 digit PIN
         </div>
         <div class="relative">
             <input
                 type={showPassword1 ? "text" : "password"}
-                placeholder="Enter PIN"
+                placeholder="Enter New PIN"
                 class="w-full px-4 py-2 rounded-md text-gray-900 border-2 border-secondary"
                 bind:value={creditPin} 
                 maxlength="4"
@@ -100,7 +124,7 @@
     </div>
 </div>
 {/if}
-
+<!--
 <style>
     @keyframes gradient-x {
         0%{
@@ -118,3 +142,4 @@
         background-size: 200% 200%;
     }
 </style>
+-->

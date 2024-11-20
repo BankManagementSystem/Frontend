@@ -1,9 +1,36 @@
 <script >
     import Navbar from "$lib/components/navbar.svelte"; // Import Navbar
+    import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
+    import { Icon } from "svelte-icons-pack";
     import { page } from '$app/stores';
+    import {onMount} from 'svelte';
+    import dayjs from 'dayjs';
+
+    function formatDate(dateString) {
+        return dayjs(dateString).format('DD-MM-YYYY'); // Format with Day.js
+    }
 
     // Retrieve the account number from route parameters
     const accountNumber = $page.params.accountNumber;
+
+    let accountdetails = [];
+    let accountId = accountNumber;
+    let accountdeets = {};
+
+    onMount(async () => {
+        try {
+            const response = await fetch(`/api/get-acc-deets?id=${accountId}`);
+            if (response.ok) {
+                accountdetails = await response.json();
+                accountdeets = accountdetails[0];
+                
+            } else {
+                console.error("Error fetching usernames:", await response.json());
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    });
 
     // Mock account details (replace with API call if needed)
     let accountDetails = {
@@ -33,46 +60,54 @@
 <Navbar />
 <slot/>
 
-<div class="container mx-auto mt-10">
-    <div class="text-center">
-        <h1 class="text-3xl font-bold text-[#732B41]">Account Details</h1>
+<div class="glass-background flex flex-col justify-center gap-5 items-center h-[120dvh]">
+    <div class="flex w-full item-center justify-start   ">
+        <div class="ml-2"> <a href="/Accounts">
+            <Icon src={BiSolidLeftArrow} size="35" color="#732B41"/>
+            </a></div>
+        <div class="text-3xl font-bold ml-14 text-[#732B41]">Account Details</div>
     </div>
-    <div class="mt-6 p-8 bg-white shadow-md rounded-lg mx-auto w-[70%]">
+    <div class="mt-1 p-8 bg-[#C73659] bg-opacity-[90%] shadow-2xl rounded-lg w-[70%] h-[104dvh] ">
         <!-- General Details Section -->
-        <div class="text-xl font-semibold text-[#732B41] mb-4">General Details</div>
-        <div class="grid grid-cols-2 gap-4 text-lg">
-            <p><strong>Account Number:</strong> {accountDetails.number}</p>
-            <p><strong>IFSC:</strong> {accountDetails.ifsc}</p>
-            <p><strong>Account Holder:</strong> {accountDetails.name}</p>
-            <p><strong>Branch:</strong> {accountDetails.branch}</p>
-            <p><strong>Address:</strong> {accountDetails.address}</p>
-            <p><strong>City:</strong> {accountDetails.city}</p>
-            <p><strong>State:</strong> {accountDetails.state}</p>
-            <p><strong>Country:</strong> {accountDetails.country}</p>
-            <p><strong>Phone:</strong> {accountDetails.phone}</p>
-            <p><strong>Email:</strong> 
-                {accountDetails.email}
-            </p>
-            <p><strong>Account Type:</strong> {accountDetails.type}</p>
-            <p><strong>Account Open Date:</strong> {accountDetails.openDate}</p>
-        </div>
-
-        <!-- Balance Details Section -->
-        <div class="mt-6 p-4 bg-gray-100 rounded-lg">
-            <div class="text-xl font-semibold text-[#732B41] mb-2">Balance Details</div>
-            <div class="grid grid-cols-2 gap-4 text-lg">
-                <p><strong>Status:</strong> {accountDetails.status}</p>
-                <p><strong>Available Balance:</strong> {accountDetails.balance}</p>
+        <div class="text-2xl font-semibold text-primary border-b-2 border-black h-[7dvh]">General Details</div>
+        <div class="flex justify-center border-b-2 border-black h-[55dvh]">
+            <div class="flex flex-row gap-20 items-center justify-center text-primary w-[110dvh]">
+                <div class="flex flex-col justify-center gap-7 w-1/2 ">
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Number:</div> <div>{accountNumber}</div></div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> Account Holder:</div> <div>{accountdeets.FirstName}{" "}{accountdeets.LastName}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> Address: </div>  <div>{accountdeets.Address1}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> State: </div> <div>{accountdeets.State}</div>  </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Phone:</div>  <div>{accountdeets.MobileNo}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Type:</div>  <div>{accountdeets.Type}</div> </div>
+                </div>
+                <div class="flex flex-col justify-center gap-7 w-1/2 ">
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">IFSC:</div>  <div>{accountdeets.IFSC}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Branch:</div>  <div>{accountdeets.BName}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">City:</div>  <div>{accountdeets.City}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Country:</div>  <div>{accountdeets.country}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Email:</div>  <div>{accountdeets.Email}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Open Date:</div>  <div>{formatDate(accountdeets.Date)}</div> </div>
+                </div>
             </div>
+        </div>
+        <!-- Balance Details Section -->
+        <div class="h-[21dvh] border-b-2 border-black">
+        <div class="mt-6 p-4 bg-gray-100 rounded-lg ">
+            <div class="text-xl font-semibold text-[#732B41] mb-4">Balance Details</div>
+            <div class="flex flex-row gap-4 text-lg ml-10 mr-10">
+                <div class="flex flex-row gap-4 items-end text-lg w-1/2"> <div class="font-bold">Status:</div> <div>{accountdeets.status}</div></div>
+                <div class="flex flex-row gap-4 items-end text-lg w-1/2"> <div class="font-bold">Available Balance:</div> <div>₹ {accountdeets.balance}</div> </div>
+            </div>
+        </div>
         </div>
 
         <!-- View Statements Button -->
-        <div class="mt-6 text-center">
+        <a href="/CreditTransactions">
+        <div class="mt-4">
             <button 
-                
-                class="px-6 py-2 bg-[#732B41] text-white font-semibold rounded-lg shadow-md hover:bg-[#5a2132]">
+                class="px-6 py-2 bg-primary text-secondary font-semibold rounded-lg shadow-md hover:bg-gray-200">
                 View Statements
             </button>
-        </div>
+        </div></a>
     </div>
 </div>

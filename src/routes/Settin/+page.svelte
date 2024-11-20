@@ -32,10 +32,13 @@
     <!-- Settings Options -->
     <div class="bg-white shadow-md rounded-lg p-6 mt-24 ">
         <div class="grid grid-cols-2 gap-4">
+        
             <button class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
                 <Icon src={ BiSolidUserDetail } className="h-6 w-10 " />
-                <span>Personal Details</span>
+                <a href="/PersonalDeets">
+                <span>Personal Details</span></a>
             </button>
+            
 
             <button class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
                 <Icon src={ BiSolidCalendarEvent } className="h-6 w-10 " />

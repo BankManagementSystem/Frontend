@@ -40,7 +40,7 @@
     <div class = "text-xl font-bold text-[#732B41] w-[150dvh]">
         Operatives Account List
     </div>
-    <div class=" flex justify-center items-center min-w-full mt-10">
+    <div class=" flex justify-center items-center min-w-full mt-2">
         <table class="shadow-md w-[150dvh] border border-gray-300 bg-white">
             <thead class="bg-[#151515]">
                 <tr class="text-[#FDFDFD]">
@@ -68,7 +68,7 @@
             </tbody>
         </table>
     </div>
-    <div class=" mt-10 w-[150dvh]">
+    <div class=" mt-6 w-[150dvh]">
         <div class="">
         <Button href="newAccount" class="bg-[#732B41] hover:bg-[#C73659] text-white py-2 px-4 rounded-md">Create New Account</Button>
     </div>

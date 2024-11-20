@@ -49,33 +49,33 @@
 			</h2>
 		</div>
 		<div class="flex flex-col ml-10 space-y-6 text-xl">
-			<div class="flex flex-col justify-center space-y-6 text-xl">
-				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Ref Name :</div>
-					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionRefName}</div>
+			<div class="flex flex-col justify-center space-y-6 text-xl bg-gray-600">
+				<div class="flex flex-row justify-center gap-4 bg-yellow-200">
+					<div class="flex w-[40dvh] font-bold justify-end bg-red-600">Transaction Ref Name :</div>
+					<div class="flex w-[40dvh] font-bold bg-green-500">{transactionDetails.transactionRefName}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-green-200">
-					<div class="flex w-[40dvh] font-bold text-xl">Pay From Account :</div>
+					<div class="flex w-[40dvh] font-bold text-xl justify-end">Pay From Account :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payFromAccount}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-blue-200">
-					<div class="flex w-[40dvh] font-bold">Payees Account No :</div>
+					<div class="flex w-[40dvh] font-bold justify-end">Payees Account No :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payeesAccountNo}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-red-200">
-					<div class="flex w-[40dvh] font-bold">Payees IFSC Code :</div>
+					<div class="flex w-[40dvh] font-bold justify-end">Payees IFSC Code :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payeesIFSC}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Date :</div>
+					<div class="flex w-[40dvh] font-bold justify-end">Transaction Date :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionDate}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Mode :</div>
+					<div class="flex w-[40dvh] font-bold justify-end">Transaction Mode :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionMode}</div>
 				</div>
 				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Amount :</div>
+					<div class="flex w-[40dvh] font-bold justify-end">Amount :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.amount}</div>
 				</div>
 			</div>

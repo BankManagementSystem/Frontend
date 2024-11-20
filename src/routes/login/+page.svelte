@@ -57,15 +57,9 @@
                 <Card.Content>
                 <form on:submit={handleLogin}>
                     <div class="grid w-full items-center gap-4">
-<<<<<<< HEAD
-                    <div class="flex flex-col space-y-1.5 text-[#FDFDFD]">
-                        <Label for="name">User ID</Label>
-                        <Input id="name" placeholder="Enter user Id"  />
-=======
                     <div class="flex flex-col space-y-1.5">
                         <Label class="text-[#FDFDFD]" for="userId">User ID</Label>
                         <Input id="userId" bind:value={userId} placeholder="Enter user Id" />
->>>>>>> 167d7159bc44412fe9e06e0a5ec4c6aa290f6db5
                     </div>
                     <div class="flex flex-col space-y-1.5 ">
                         <Label class="text-[#FDFDFD]" for="name">Password</Label>

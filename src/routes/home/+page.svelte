@@ -2,6 +2,7 @@
     import Navbar from '$lib/components/navbar.svelte';
     import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
     import { Icon } from "svelte-icons-pack";
+    import {onMount} from "svelte";
     import Autoplay from "embla-carousel-autoplay";
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Carousel from "$lib/components/ui/carousel/index.js"; 
@@ -10,6 +11,39 @@
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
     let isBalanceVisible = false;
+    let inputId = 925; // Id input from the user
+    let card = {}; // Holds the fetched card data
+
+    // Function to fetch credit card details based on Id
+    onMount(async () => {
+        if (!inputId) {
+            alert("Please enter a valid Id");
+            return; 
+        }
+        try {
+            const response = await fetch(`/api/debit-card?id=${inputId}`);
+            if (response.ok) {
+                const data = await response.json();
+                // Check if data is not empty
+                if (data.length > 0) {
+                    card = data[0];
+                    accountNumber = card.Number;
+                    availableBalance = card.balance;
+                } else {
+                    accountNumber = "Not Found";
+                    availableBalance = "Not Available";
+                }
+            } else {
+                console.error("Error fetching credit card details:", await response.json());
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    });
+
+    const formatDebitNumber = (number) => {
+        return number.replace(/(\d{4})(?=\d)/g, '$1 ');
+    };
 
     const plugin = Autoplay({ delay: 3000, stopOnInteraction: true });
 </script>
@@ -19,7 +53,7 @@
     <div class="w-[80vh] h-[80vh] flex flex-col">
         <div class="ml-14 mt-14 w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
             <div class="text-sm font-light">Savings account</div>
-            <div class="text-xl font-bold mt-2">{accountNumber}</div>
+            <div class="text-2xl font-bold mt-2">{formatDebitNumber(accountNumber)}</div>
             
             <div class="flex items-end justify-between mt-14">
                 <div>
