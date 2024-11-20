@@ -212,9 +212,9 @@
 					<h2 class="text-lg font-bold mb-2">Your Application Id is :</h2>
 					<p class="text-lg">
 						Thank you for applying,we'll get back to you soon!
-						<a href="/" class="text-xl font-bold text-gray-300"><u>Continue</u></a><br />
+						<a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
 						Hey! It appears that you don't have an account with us. Would you like to open one?
-						<a href="/newAccount" class="text-xl font-bold text-gray-300"><u>Click here</u></a>
+						<a href="/newAccount" class="text-normal font-bold text-gray-300"><u>Click here</u></a>
 					</p>
 				{/if}
 			</div>

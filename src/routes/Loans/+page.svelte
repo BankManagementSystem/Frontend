@@ -1,9 +1,7 @@
-<!-- src/routes/loans/+page.svelte -->
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
 
-	// Function to navigate to the EMI Calculator page
 	function navigateToEMICalculator() {
 		goto('/emicalcperso');
 	}
@@ -27,7 +25,7 @@
 	<div class="space-y-4">
 		<!-- Personal Loan Card -->
 		<div class="flex-shrink-0 ml-60">
-			<h3 class="text-lg font-bold mb-2">Personal Loan</h3>
+			<h3 class="text-xl font-bold mb-2">Personal Loan</h3>
 		</div>
 		<div class="flex items-center w-3/4 p-4 ml-44 mr-24 bg-[#EEC1CC] rounded-md shadow-md">
 			<div class="flex-shrink-0 mr-4">
@@ -39,7 +37,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-1">
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold">Features and Benefits:</h4>
+					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm ml-10">
@@ -51,7 +49,7 @@
 					</ul>
 				</div>
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold text-center">Required documents:</h4>
+					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -75,7 +73,7 @@
 
 		<!-- Education Loan Card -->
 		<div class="flex-shrink-0 ml-60">
-			<h3 class="text-lg font-bold mb-2">Education Loan</h3>
+			<h3 class="text-xl font-bold mb-2">Education Loan</h3>
 		</div>
 		<div class="flex items-center w-3/4 p-4 ml-44 mr-24 bg-[#EEC1CC] rounded-md shadow-md">
 			<div class="flex-shrink-0 mr-4">
@@ -87,7 +85,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-1">
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold">Features and Benefits:</h4>
+					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -100,7 +98,7 @@
 					</ul>
 				</div>
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold text-center">Required documents:</h4>
+					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -124,7 +122,7 @@
 
 		<!-- Home Loan Card -->
 		<div class="flex-shrink-0 ml-60">
-			<h3 class="text-lg font-bold mb-2">Home Loan</h3>
+			<h3 class="text-xl font-bold mb-2">Home Loan</h3>
 		</div>
 		<div class="flex items-center w-3/4 p-4 ml-44 mr-24 bg-[#EEC1CC] rounded-md shadow-md">
 			<div class="flex-shrink-0 mr-4">
@@ -136,7 +134,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-1">
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold">Features and Benefits:</h4>
+					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -149,7 +147,7 @@
 					</ul>
 				</div>
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold text-center">Required documents:</h4>
+					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -181,7 +179,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-1">
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold">Features and Benefits:</h4>
+					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
@@ -194,7 +192,7 @@
 					</ul>
 				</div>
 				<div class="flex justify-start">
-					<h4 class="text-base font-semibold text-center">Required documents:</h4>
+					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
