@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar.svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { goto } from '$app/navigation';
 	let transactionDetails = {};
 
 	// Load details from localStorage or a state management store
@@ -10,6 +12,10 @@
 			transactionDetails = JSON.parse(details);
 		}
 	});
+
+	function handleback() {
+		history.length > 1 ? history.back() : goto('/transfer');
+	};
 
 	async function confirmPayment() {
 		// Logic to handle payment confirmation
@@ -44,40 +50,46 @@
 <div class=" ml-64 mr-64 mt-8 p-8 bg-gray-200">
 	<div class="mb-6 border-b border-black pb-4 gap-2">
 		<div class="mb-6 border-b border-black pb-4 gap-2">
-			<h2 class="text-center font-semibold text-2xl text-[#772035] mb-2">
-				General Transaction Details:
-			</h2>
+			<h2 class="font-semibold text-2xl text-[#772035] mb-2">General Transaction Details:</h2>
 		</div>
 		<div class="flex flex-col ml-10 space-y-6 text-xl">
 			<div class="flex flex-col justify-center space-y-6 text-xl">
-				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Ref Name :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Transaction Ref Name :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionRefName}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-green-200">
-					<div class="flex w-[40dvh] font-bold text-xl">Pay From Account :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold text-xl">Pay From Account :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payFromAccount}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-blue-200">
-					<div class="flex w-[40dvh] font-bold">Payees Account No :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Payees Account No :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payeesAccountNo}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-red-200">
-					<div class="flex w-[40dvh] font-bold">Payees IFSC Code :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Payees IFSC Code :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.payeesIFSC}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Date :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Transaction Date :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionDate}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Transaction Mode :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Transaction Mode :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionMode}</div>
 				</div>
-				<div class="flex flex-row justify-center bg-yellow-200">
-					<div class="flex w-[40dvh] font-bold">Amount :</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Amount :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.amount}</div>
 				</div>
+			</div>
+			<div class="flex justify-end">
+				<button
+					class=" text-white px-6 py-2 mr-10 rounded-sm bg-secondary font-semibold text-sm hover-bg-[#C73659]"
+					on:click={handleback}
+				>
+					BACK TO EDIT
+				</button>
 			</div>
 		</div>
 	</div>

@@ -38,7 +38,7 @@
 		localStorage.setItem('transferDetails', JSON.stringify(details));
 
 		// Redirect to the confirm page
-		goto('transfer/confirm', { state: details });
+		goto('/transfer/confirm', { state: details });
 		} else {
 		alert('Please fill in all fields.');
 		}
@@ -190,14 +190,14 @@
 			<div class="flex justify-end space-x-4">
 				<button
 					type="submit"
-					class="bg-[#772035] text-white px-6 py-2 rounded-md hover:bg-gray-500"
+					class="bg-[#FFFFFF] text-BLACK shadow-lg px-6 py-2 rounded-md hover:bg-[#C73659] hover:text-primary"
                     on:click={handleSubmit}
 				>
 					Continue
 				</button>
 				<button
 					type="reset"
-					class="bg-[#772035] text-white px-6 py-2 rounded-md hover:bg-gray-500"
+					class="bg-[#FFFFFF] text-BLACK shadow-lg px-6 py-2 rounded-md hover:bg-[#C73659] hover:text-primary"
 					on:click={handleReset}
 				>
 					Reset
