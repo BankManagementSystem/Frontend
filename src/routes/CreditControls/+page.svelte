@@ -69,8 +69,10 @@
     });
 </script>
 
+
+
 <form on:submit|preventDefault={handleSave}>
-<div class="flex items-center justify-between bg-[#FDFDFD] text-[#772035] h-[10dvh] font-bold text-3xl">
+<div class="flex items-center justify-between relative bg-[#FDFDFD] text-[#772035] h-[10dvh] border-secondary border-b-2 font-bold text-3xl">
     <div class="ml-4">
         <a href="/CreditCards">
         <Icon src={BiSolidLeftArrow}/>
@@ -79,7 +81,7 @@
     <div>Credit Card Limits</div>
     <div class="mr-4"></div>
 </div>
-<div class="glass-background flex flex-col justify-center gap-5 items-center h-screen bg-[#F9EBEE]" >
+<div class="glass-background flex flex-col justify-center gap-5 items-center h-screen bg-gradient-to-b from-[#C73659] via-[#E4B9C2] to-[#C73659]" > <!--bg-gradient-to-b from-primary  to-primary via-[#C73659]-->
     <div class="bg-[#772035] w-[70dvh] h-[18dvh] rounded-lg border-2 border-[#772035] flex flex-col">
         <div class="text-xl font-bold mt-3 ml-6 text-[#FDFDFD]">
             Domestic
@@ -156,3 +158,22 @@
     {/if}
 </div>
 </form>
+<!--
+<style>
+    @keyframes gradient-x {
+        0%{
+            background-position: 0% 50%;
+        }
+        50%{
+            background-position: 100% 50%;
+        }
+        100%{
+            background-position: 0% 50%;
+        }
+    }
+    .animate-gradient-x{
+        animation: gradient-x 4s ease infinite;
+        background-size: 200% 200%;
+    }
+</style>
+-->
