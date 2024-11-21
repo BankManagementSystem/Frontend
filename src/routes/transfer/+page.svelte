@@ -3,6 +3,15 @@
 	import { onMount } from 'svelte';
 	import Navbar from "$lib/components/navbar.svelte";
 
+	// Form data
+	let transactionRefName = '';
+	let transactionDate = '';
+	let payFromAccount = '';
+	let payeesAccountNo = '';
+	let payeesIFSC = '';
+	let amount = '';
+	let transactionMode = '';
+
 	// Array to store account numbers
 	let accountNumbers = [];
 
@@ -16,16 +25,7 @@
 		} catch (error) {
 			console.error('Error fetching account numbers:', error);
 		}
-		});
-
-	// Form data
-	let transactionRefName = '';
-	let transactionDate = '';
-	let payFromAccount = '';
-	let payeesAccountNo = '';
-	let payeesIFSC = '';
-	let amount = '';
-	let transactionMode = '';
+	});
 
 	async function handleSubmit(event) {
 		// Prevent the default form submission behavior
@@ -127,12 +127,16 @@
 							Pay From Account*
 						</div>
 						<div>
-							<input
+							<select
 								bind:value={payFromAccount}
-								type="text"
 								class="w-[30dvh] border rounded-md p-2 text-black"
 								required
-							/>
+							>
+								<option value="" disabled selected>Select an account</option>
+								{#each accountNumbers as account}
+								<option value={account}>{account}</option>
+								{/each}
+							</select>
 						</div>
 					</div>
 				</div>

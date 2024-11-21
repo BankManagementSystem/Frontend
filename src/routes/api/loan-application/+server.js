@@ -4,7 +4,7 @@ import { User } from 'lucide-svelte';
 export async function GET() {
     try {
         // Query all usernames from the users table
-        const [rows] = await db.execute('SELECT * FROM Customers WHERE Id = 2');
+        const [rows] = await db.execute('SELECT * FROM Customers WHERE Id = ?',[User.toString()]);
 
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
@@ -24,7 +24,6 @@ export async function POST({ request }) {
             'INSERT INTO Loanapplication (Firstname, Middlename, Lastname, email, phonenumber, Aadhaarnumber, Pancard) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [Firstname, Middlename, Lastname, email, phonenumber, aadhaar, Pancardno]
         );
-
         if (result.affectedRows > 0) {
             return new Response(
             JSON.stringify({
