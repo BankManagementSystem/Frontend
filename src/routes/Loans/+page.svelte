@@ -37,7 +37,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-1">
 				<div class="flex justify-start">
-					<h4 class="text-base font-bold">Features and Benefits:</h4>
+					<h4 class="text-base font-bold ">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm ml-10">
@@ -89,7 +89,7 @@
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
-						<li>Personal Loan with attractive interest rates</li>
+						<li>Education Loan with attractive interest rates</li>
 						<li>
 							Discounted processing fee will apply if your repayment is done from your Bank_Name <br
 							/>
@@ -138,7 +138,7 @@
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm">
-						<li>Personal Loan with attractive interest rates</li>
+						<li>Home Loan with attractive interest rates</li>
 						<li>
 							Discounted processing fee will apply if your repayment is done from your Bank_Name <br
 							/>

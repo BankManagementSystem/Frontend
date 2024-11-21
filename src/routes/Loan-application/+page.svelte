@@ -14,6 +14,38 @@
 	function closePopup() {
 		showPopup.set(false);
 	}
+	
+	function formatAadhaar(event) {
+        // Remove non-numeric characters
+        let input = event.target.value.replace(/[^0-9]/g, '');
+
+        // Format input to 'xxxx-xxxx-xxxx'
+        const formatted = input.match(/.{1,4}/g)?.join('-') || '';
+        event.target.value = formatted;
+        Aadhaar = formatted;
+    }
+
+    function validateAadhaar(event) {
+        const aadhaarPattern = /^\d{4}-\d{4}-\d{4}$/;
+        if (!aadhaarPattern.test(Aadhaar)) {
+            alert("Please enter a valid Aadhaar number in the format 1234-5678-9101");
+            event.preventDefault(); // Prevent form submission
+        }
+    }
+
+    function validatePANInput(event) {
+        // Convert input to uppercase automatically
+        event.target.value = event.target.value.toUpperCase();
+
+        // Regular expression for validating PAN format
+        const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        if (!panPattern.test(event.target.value)) {
+            event.target.setCustomValidity("Enter a valid PAN in the format: ABCDE1234F");
+        } else {
+            event.target.setCustomValidity(""); // Clear custom error message if input is valid
+			}
+		}
+
 	interface UserDetails {
 		Firstname: string;
 		Middlename: string;
@@ -44,7 +76,7 @@
 	let email = '';
 	let phonenumber = '';
 	let aadhaar = '';
-	let Pancardno = '';
+	let Pancardno = '';	
 
 	onMount(async () => {
 		try {
@@ -59,6 +91,7 @@
 				phonenumber = data.phonenumber || '';
 				aadhaar = data.Aadhaarnumber || '';
 				Pancardno = data.Pancard || '';
+				user = data.Id || '';
 				user = data.Id || '';
 			} else {
 				console.error('Error fetching usernames:', await response.json());
@@ -90,7 +123,6 @@
 		}
 	}
 </script>
-
 <form on:submit|preventDefault={handleSave}>
 	<div class="bg-gray-100p-8">
 		<h1 class="text-red-800 text-center text-3xl font-bold">Loan Application</h1>
@@ -103,6 +135,7 @@
 				<label class="block text-sm mb-1"
 					>First name:
 					<input
+						required
 						bind:value={Firstname}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
@@ -115,6 +148,7 @@
 				<label class="block text-sm mb-1"
 					>Middle name:
 					<input
+						required
 						bind:value={Middlename}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
@@ -127,6 +161,7 @@
 				<label class="block text-sm mb-1"
 					>Last name:
 					<input
+						required
 						bind:value={Lastname}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
@@ -139,6 +174,7 @@
 				<label class="block text-sm mb-1"
 					>Email:
 					<input
+						required
 						bind:value={email}
 						type="email"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
@@ -151,6 +187,7 @@
 				<label class="block text-sm mb-1"
 					>Phone number:
 					<input
+						required
 						bind:value={phonenumber}
 						type="tel"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
@@ -160,24 +197,33 @@
 
 			<!-- Aadhaar Number -->
 			<div>
-				<label class="block text-sm mb-1"
+				<label for="Aadhaar" class="block text-sm mb-1"
 					>Aadhaar number:
 					<input
+						required
 						bind:value={aadhaar}
+						id="Aadhaar"
 						type="text"
+						maxlength="14"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
+						on:input={formatAadhaar}
 					/>
 				</label>
 			</div>
 
 			<!-- Pan Number -->
 			<div>
-				<label class="block text-sm mb-1"
+				<label for="PAN" class="block text-sm mb-1"
 					>Pan number:
 					<input
+						required
 						bind:value={Pancardno}
+						id="PAN"
 						type="text"
+						maxlength="10"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
+						title="Enter a valid PAN in the format: ABCDE1234F"
+						on:input={validatePANInput}
 					/>
 				</label>
 			</div>
@@ -202,10 +248,10 @@
 				</button>
 				{#if $hasAccount}
 					<!-- Pop-up content for users with an account -->
-					<h2 class="text-lg font-bold mb-2">Your Application Id is:</h2>
+					<h2 class="text-lg font-bold mb-2"> Your Application Id is :</h2>
 					<p class="text-sm">
-						Thank you for banking with us. In order to track the application status, please login to
-						netbanking.
+						Thank you for banking with us. we'll get back to you soon. In order to track the application status, please login to
+						netbanking. <a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a>
 					</p>
 				{:else}
 					<!-- Pop-up content for users without an account -->
