@@ -1,6 +1,7 @@
 <script>
     import { FaCreditCard } from "svelte-icons-pack/fa";
     import { Icon } from "svelte-icons-pack";
+    import { BsTelephone } from "svelte-icons-pack/bs";
     import { ImUserPlus } from "svelte-icons-pack/im";
     import { BsCreditCard2Front } from "svelte-icons-pack/bs";
     import { TrOutlinePigMoney } from "svelte-icons-pack/tr";
@@ -26,11 +27,11 @@
 </script>
 
 <div class="bg-[#772035] h-[100dvh] flex flex-col">
-    <div class = "flex flex-row justify-between h-10 ml-12 mr-12 mt-6 text-3xl text-[#FDFDFD]">
-        <div><h1>Nitte Bank</h1></div>
-        <div class="bg-[#FDFDFD] flex border-spacing-2 rounded-full w-32 h-[9dvh] justify-center items-center">
+    <div class = "flex flex-row justify-between h-10 ml-12 mr-12 mt-6 text-[#FDFDFD]">
+        <div class="text-3xl"><h1>Nitte Bank</h1></div>
+        <div class="bg-[#FDFDFD] flex border-spacing-2 rounded-full w-20 h-[7dvh] justify-center items-center">
             <DropdownMenu.Root>
-            <DropdownMenu.Trigger class="text-[#772035]">Login</DropdownMenu.Trigger>
+            <DropdownMenu.Trigger class="text-[#772035] font-semibold text-xl">Login</DropdownMenu.Trigger>
             <DropdownMenu.Content>
             <DropdownMenu.Group>
                 <DropdownMenu.GroupHeading>Log on to <br>internet banking</DropdownMenu.GroupHeading>
@@ -88,7 +89,13 @@
                 </div>
         </div>
         <div class="w-1/3 bg-[#FDFDFD] rounded-3xl">
-            
+            <div class="flex flex-col items-start justify-start h-[35dvh] w-[60dvh] ">
+                <div class="ml-6 mt-10 text-2xl font-semibold">For your banking needs and queries</div>
+                <div class="ml-6 mt-4 text-2xl font-bold flex flex-row items-center gap-3">
+                    <div><Icon src={BsTelephone} color="#772035 "/></div>
+                    <div>1800 5700, 1800 5800</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
