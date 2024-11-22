@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Navbar from '$lib/components/navbar.svelte';
     import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
     import { Icon } from "svelte-icons-pack";
@@ -7,13 +7,53 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Carousel from "$lib/components/ui/carousel/index.js"; 
     import * as Card from "$lib/components/ui/card/index.js";
-    const numbs = [ 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    import jwt_decode from 'jwt-decode';
+    import { goto } from '$app/navigation';
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
+
+    let customerId = '';
+    const numbs = [1,2,3];
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
     let isBalanceVisible = false;
     let inputId = 925; // Id input from the user
     let card = {}; // Holds the fetched card data
 
+    /*onMount (() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            const decoded = jwt_decode(token);
+            customerId = decoded.id; // Extract the Customer ID
+    }
+    });*/
+    
     // Function to fetch credit card details based on Id
     onMount(async () => {
         if (!inputId) {
@@ -52,7 +92,7 @@
 <div class="flex flex-row">
     <div class="w-[80vh] h-[80vh] flex flex-col">
         <div class="ml-14 mt-14 w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
-            <div class="text-sm font-light">Savings account</div>
+            <div class="text-sm font-light">Savings account {customerId}</div>
             <div class="text-2xl font-bold mt-2">{formatDebitNumber(accountNumber)}</div>
             
             <div class="flex items-end justify-between mt-14">
@@ -94,14 +134,14 @@
             on:mouseleave={plugin.reset}
             swipe={false}
             opts={ {loop: true}}
-            class="w-[90dvh] h-[70dvh]">
+            class="w-[110dvh] h-[60dvh]">
             <Carousel.Content class="">
                 {#each numbs as num}
                 <Carousel.Item class="">
                     
                     <img
-                        class="w-full h-[70dvh] object-cover rounded-xl"
-                        src="images/landingBg{num}.jpg"
+                        class="w-full h-[60dvh] object-cover rounded-xl"
+                        src="images/Bank{num}.jpg"
                         alt="Bg{num}"
                     />
                 </Carousel.Item>

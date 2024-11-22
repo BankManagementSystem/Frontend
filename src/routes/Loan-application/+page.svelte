@@ -6,6 +6,7 @@
 	// State to manage the account status and pop-up visibility
 	let hasAccount = writable(false); // Adjust this value based on actual account status
 	let showPopup = writable(false);
+	let loanApplicationId = writable('')
 
 	function handleApplyNow() {
 		showPopup.set(true);
@@ -118,6 +119,12 @@
 				})
 			});
 			const result = await response.json();
+			if (result.success) {
+				loanApplicationId.set(result.loanApplicationId);
+				showPopup.set(true);
+			} else {
+				alert('Failed to submit application. Please try again.');
+			}
 		} catch (error) {
 			console.error('Error saving loan application:', error);
 		}
@@ -248,14 +255,14 @@
 				</button>
 				{#if $hasAccount}
 					<!-- Pop-up content for users with an account -->
-					<h2 class="text-lg font-bold mb-2"> Your Application Id is :</h2>
+					<h2 class="text-lg font-bold mb-2"> Your Application Id is :{$loanApplicationId}</h2>
 					<p class="text-sm">
 						Thank you for banking with us. we'll get back to you soon. In order to track the application status, please login to
 						netbanking. <a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a>
 					</p>
 				{:else}
 					<!-- Pop-up content for users without an account -->
-					<h2 class="text-lg font-bold mb-2">Your Application Id is :</h2>
+					<h2 class="text-lg font-bold mb-2">Your Application Id is :{$loanApplicationId}</h2>
 					<p class="text-lg">
 						Thank you for applying,we'll get back to you soon!
 						<a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
