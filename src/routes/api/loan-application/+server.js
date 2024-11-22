@@ -37,8 +37,8 @@ export async function POST({ request }) {
             );
         } else {
             return new Response(
-            JSON.stringify({ success: false, message: 'Failed to save new user details' }),
-            { status: 400 }
+                JSON.stringify({ success: false, message: 'Failed to save new user details' }),
+                { status: 400 }
             );
         }
     } catch (error) {
