@@ -6,6 +6,7 @@
 	// State to manage the account status and pop-up visibility
 	let hasAccount = writable(false); // Adjust this value based on actual account status
 	let showPopup = writable(false);
+	let loanApplicationId = writable('');
 
 	function handleApplyNow() {
 		showPopup.set(true);
@@ -14,37 +15,37 @@
 	function closePopup() {
 		showPopup.set(false);
 	}
-	
+
 	function formatAadhaar(event) {
-        // Remove non-numeric characters
-        let input = event.target.value.replace(/[^0-9]/g, '');
+		// Remove non-numeric characters
+		let input = event.target.value.replace(/[^0-9]/g, '');
 
-        // Format input to 'xxxx-xxxx-xxxx'
-        const formatted = input.match(/.{1,4}/g)?.join('-') || '';
-        event.target.value = formatted;
-        Aadhaar = formatted;
-    }
+		// Format input to 'xxxx-xxxx-xxxx'
+		const formatted = input.match(/.{1,4}/g)?.join('-') || '';
+		event.target.value = formatted;
+		Aadhaar = formatted;
+	}
 
-    function validateAadhaar(event) {
-        const aadhaarPattern = /^\d{4}-\d{4}-\d{4}$/;
-        if (!aadhaarPattern.test(Aadhaar)) {
-            alert("Please enter a valid Aadhaar number in the format 1234-5678-9101");
-            event.preventDefault(); // Prevent form submission
-        }
-    }
-
-    function validatePANInput(event) {
-        // Convert input to uppercase automatically
-        event.target.value = event.target.value.toUpperCase();
-
-        // Regular expression for validating PAN format
-        const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-        if (!panPattern.test(event.target.value)) {
-            event.target.setCustomValidity("Enter a valid PAN in the format: ABCDE1234F");
-        } else {
-            event.target.setCustomValidity(""); // Clear custom error message if input is valid
-			}
+	function validateAadhaar(event) {
+		const aadhaarPattern = /^\d{4}-\d{4}-\d{4}$/;
+		if (!aadhaarPattern.test(Aadhaar)) {
+			alert('Please enter a valid Aadhaar number in the format 1234-5678-9101');
+			event.preventDefault(); // Prevent form submission
 		}
+	}
+
+	function validatePANInput(event) {
+		// Convert input to uppercase automatically
+		event.target.value = event.target.value.toUpperCase();
+
+		// Regular expression for validating PAN format
+		const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+		if (!panPattern.test(event.target.value)) {
+			event.target.setCustomValidity('Enter a valid PAN in the format: ABCDE1234F');
+		} else {
+			event.target.setCustomValidity(''); // Clear custom error message if input is valid
+		}
+	}
 
 	interface UserDetails {
 		Firstname: string;
@@ -76,7 +77,7 @@
 	let email = '';
 	let phonenumber = '';
 	let aadhaar = '';
-	let Pancardno = '';	
+	let Pancardno = '';
 
 	onMount(async () => {
 		try {
@@ -91,7 +92,6 @@
 				phonenumber = data.phonenumber || '';
 				aadhaar = data.Aadhaarnumber || '';
 				Pancardno = data.Pancard || '';
-				user = data.Id || '';
 				user = data.Id || '';
 			} else {
 				console.error('Error fetching usernames:', await response.json());
@@ -118,11 +118,19 @@
 				})
 			});
 			const result = await response.json();
+			if (result.success) {
+				// Set loan application ID and show popup
+				loanApplicationId.set(result.loanApplicationId);
+				showPopup.set(true);
+			} else {
+				alert('Failed to submit application. Please try again.');
+			}
 		} catch (error) {
 			console.error('Error saving loan application:', error);
 		}
 	}
 </script>
+
 <form on:submit|preventDefault={handleSave}>
 	<div class="bg-gray-100p-8">
 		<h1 class="text-red-800 text-center text-3xl font-bold">Loan Application</h1>
@@ -248,17 +256,20 @@
 				</button>
 				{#if $hasAccount}
 					<!-- Pop-up content for users with an account -->
-					<h2 class="text-lg font-bold mb-2"> Your Application Id is :</h2>
+					<h2 class="text-lg font-bold mb-2">Your Application Id is :{$loanApplicationId}</h2>
 					<p class="text-sm">
-						Thank you for banking with us. we'll get back to you soon. In order to track the application status, please login to
-						netbanking. <a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a>
+						Thank you for banking with us. we'll get back to you soon. In order to track the
+						application status, please login to netbanking. <a
+							href="/home"
+							class="text-normal font-bold text-gray-300"><u>Continue</u></a
+						>
 					</p>
 				{:else}
 					<!-- Pop-up content for users without an account -->
-					<h2 class="text-lg font-bold mb-2">Your Application Id is :</h2>
+					<h2 class="text-lg font-bold mb-2">Your Application Id is : {$loanApplicationId}</h2>
 					<p class="text-lg">
 						Thank you for applying,we'll get back to you soon!
-						<a href="/" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
+						<a href="/home" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
 						Hey! It appears that you don't have an account with us. Would you like to open one?
 						<a href="/newAccount" class="text-normal font-bold text-gray-300"><u>Click here</u></a>
 					</p>

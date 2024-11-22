@@ -25,18 +25,20 @@ export async function POST({ request }) {
             [Firstname, Middlename, Lastname, email, phonenumber, aadhaar, Pancardno]
         );
         if (result.affectedRows > 0) {
+            const loanApplicationId = result.insertId;
             return new Response(
-            JSON.stringify({
-                success: true,
-                hasAccount: false,
-                message: 'New user details saved successfully',
-            }),
-            { status: 200 }
+                JSON.stringify({
+                    success: true,
+                    hasAccount: false,
+                    message: 'New user details saved successfully',
+                    loanApplicationId, // Send the ID to the frontend
+                }),
+                { status: 200 }
             );
         } else {
             return new Response(
-            JSON.stringify({ success: false, message: 'Failed to save new user details' }),
-            { status: 400 }
+                JSON.stringify({ success: false, message: 'Failed to save new user details' }),
+                { status: 400 }
             );
         }
     } catch (error) {

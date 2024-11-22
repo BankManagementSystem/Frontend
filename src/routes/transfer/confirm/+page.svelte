@@ -15,7 +15,7 @@
 
 	function handleback() {
 		history.length > 1 ? history.back() : goto('/transfer');
-	};
+	}
 
 	async function confirmPayment() {
 		// Logic to handle payment confirmation
@@ -93,9 +93,9 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Confirmation button -->
-	<button on:click={confirmPayment} class="btn-primary mt-4">Confirm Payment</button>
+	<div class="flex jsutify-center">
+		<button on:click={confirmPayment} class="btn-primary mt-4">Confirm Payment</button>
+	</div>
 </div>
 
 <style>
