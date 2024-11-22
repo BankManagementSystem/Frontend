@@ -8,8 +8,18 @@
     import { BiLogOut } from "svelte-icons-pack/bi";
     import ChangeLogin from '../changelogin/+page.svelte';
     import ChangeTransaction from '../changeTransaction/+page.svelte';
+    
+    async function handleLogout() {
+        // Remove the token from localStorage
+        isLoading = true;
+        localStorage.removeItem("authToken");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Redirect the user to the home page or login page
+        window.location.href = "/";
+    }
 
     let showPopup = null; // Can be 'login' or 'transaction' to track which popup to show
+    let isLoading = false;
 
     function openPopup(type) {
             showPopup = type;
@@ -58,10 +68,18 @@
     </div>
 
     <!-- Logout Button -->
-    <a href="/" class="mt-8 flex items-center space-x-0.2 text-[#772035] text-lg font-semibold">
-        <Icon src={ BiLogOut } className="h-6 w-10 fill-[#772035]"  />
+    <!--<a 
+        href="javascript:void(0);" 
+        class="mt-8 flex items-center space-x-0.2 text-[#772035] text-lg font-semibold"
+        on:click={handleLogout}
+    >
+        <Icon src={BiLogOut} class="h-6 w-10 fill-[#772035]" />
         <span>Logout</span>
-    </a>
+    </a>-->
+    <div class="mt-10">
+        <button type="button" class="outline-button-class bg-secondary text-primary w-20 h-10 rounded-md hover:bg-[#C73659] hover:text-white" on:click={handleLogout}>
+        Logout
+    </button></div>
     <!-- Popup Modal -->
     {#if showPopup}
         <!-- Background Blur Effect -->
@@ -79,9 +97,50 @@
         </div>
     </div>
     {/if}
+    {#if isLoading}
+        <div class="popup">
+            <div class="popup-content">
+                <div class="spinner"></div>
+                <p>Logging out, please wait...</p>
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    }
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top-color: #732B41;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 10px auto;
+    }
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
     /* Popup animation: Slide up from below */
     .animate-slideUp {
         transform: translateY(100%);

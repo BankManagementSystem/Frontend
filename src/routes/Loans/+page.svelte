@@ -19,7 +19,7 @@
 <!-- Loans Content Section -->
 <div class="flex flex-col p-4 items-center bg-[#FDFDFD]">
 	<div class="bg-white p-4">
-		<h1 class="text-red-800 text-center text-3xl font-bold">Available Loan Options:</h1>
+		<h1 class="text-red-800 text-center text-3xl font-bold">Available Loan Options</h1>
 	</div>
 	<!-- Loan Options List -->
 	<div class="space-y-4">
@@ -35,7 +35,7 @@
 					alt="Personal Loan"
 				/>
 			</div>
-			<div class="flex-1 justify-items-center space-y-1">
+			<div class="flex-1 justify-items-center space-y-2">
 				<div class="flex justify-start">
 					<h4 class="text-base font-bold ">Features and Benefits:</h4>
 				</div>
@@ -52,7 +52,7 @@
 					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Pan Card</li>
 						<li>Aadhaar</li>
 						<li>
@@ -83,16 +83,15 @@
 					alt="Education Loan"
 				/>
 			</div>
-			<div class="flex-1 justify-items-center space-y-1">
+			<div class="flex-1 justify-items-center space-y-2">
 				<div class="flex justify-start">
 					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Education Loan with attractive interest rates</li>
 						<li>
-							Discounted processing fee will apply if your repayment is done from your Bank_Name <br
-							/>
+							Discounted processing fee will apply if your repayment is done from your Bank_Name
 							Bank Acc. T&C apply
 						</li>
 					</ul>
@@ -101,7 +100,7 @@
 					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Pan Card</li>
 						<li>Aadhaar</li>
 						<li>
@@ -132,16 +131,15 @@
 					alt="Home Loan"
 				/>
 			</div>
-			<div class="flex-1 justify-items-center space-y-1">
+			<div class="flex-1 justify-items-center space-y-2">
 				<div class="flex justify-start">
 					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Home Loan with attractive interest rates</li>
 						<li>
-							Discounted processing fee will apply if your repayment is done from your Bank_Name <br
-							/>
+							Discounted processing fee will apply if your repayment is done from your Bank_Name
 							Bank Acc. T&C apply
 						</li>
 					</ul>
@@ -150,7 +148,7 @@
 					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Pan Card</li>
 						<li>Aadhaar</li>
 						<li>
@@ -177,16 +175,15 @@
 			<div class="flex-shrink-0 mr-4">
 				<img class="w-100 h-100 object-cover rounded-md" src="images/carloan.png" alt="Car Loan" />
 			</div>
-			<div class="flex-1 justify-items-center space-y-1">
+			<div class="flex-1 justify-items-center space-y-2">
 				<div class="flex justify-start">
 					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Personal Loan with attractive interest rates</li>
 						<li>
-							Discounted processing fee will apply if your repayment is done from your Bank_Name <br
-							/>
+							Discounted processing fee will apply if your repayment is done from your Bank_Name
 							Bank Acc. T&C apply
 						</li>
 					</ul>
@@ -195,7 +192,7 @@
 					<h4 class="text-base font-bold text-center">Required documents:</h4>
 				</div>
 				<div class="flex justify-items-center">
-					<ul class="list-disc list-inside text-sm">
+					<ul class="list-disc list-inside text-sm ml-10">
 						<li>Pan Card</li>
 						<li>Aadhaar</li>
 						<li>

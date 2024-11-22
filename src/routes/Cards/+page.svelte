@@ -1,6 +1,39 @@
-<script>
+<script lang="ts">
     import Navbar from "$lib/components/navbar.svelte";
+    import {onMount} from 'svelte';
     import { Button } from "$lib/components/ui/button/index.js";
+    import jwt_decode from 'jwt-decode';
+    import { goto } from '$app/navigation';
+
+    let customerId = '';
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
 </script>
 <Navbar/>
 <slot/>

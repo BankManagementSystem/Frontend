@@ -67,7 +67,7 @@
             </a></div>
         <div class="text-3xl font-bold ml-14 text-[#732B41]">Account Details</div>
     </div>
-    <div class="mt-1 p-8 bg-[#C73659] bg-opacity-[90%] shadow-2xl rounded-lg w-[70%] h-[104dvh] ">
+    <div class="mt-1 p-8 bg-secondary shadow-2xl rounded-lg w-[70%] h-[104dvh] ">
         <!-- General Details Section -->
         <div class="text-2xl font-semibold text-primary border-b-2 border-black h-[7dvh]">General Details</div>
         <div class="flex justify-center border-b-2 border-black h-[55dvh]">

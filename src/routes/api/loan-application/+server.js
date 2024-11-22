@@ -4,7 +4,7 @@ import { User } from 'lucide-svelte';
 export async function GET() {
     try {
         // Query all usernames from the users table
-        const [rows] = await db.execute('SELECT * FROM Customers WHERE Id = ?',[User.toString()]);
+        const [rows] = await db.execute('SELECT * FROM Customer WHERE Id = 1');
 
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
@@ -27,13 +27,13 @@ export async function POST({ request }) {
         if (result.affectedRows > 0) {
             const loanApplicationId = result.insertId;
             return new Response(
-                JSON.stringify({
-                    success: true,
-                    hasAccount: false,
-                    message: 'New user details saved successfully',
-                    loanApplicationId, // Send the ID to the frontend
-                }),
-                { status: 200 }
+            JSON.stringify({
+                success: true,
+                hasAccount: false,
+                message: 'New user details saved successfully',
+                loanApplicationId,
+            }),
+            { status: 200 }
             );
         } else {
             return new Response(
