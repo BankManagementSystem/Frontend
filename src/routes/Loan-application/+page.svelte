@@ -6,7 +6,7 @@
 	// State to manage the account status and pop-up visibility
 	let hasAccount = writable(false); // Adjust this value based on actual account status
 	let showPopup = writable(false);
-	let loanApplicationId = writable('')
+	let loanApplicationId = writable('');
 
 	function handleApplyNow() {
 		showPopup.set(true);

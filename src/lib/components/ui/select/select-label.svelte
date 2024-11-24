@@ -5,4 +5,9 @@
 	export { className as class };
 </script>
 
-<SelectPrimitive.Separator class={cn("bg-muted -mx-1 my-1 h-px", className)} {...$$restProps} />
+<SelectPrimitive.Label
+	class={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+	{...$$restProps}
+>
+	<slot />
+</SelectPrimitive.Label>

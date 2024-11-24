@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-	import Navbar from '$lib/components/navbar.svelte';
+    import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
+	import {Icon} from 'svelte-icons-pack';
 	let accountNumber = '';
 	let address = '';
     let Type='';
@@ -52,13 +53,14 @@
 	}
 </script>
 
-<Navbar />
-<div class=" bg-gray-200 flex flex-col items-center py-6">
-	<h1 class="text-4xl font-bold text-[#772035] mb-8">Locker Registration Form</h1>
+<div class="w-full bg-[#772035] flex justify-between items-center text-white h-[10dvh]">
+	<div><button class="ml-2 text-2xl"><a href="/Lockers"><Icon src={ BiSolidLeftArrow} className="h-6 w-6"/></a></button></div>
+	<div class=" text-2xl font-semibold">Locker Registration Form</div>
+	<div class="mr-6 "></div>
 </div>
 <div class="min-h-screen bg-gray-200 flex flex-col items-center py-1">
 	<form
-		class="w-[60dvh] bg-secondary p-12 rounded-lg shadow-lg space-y-4"
+		class="w-[60dvh] bg-secondary p-10 rounded-lg shadow-lg space-y-4 mt-8"
 		on:submit|preventDefault={handleSubmit}>
 		<div>
 			<label for="accountNumber" class="block text-white text-lg font-medium mb-2">Account Number:</label
@@ -104,14 +106,15 @@
 				<option value="Large">Large</option>
 			</select>
 		</div>
+		<div class="flex flex-row justify-between">
         <div>
             <label for="StartDate" class="block text-lg font-medium text-white">Start Date</label>
-            <input
+			<input
                 id="StartDate"
                 type="date"
                 bind:value={StartDate}
                 required
-                class="mt-1 block h-[6dvh] w-[22dvh] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                class="mt-1 block h-[6dvh] w-[20dvh] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
         </div>
         <div>
@@ -121,9 +124,10 @@
                 type="date"
                 bind:value={EndDate}
                 required
-                class="mt-1 block h-[6dvh] w-[22dvh] rounded-sm border-gray-300 "
+                class="mt-1 block h-[6dvh] w-[20dvh] rounded-sm border-gray-300 "
                 />
         </div>
+		</div>
 		<div class="flex items-center">
 			<input
 				id="terms"

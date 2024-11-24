@@ -15,7 +15,7 @@ export async function POST({ request }) {
         //console.log('Query result:', rows); // Log the result for debugging
         if (rows.length > 0) {
             const user = rows[0];
-            const token = jwt.sign({ id: user.CustomerId }, SECRET_KEY, { expiresIn: '10m' });
+            const token = jwt.sign({ id: user.CustomerId }, SECRET_KEY, { expiresIn: '30m' });
             //console.log('Generated Token:', token);
             return new Response(JSON.stringify({ success: true, token }), { status: 200 });
         } else {

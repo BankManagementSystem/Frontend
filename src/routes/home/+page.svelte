@@ -43,7 +43,6 @@
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
     let isBalanceVisible = false;
-    let inputId = 925; // Id input from the user
     let card = {}; // Holds the fetched card data
 
     /*onMount (() => {
@@ -56,12 +55,8 @@
     
     // Function to fetch credit card details based on Id
     onMount(async () => {
-        if (!inputId) {
-            alert("Please enter a valid Id");
-            return; 
-        }
         try {
-            const response = await fetch(`/api/debit-card?id=${inputId}`);
+            const response = await fetch(`/api/debit-card?id=${customerId}`);
             if (response.ok) {
                 const data = await response.json();
                 // Check if data is not empty
