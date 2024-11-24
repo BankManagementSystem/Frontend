@@ -41,7 +41,7 @@
 </div>
 
 <div class="flex justify-center items-center bg-gradient-to-b from-[#C73659] via-[#E4B9C2] to-[#C73659] h-[90dvh]"> <!-- bg-gradient-to-b from-[#B33150]  to-primary via-[#C73659]--> <!--bg-secondary bg-opacity-[90%]-->
-    <div class ="flex flex-col gap-2 rounded-sm justify-center   items-center font-semibold text-lg bg-primary shadow-2xl h-[70dvh] w-[70dvh]">
+    <div class ="flex flex-col gap-2 rounded-sm justify-center   items-center font-semibold text-lg bg-secondary text-white shadow-2xl h-[70dvh] w-[70dvh]">
         <div >Enter PIN</div>
         <div class="relative">
             <input
@@ -111,7 +111,7 @@
             </button>
         </div>
         <div>
-            <button on:click={handleSubmit} class="bg-secondary text-primary w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
+            <button on:click={handleSubmit} class="bg-primary text-secondary hover:bg-gray-200 w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
                 <span>Submit</span>
             </button>
         </div>

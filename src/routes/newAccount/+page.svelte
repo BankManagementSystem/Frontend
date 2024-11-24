@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
     import { Icon } from "svelte-icons-pack";
     import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
+    import { goto } from '$app/navigation';
+    import jwt_decode from 'jwt-decode';
   
     // Function to navigate back
     let FN = "";
@@ -83,14 +85,46 @@
             event.target.setCustomValidity(""); // Clear custom error message if input is valid
         }
     }
+
+    async function handleBack(event) {
+    event.preventDefault(); // Prevent default behavior for the back action
+
+    const token = localStorage.getItem('authToken'); // Retrieve the token
+
+    if (token) {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+            if (decoded.exp < currentTime) {
+                // Token has expired
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken'); // Clear the expired token
+                goto('/'); // Redirect to login or home page
+            } else {
+                // Token is valid
+                goto('/Accounts'); // Redirect to accounts page
+            }
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            alert('Invalid session. Please log in again.');
+            localStorage.removeItem('authToken'); // Clear invalid token
+            goto('/'); // Redirect to login or home page
+        }
+    } else {
+        // No token found
+        goto('/'); // Redirect to login or home page
+    }
+  }
+
   </script>
   
   <!-- Header -->
   <div class="flex items-center justify-between bg-[#D9D9D9] text-[#772035] h-[10dvh] font-bold text-3xl w-full">
     <div class="ml-4 cursor-pointer">
-      <a href="/">
+      <button on:click={handleBack}>
       <Icon src={BiSolidLeftArrow} />
-      </a>
+      </button>
     </div>
     <div>New Account</div>
     <div class="mr-4"></div>

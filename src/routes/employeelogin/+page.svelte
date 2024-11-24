@@ -1,12 +1,18 @@
 <script>
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
-    import * as Select from "$lib/components/ui/select/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
+    import {Icon} from 'svelte-icons-pack';
+    import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
 </script>
 
-<div class="flex flex-  col">
+<div class="w-full bg-[#772035] flex justify-between items-center text-white h-[10dvh]">
+    <div><button class="ml-2 text-2xl"><a href="/"><Icon src={ BiSolidLeftArrow} className="h-6 w-6"/></a></button></div>
+    <div class="text-2xl font-bold"><a href="/">NITTE Bank</a></div>
+    <div class="mr-6 "></div>
+</div>
+<div class="flex flex-col">
     <div class="items-center justify-center mt-6 ml-6 md-0">
         <h1 class = "text-3xl text-red-800">
             <!---<Button class="bg-[#732B41] text-white" variant="primary" size="large">Bank Name</Button> -->
@@ -49,7 +55,7 @@
                 </form>
                 </Card.Content>
                 <Card.Footer class="flex flex-col text-[#732B41]">
-                <div><Button variant="outline">Login</Button></div>
+                <div><Button variant="outline" href="/employeesHome">Login</Button></div>
                 <div class="flex flex-col mt-2 justify-start space-y-1.5 text-[#FDFDFD]">
                     <h1>Forgot password?</h1>
                 </div>

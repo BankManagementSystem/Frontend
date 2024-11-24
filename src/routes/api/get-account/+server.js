@@ -1,10 +1,11 @@
 import { json } from '@sveltejs/kit';
 import { db } from '$lib/db'; // Assuming db is your MySQL connection instance
 
-export async function GET() {
+export async function GET({url}) {
+    const id = url.searchParams.get('id');
     try {
         const [accounts] = await db.execute(
-        'SELECT accountNumber FROM account WHERE CustomerId = 1');
+        'SELECT accountNumber FROM account WHERE CustomerId = ?',[id]);
 
         // Transform the result into an array of account numbers
         const accountNumbers = accounts.map((row) => row.accountNumber);

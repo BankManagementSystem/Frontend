@@ -1,13 +1,48 @@
-<script>
+<script lang="ts">
     import Navbar from "$lib/components/navbar.svelte";
     import {Icon} from "svelte-icons-pack"
     import { Button } from "$lib/components/ui/button/index.js";
     import { Switch } from "$lib/components/ui/switch/index.js";
     import ToggleSwitch from "$lib/components/ToggleSwitch2.svelte";
+    import * as Carousel from "$lib/components/ui/carousel/index.js"; 
     import { Label } from "$lib/components/ui/label/index.js";
     import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
     import {onMount} from "svelte";
+    import Autoplay from "embla-carousel-autoplay";
+    import jwt_decode from 'jwt-decode';
+    import { goto } from '$app/navigation';
 
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
+
+    const plugin = Autoplay({ delay: 3000, stopOnInteraction: true });
+
+    const numbs = [1,2,3];  
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
     let isBalanceVisible = false;
@@ -20,29 +55,38 @@
         return number.replace(/(\d{4})(?=\d)/g, '$1 ');
     };
 
-    let inputId = 925; // Id input from the user
+    let Account = '';
+    let customerId = ''; // Id input from the user
     let card = {}; // Holds the fetched card data
+    let accounts = [];
+
+
+    //const selectedAccount = accounts.find(account => account.AccountId === Account);
+    let selectedAccount = null; // Holds the currently selected account details
+
+    // Reactive statement to update selectedAccount based on the selected Account ID
+    $: selectedAccount = accounts.find(account => account.AccountId === Account);
 
     // Function to fetch credit card details based on Id
     onMount(async () => {
-        if (!inputId) {
-            alert("Please enter a valid Id");
-            return; 
-        }
         try {
-            const response = await fetch(`/api/debit-card?id=${inputId}`);
+            const response = await fetch(`/api/debit-card?id=${customerId}`);
             if (response.ok) {
-                const data = await response.json();
+                accounts = await response.json();
+                if (accounts.length > 0) {
+                    Account = accounts[0].AccountId;
+                    selectedAccount = accounts[0];
+                }
                 // Check if data is not empty
-                if (data.length > 0) {
-                    card = data[0];
+                /*if (accounts.length > 0) {
+                    card = accounts[0];
                     accountNumber = card.Number;
                     availableBalance = card.balance;
                     CVV = card.CVV;
                 } else {
                     accountNumber = "Not Found";
                     availableBalance = "Not Available";
-                }
+                }*/
             } else {
                 console.error("Error fetching credit card details:", await response.json());
             }
@@ -55,15 +99,33 @@
 <Navbar/>
 <slot/>
 
-<div class="flex flex-col text-black h-[80dvh] ml-10 mr-96" >
-    <div class="font-bold mt-6 text-2xl">Debit Card</div>
+<div class="flex flex-row justify-between">
+<div class="flex flex-col text-black h-[80dvh] ml-10">
+    <div class="flex flex-row items-center h-[10dvh] mt-2 justify-between">
+        <div class="font-bold text-2xl">Debit Card</div>
+        <div class="">
+            <select required
+                bind:value={Account}
+                id = "account"
+                class="w-[30dvh] px-4 py-2 rounded-md bg-secondary text-primary hover:bg-secondary focus:ring-2 focus:ring-[#A12A48]">
+                <option value="" disabled selected class="text-white bg-secondary" >Select Account</option>
+                {#each accounts as account}
+                <option value={account.AccountId} class="bg-secondary text-primary">{account.AccountId}</option>                    
+                {/each}
+            </select>
+        </div>
+    
+    </div>
 <!---->
-    <div class="mt-4 w-[60vh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
-        <div class="text-2xl font-bold mt-2">{formatDebitNumber(accountNumber)}</div>
+    <div class="mt-2 w-[60vh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
+        <div class="text-2xl font-bold mt-2">   
+            {(selectedAccount?.Number) ? formatDebitNumber(selectedAccount.Number) : "Not Available"}
+        </div>
         <div class="text-sm font-light">Valid Upto: 31-DEC-26</div>
         <div class=" flex flex-row text-base font-semibold mt-8"><div>CVV:</div> 
             {#if CvvisChecked}
-                <div class="text-primary font-bold font-serif ml-2"> {CVV} </div>             
+                <div class="text-primary font-bold font-serif ml-2">
+                    {selectedAccount?.CVV || "N/A"}</div>             
             {:else}
                 <div class="text-red-600 ml-2"></div>
             {/if}
@@ -119,4 +181,27 @@
         <div class="ml-4"> <Button variant="outline" class=" text-red-600 h-11 rounded-md px-6 text-lg font-bold bg-[#FDFDFD] shadow-xl">Block Card</Button> </div>
         <div class="mr-4"> <Button variant="outline" href="/DebitControls" class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</Button> </div>
     </div>
+</div>
+<div class="w-[132dvh] flex items-center justify-center">
+    <Carousel.Root 
+        plugins={[plugin]}
+        on:mousenter={plugin.stop}
+        on:mouseleave={plugin.reset}
+        swipe={false}
+        opts={ {loop: true}}
+        class="w-[110dvh] h-[60dvh]">
+        <Carousel.Content class="">
+            {#each numbs as num}
+            <Carousel.Item class="">
+                
+                <img
+                    class="w-full h-[60dvh] object-cover rounded-xl"
+                    src="images/Bank{num}.jpg"
+                    alt="Bg{num}"
+                />
+            </Carousel.Item>
+            {/each}
+        </Carousel.Content>
+        </Carousel.Root>
+</div>
 </div>

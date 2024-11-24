@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Navbar from '$lib/components/navbar.svelte';
     import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
     import { BsCreditCard2Front } from "svelte-icons-pack/bs";
@@ -9,6 +9,38 @@
     import { Icon } from "svelte-icons-pack";
     import { Button } from "$lib/components/ui/button/index.js";
     import { onMount } from 'svelte';
+    import jwt_decode from 'jwt-decode';
+    import { goto } from '$app/navigation';
+
+    let customerId = '';
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
 
     let accountNumber = "Fetching";
     let availableBalance = "Not Available";
@@ -67,13 +99,13 @@
     </button>-->
 
     <div class="w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
-        <div class="text-sm font-medium">Savings account</div>
+        <div class="text-sm font-medium"></div>
         <div class="text-2xl font-bold mt-2">{accountNumber}</div>
         
         <div class="flex items-end justify-between mt-14">
             <div>
                 <div class="text-2xl font-bold">₹ {isBalanceVisible ? availableBalance : 'X,XX,XXX'}</div>
-                <div class="text-sm font-light">Available balance</div>
+                <div class="text-sm font-light">Available Limit</div>
             </div>
 
             <!-- Clickable Icon for toggling visibility -->
@@ -90,8 +122,8 @@
         </div>
     </div>
 </div>
-
-<div class="flex flex-col bg-[#A91D3A] h-[29dvh] rounded-lg ml-10 mr-10 mt-6">
+<div class="flex justify-center">
+<div class="flex flex-col bg-[#A91D3A] h-[29dvh] w-[170dvh] rounded-lg ml-10 mr-10 mt-6">
     <div class="flex flex-row justify-between mt-4 ">
         <div class="flex font-bold ml-10 text-2xl text-[#D9D9D9] ">
             Credit Card
@@ -117,17 +149,20 @@
             <div class="text-[#D9D9D9]">Set Pin</div>
             </div>  
         </a>
+        <a href="./PayBill">
         <div class="flex flex-col justify-center items-center ">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={RiDocumentArticleLine} size="30" /></div>
             <div class="text-[#D9D9D9]">Pay Bill</div>
         </div>
+        </a>
         <div class="flex flex-col justify-center items-center">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={TrOutlineCreditCardOff} size="30" /></div>
             <div class="text-[#D9D9D9]">Block Card</div>
         </div>
-        <div class="flex flex-col justify-center items-center">
+        <!--<div class="flex flex-col justify-center items-center">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={TrOutlineDeviceIpadHorizontalSearch} size="30" /></div>
             <div class="text-[#D9D9D9]">View More</div>
-        </div>
+        </div>-->
     </div>
+</div>
 </div>
