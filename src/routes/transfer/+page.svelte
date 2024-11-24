@@ -86,7 +86,7 @@
 		<form on:submit={handleSubmit}>
 			<!-- Set Payment Date and Frequency -->
 			<div class="mb-6 border-b border-black pb-4 gap-2">
-				<h2 class="font-semibold text-xl text-white mb-2">
+				<h2 class="font-semibold text-xl text-white mb-7">
 					Set Payment Date and Reference number:
 				</h2>
 				<div class="flex flex-col justify-between w-[84dvh] ml-24 gap-2">
