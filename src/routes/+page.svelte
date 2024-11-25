@@ -31,16 +31,17 @@
         <div class="text-3xl"><h1>Nitte Bank</h1></div>
         <div class="bg-[#FDFDFD] flex border-spacing-2 rounded-full w-20 h-[7dvh] justify-center items-center">
             <DropdownMenu.Root>
-            <DropdownMenu.Trigger class="text-[#772035] font-semibold text-xl">Login</DropdownMenu.Trigger>
-            <DropdownMenu.Content>
-            <DropdownMenu.Group>
-                <DropdownMenu.GroupHeading>Log on to <br>internet banking</DropdownMenu.GroupHeading>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item><a href="./login">Customer</a></DropdownMenu.Item>
-                <DropdownMenu.Item><a href="./employeelogin">Employee</a></DropdownMenu.Item>
-            </DropdownMenu.Group>
-            </DropdownMenu.Content>
-        </DropdownMenu.Root></div>
+                <DropdownMenu.Trigger class="text-[#772035] font-semibold text-xl">Login</DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                    <DropdownMenu.Group>
+                        <DropdownMenu.GroupHeading>Log on to <br>internet banking</DropdownMenu.GroupHeading>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Item><a href="./login">Customer</a></DropdownMenu.Item>
+                        <DropdownMenu.Item><a href="./employeelogin">Employee</a></DropdownMenu.Item>
+                    </DropdownMenu.Group>
+                </DropdownMenu.Content>
+            </DropdownMenu.Root>
+        </div>
     </div>
     <div class="bg-gray-500 mt-9">
         <img class="w-full h-[45dvh]" src="images/home.png" alt="Login">
