@@ -21,7 +21,7 @@
 <slot />
 
 <div class="min-h-screen bg-gray-100">
-	<div class="container mx-auto py-8 ">
+	<div class="container mx-auto py-8">
 		<h1 class="text-2xl font-bold mb-6 text-secondary">Loans Applications</h1>
 
 		{#if error}
@@ -31,55 +31,67 @@
 		{:else}
 			<div class="space-y-6">
 				{#each loanApplications as loan}
-				<div class="flex flex-col shadow-md text-xl gap-6 bg-white justify-center rounded-lg p-6 border border-gray-300">
-					<!-- Outer wrapper for centering -->
-					<div class="flex flex-col items-center">
-						<!-- First Yellow Div -->
-						<div class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md">
-							<div>
-								<p class="font-bold text-secondary">
-									Loan Application Id: <span class="font-normal">{loan.Id}</span>
-								</p>
+					<div
+						class="flex flex-col ml-40 mr-40 shadow-md text-xl gap-6 w-[150dvh] bg-gray-200 justify-center rounded-lg p-6 border border-gray-300"
+					>
+						<!-- Outer wrapper for centering -->
+						<div class="flex flex-col items-center">
+							<!-- First Yellow Div -->
+							<div
+								class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md"
+							>
+								<div>
+									<p class="font-bold text-secondary">
+										Loan Application Id: <span class="font-normal">{loan.Id}</span>
+									</p>
+								</div>
+								<div>
+									<p class="font-bold text-secondary">
+										Name: <span class="font-normal"
+											>{loan.Firstname} {loan.Middlename} {loan.Lastname}</span
+										>
+									</p>
+								</div>
+								<div>
+									<p class="font-bold text-secondary">
+										Type: <span class="font-normal">Personal</span>
+									</p>
+								</div>
 							</div>
-							<div>
-								<p class="font-bold text-secondary">
-									Name: <span class="font-normal">{loan.Firstname} {loan.Middlename} {loan.Lastname}</span>
-								</p>
-							</div>
-							<div>
-								<p class="font-bold text-secondary">
-									Type: <span class="font-normal">Personal</span>
-								</p>
+
+							<!-- Second Yellow Div -->
+							<div
+								class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md mt-4"
+							>
+								<div>
+									<p class="font-bold text-secondary">
+										Loan Amount: <span class="font-normal">₹25,00,000</span>
+									</p>
+								</div>
+								<div>
+									<p class="font-bold text-secondary">
+										Tenure: <span class="font-normal">40</span>
+									</p>
+								</div>
+								<div>
+									<p class="font-bold text-secondary">
+										Rate of Interest: <span class="font-normal">17%</span>
+									</p>
+								</div>
 							</div>
 						</div>
-				
-						<!-- Second Yellow Div -->
-						<div class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md mt-4">
-							<div>
-								<p class="font-bold text-secondary">
-									Loan Amount: <span class="font-normal">₹25,00,000</span>
-								</p>
-							</div>
-							<div>
-								<p class="font-bold text-secondary">
-									Tenure: <span class="font-normal">40</span>
-								</p>
-							</div>
-							<div>
-								<p class="font-bold text-secondary">
-									Rate of Interest: <span class="font-normal">17%</span>
-								</p>
-							</div>
+						<div class="flex flex-row justify-center space-x-14">
+							<button
+								class="bg-secondary w-[20dvh] text-white px-4 py-2 rounded-lg hover:bg-maroon-900"
+							>
+								Approve
+							</button>
+							<button
+								class="bg-secondary w-[20dvh] text-white px-4 py-2 rounded-lg hover:bg-maroon-900"
+							>
+								Reject
+							</button>
 						</div>
-					</div>
-							<div class="flex flex-row justify-center space-x-4">
-								<button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-maroon-900">
-									Approve
-								</button>
-								<button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-maroon-900">
-									Reject
-								</button>
-							</div>
 					</div>
 				{/each}
 			</div>
