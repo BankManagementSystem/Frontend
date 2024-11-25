@@ -2,11 +2,23 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	// State to manage the account status and pop-up visibility
 	let hasAccount = writable(false); // Adjust this value based on actual account status
 	let showPopup = writable(false);
 	let loanApplicationId = writable('');
+
+	let loanDetails = {};
+	onMount(() => {
+		// Fetch loan details passed from the previous page
+		if (history.state && history.state.typeofLoan) {
+			loanDetails = { ...history.state };
+		} else {
+			alert('No loan details found!');
+			goto('/emicalcperso'); // Redirect back if no data
+		}
+	});
 
 	function handleApplyNow() {
 		showPopup.set(true);

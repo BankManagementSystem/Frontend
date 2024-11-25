@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
+	import { Icon } from 'svelte-icons-pack';
+	import { BiSolidLeftArrow } from 'svelte-icons-pack/bi';
+	import jwt_decode from 'jwt-decode';
 
 	function navigateToEMICalculator() {
 		goto('/emicalcperso');
@@ -14,13 +17,53 @@
 	function navigateToemicalccar() {
 		goto('/emicalccar');
 	}
+	async function handleBack(event) {
+		event.preventDefault(); // Prevent default behavior for the back action
+
+		const token = localStorage.getItem('authToken'); // Retrieve the token
+
+		if (token) {
+			try {
+				const decoded = jwt_decode<{ exp: number }>(token);
+				const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+				if (decoded.exp < currentTime) {
+					// Token has expired
+					alert('Session expired. Please log in again.');
+					localStorage.removeItem('authToken'); // Clear the expired token
+					goto('/'); // Redirect to login or home page
+				} else {
+					// Token is valid
+					goto('/Home'); // Redirect to accounts page
+				}
+			} catch (error) {
+				console.error('Error decoding token:', error);
+				alert('Invalid session. Please log in again.');
+				localStorage.removeItem('authToken'); // Clear invalid token
+				goto('/'); // Redirect to login or home page
+			}
+		} else {
+			// No token found
+			goto('/'); // Redirect to login or home page
+		}
+	}
 </script>
+
+<!-- Header -->
+<div
+	class="flex items-center justify-between bg-gray-200 text-[#772035] h-[10dvh] font-bold text-3xl w-full"
+>
+	<div class="ml-4 cursor-pointer">
+		<button on:click={handleBack}>
+			<Icon src={BiSolidLeftArrow} />
+		</button>
+	</div>
+	<div>Available Loan Options</div>
+	<div class="mr-4"></div>
+</div>
 
 <!-- Loans Content Section -->
 <div class="flex flex-col p-4 items-center bg-[#FDFDFD]">
-	<div class="bg-white p-4">
-		<h1 class="text-red-800 text-center text-3xl font-bold">Available Loan Options</h1>
-	</div>
 	<!-- Loan Options List -->
 	<div class="space-y-4">
 		<!-- Personal Loan Card -->
@@ -37,7 +80,7 @@
 			</div>
 			<div class="flex-1 justify-items-center space-y-2">
 				<div class="flex justify-start">
-					<h4 class="text-base font-bold ">Features and Benefits:</h4>
+					<h4 class="text-base font-bold">Features and Benefits:</h4>
 				</div>
 				<div class="flex justify-items-center">
 					<ul class="list-disc list-inside text-sm ml-10">

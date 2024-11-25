@@ -3,17 +3,26 @@
 	import { writable } from 'svelte/store';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
-
-    // Function to navigate to the Loan Application page
-    function navigateToLoanApplication() {
-        goto('/Loan-application');
-    }
     
     // Input values
+    let typeofLoan = 'Personal loan';
     let loanAmount = 1250000; 
     let tenure = 40; 
     let reducingRate = 17; 
     let emi = 0; 
+
+    function checkEligibility() {
+		// Pass data to loan application form via query parameters or a store
+		goto('/Loan-application', {
+			state: {
+				typeofLoan,
+				loanAmount,
+				tenure,
+				reducingRate,
+				emi
+			}
+		});
+	}
 
     // Reactive block to calculate EMI whenever values change
     $: {
@@ -120,7 +129,7 @@
         <div class="flex justify-center items-center mt-4">
         <button
             class="bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold text-sm"
-            on:click={navigateToLoanApplication}
+            on:click={checkEligibility}
         >
             Check Eligibility
         </button>

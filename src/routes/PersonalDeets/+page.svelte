@@ -1,4 +1,6 @@
 <script>
+    import { BiSolidLeftArrow } from 'svelte-icons-pack/bi';
+    import { Icon } from 'svelte-icons-pack';
     let customerDetails = {
         name: "",
         address: "",
@@ -12,11 +14,16 @@
     };
 </script>
 
+<div class="w-full bg-[#772035] flex justify-between items-center text-white h-[10dvh]">
+    <div><button class="ml-2 text-2xl"><a href="/Settin">
+        <Icon src={ BiSolidLeftArrow} className="h-6 w-6"/>
+        </a>
+    </button></div>
+    <div class=" text-2xl font-semibold">Profile</div>
+    <div class="mr-6 "></div>
+</div>
+
 <div class="min-h-screen bg-white flex flex-col items-center p-6">
-    <!-- Header -->
-    <div class="w-full max-w-4xl bg-white text-white py-4 px-6 rounded-t-lg">
-        <h1 class="text-3xl font-bold text-[#772035] text-center">Profile</h1>
-    </div>
 
     <!-- Form Container -->
     <div class="w-full max-w-lg p-6 rounded-lg shadow-lg bg-[#772035] gap-2 flex flex-col">
