@@ -5,7 +5,7 @@ export async function GET({url}) {
     const id = url.searchParams.get('id');
     try {
         const [accounts] = await db.execute(
-        'SELECT accountNumber FROM account WHERE CustomerId = ?',[id]);
+        'SELECT accountNumber FROM account WHERE CustomerId = 1');
 
         // Transform the result into an array of account numbers
         const accountNumbers = accounts.map((row) => row.accountNumber);

@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
 	let transactionDetails = {};
-
+	let transactionPassword = '';
 	// Load details from localStorage or a state management store
 	onMount(() => {
 		const details = localStorage.getItem('transferDetails');
@@ -16,6 +16,7 @@
 	function handleback() {
 		history.length > 1 ? history.back() : goto('/transfer');
 	}
+	
 
 	async function confirmPayment() {
 		// Logic to handle payment confirmation
@@ -47,10 +48,12 @@
 <div class="border border-gray-300 max-w-4xl mx-auto p-4 rounded-md">
 	<h2 class="text-xl font-bond text-black">Preview and Confirm:</h2>
 </div>
-<div class=" ml-64 mr-64 mt-8 p-8 bg-gray-200">
-	<div class="mb-6 border-b border-black pb-4 gap-2">
-		<div class="mb-6 border-b border-black pb-4 gap-2">
-			<h2 class="font-semibold text-2xl text-[#772035] mb-2">General Transaction Details:</h2>
+<div class=" ml-64 mr-64 mb-8 mt-8 bg-gray-200">
+	<div class="mb-6 pb-2 gap-2">
+		<div
+			class="mb-6 border-b bg-secondary w-full flex flex-col items-center border-black pb-2"
+		>
+			<h2 class="font-semibold text-2xl ml-10 text-white">General Transaction Details:</h2>
 		</div>
 		<div class="flex flex-col ml-10 space-y-6 text-xl">
 			<div class="flex flex-col justify-center space-y-6 text-xl">
@@ -93,7 +96,26 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex jsutify-center">
+	<div class="mb-6 border-b bg-secondary w-full flex flex-col items-center border-black pb-2">
+		<h2 class="font-semibold text-2xl ml-10 text-white">Confirmation detail:</h2>
+	</div>
+	<div class="flex flex-row gap-8 justify-center">
+		<div>
+			<label for="transactionPassword" class="block text-2xl font-medium text-black"
+				>Transaction Password :</label
+			>
+		</div>
+		<div>
+			<input
+				type="password"
+				id="transactionPassword"
+				bind:value={transactionPassword}
+				class="w-[24dvh] px-3 py-2 border border-gray-300 rounded shadow focus:outline-none focus:ring focus:border-blue-300"
+				placeholder="Enter your password"
+			/>
+		</div>
+	</div>
+	<div class="flex mr-9 justify-end mb-14">
 		<button on:click={confirmPayment} class="btn-primary mt-4">Confirm Payment</button>
 	</div>
 </div>
