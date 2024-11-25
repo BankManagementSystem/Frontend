@@ -50,10 +50,8 @@
 </div>
 <div class=" ml-64 mr-64 mb-8 mt-8 bg-gray-200">
 	<div class="mb-6 pb-2 gap-2">
-		<div
-			class="mb-6 border-b bg-secondary w-full flex flex-col items-center border-black pb-2"
-		>
-			<h2 class="font-semibold text-2xl ml-10 text-white">General Transaction Details:</h2>
+		<div class="mb-6 border-b bg-secondary w-full flex flex-col border-black pb-2">
+			<h2 class="font-semibold text-2xl  ml-10 text-white">General Transaction Details:</h2>
 		</div>
 		<div class="flex flex-col ml-10 space-y-6 text-xl">
 			<div class="flex flex-col justify-center space-y-6 text-xl">
@@ -96,7 +94,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="mb-6 border-b bg-secondary w-full flex flex-col items-center border-black pb-2">
+	<div class="mb-6 border-b bg-secondary w-full flex flex-col border-black pb-2">
 		<h2 class="font-semibold text-2xl ml-10 text-white">Confirmation detail:</h2>
 	</div>
 	<div class="flex flex-row gap-8 justify-center">
