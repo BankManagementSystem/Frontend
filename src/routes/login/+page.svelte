@@ -7,37 +7,54 @@
     import { Icon } from 'svelte-icons-pack';
     import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
     import { goto } from '$app/navigation';
+    import { AiOutlineReload } from "svelte-icons-pack/ai";
 
     let userId = "";
     let password = "";
-    let captcha = "";
+    let captcha = "W93BX";
     let ocaptcha = "W93BX";
+    let generatedCaptcha = "";
+    let enteredCaptcha = "";
     let errorMessage = "";
     let successLogin = false;
     let isLoading = false;
-
     let errorMes = "";
 
+    const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const digits = "0123456789";
+
+
+    function generateCaptcha() {
+        const first = alphabets[Math.floor(Math.random() * alphabets.length)];
+        const second = digits[Math.floor(Math.random() * digits.length)];
+        const third = digits[Math.floor(Math.random() * digits.length)];
+        const fourth = alphabets[Math.floor(Math.random() * alphabets.length)];
+        const fifth = alphabets[Math.floor(Math.random() * alphabets.length)];
+        const sixth = digits[Math.floor(Math.random() * digits.length)];
+        // Combine all characters to form the captcha
+        generatedCaptcha = `${first}${second}${third}${fourth}${fifth}${sixth}`;
+        enteredCaptcha = ""; // Clear the input field
+    }
+
+    function validateCaptcha() {
+        if (enteredCaptcha === generatedCaptcha) {
+            return true;
+        }
+        return false;
+    }
 
     async function handleLogin(event) {
-    if (captcha === ocaptcha){
-            errorMes = "The UserId or Password is invalid.";
-    }else{
-            errorMes = "Captcha is Invalid";
+        event.preventDefault();
+        if (!validateCaptcha()) {
+            errorMes = "Captcha is invalid. Please try again.";
             successLogin = true;
             setTimeout(() => {
                     successLogin = false; // Hide popup after 3 seconds
                 }, 5000);
             return;
-    }
-    event.preventDefault();
+        }
     console.log("Function triggered");
-    const payload = {
-        username: userId,
-        password: password,
-        captcha: captcha,
-    };
-
+    isLoading = true;
     try {
         const response = await fetch("/api/login", {
             method: "POST",
@@ -57,6 +74,7 @@
             await new Promise(resolve => setTimeout(resolve, 2500));
             goto('/Home'); // Redirect to Home page
         } else {
+            errorMes = result.message;
             successLogin = true;
             setTimeout(() => {
                     successLogin = false; // Hide popup after 3 seconds
@@ -71,6 +89,37 @@
         isLoading = false;
     }
 }
+    onMount(() => {
+        generateCaptcha();
+    });
+
+    async function handleForgotPassword() {
+        if (!userId) {
+            alert("Please enter your User ID.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || "A password reset link has been sent via SMS.");
+            } else {
+                alert(result.error || "Unable to send SMS. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+        }
+    }
 </script>
 <div class="w-full bg-[#772035] flex justify-between items-center text-white h-[10dvh]">
     <div><button class="ml-2 text-2xl"><a href="/"><Icon src={ BiSolidLeftArrow} className="h-6 w-6"/></a></button></div>
@@ -83,9 +132,9 @@
             Customer Login
         </h1>
     </div>
-    <div class="mt-2 ml-64 h-[5dvh]">
+    <div class="mt-2 ml-60 h-[5dvh]">
         {#if successLogin}
-        <div class="flex  items-center w-[46dvh]" >
+        <div class="flex items-center w-[46dvh]" >
             <div class="text-red-700 font-semibold flex items-center text-center">
                 {errorMes}
             </div>
@@ -100,18 +149,35 @@
                     <div class="grid w-full items-center gap-4">
                     <div class="flex flex-col space-y-1.5">
                         <Label class="text-[#FDFDFD]" for="userId">User ID</Label>
-                        <Input id="userId" bind:value={userId} placeholder="Enter user Id" />
+                        <Input id="userId" bind:value={userId} placeholder="Enter user Id"/>
                     </div>
-                    <div class="flex flex-col space-y-1.5 ">
+                    <div class="flex flex-col space-y-1.5 justify-center">
                         <Label class="text-[#FDFDFD]" for="name">Password</Label>
                         <Input id="password" bind:value={password} placeholder="Enter password" type="password"/>
                     </div>
                     <div class="flex flex-col space-y-1.5 ">
                         <Label class="text-[#FDFDFD]" for="framework">Verification</Label>
-                        <div>
-                            <img class="h-10 rounded-lg" src="images/captcha.jpg" alt="Captcha">
+                        <div class="flex flex-row justify-between items-center">
+                            <div class="w-20">
+                                <input  
+                                    bind:value={generatedCaptcha}
+                                    type="text" 
+                                    readonly 
+                                    class="text-2xl font-bold text-center rounded-md line-through h-10 w-[40dvh]">
+                            </div>
+                            <div>
+                                <button type="button" on:click={generateCaptcha} >
+                                    <Icon src={AiOutlineReload} className="h-10 w-10"/>
+                                </button>
+                            </div>
                         </div>
-                        <Input id="captcha" bind:value={captcha} placeholder="Enter Captcha" />
+                        <!--
+                        <input 
+                            bind:value={enteredCaptcha}
+                            id="enteredCaptcha" 
+                            placeholder="Enter the captcha.." 
+                            class="h-10 rounded-md">-->
+                        <Input id="enteredCaptcha" bind:value={enteredCaptcha} placeholder="Enter the Captcha.." class="h-10 rounded-md"/>
                     </div>
                     </div>
                 </form>
@@ -121,7 +187,7 @@
                     Login
                 </button></div>
                 <div class="flex flex-col mt-2 justify-start space-y-1.5 text-[#FDFDFD]">
-                    <h1>Forgot password?</h1>
+                    <button on:click={handleForgotPassword}>Forgot password?</button>
                 </div>
                 </Card.Footer>
             </Card.Root>

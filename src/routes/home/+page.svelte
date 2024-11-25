@@ -1,4 +1,5 @@
 <script lang="ts">
+    //import { DB_User, Db_Password } from '$env/static/private';
     import Navbar from '$lib/components/navbar.svelte';
     import { FiEye, FiEyeOff } from "svelte-icons-pack/fi";
     import { Icon } from "svelte-icons-pack";
@@ -87,7 +88,7 @@
 <div class="flex flex-row">
     <div class="w-[80vh] h-[80vh] flex flex-col">
         <div class="ml-14 mt-14 w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
-            <div class="text-sm font-light">Savings account {customerId}</div>
+            <div class="text-sm font-light">Savings account</div>
             <div class="text-2xl font-bold mt-2">{formatDebitNumber(accountNumber)}</div>
             
             <div class="flex items-end justify-between mt-14">

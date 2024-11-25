@@ -1,8 +1,11 @@
 // src/routes/api/login/+server.js
 import { db } from '$lib/db';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-const SECRET_KEY = '9876'; // Replace with a strong secret key
+dotenv.config();
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export async function POST({ request }) {
     const { userId, password } = await request.json();
@@ -15,7 +18,10 @@ export async function POST({ request }) {
         //console.log('Query result:', rows); // Log the result for debugging
         if (rows.length > 0) {
             const user = rows[0];
-            const token = jwt.sign({ id: user.CustomerId }, SECRET_KEY, { expiresIn: '30m' });
+            const token = jwt.sign(
+                { id: user.CustomerId },
+                SECRET_KEY,
+                { expiresIn: process.env.TOKEN_EXPIRY });
             //console.log('Generated Token:', token);
             return new Response(JSON.stringify({ success: true, token }), { status: 200 });
         } else {
