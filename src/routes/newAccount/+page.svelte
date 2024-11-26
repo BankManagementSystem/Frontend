@@ -20,31 +20,42 @@
     let Aadhaar = "";
     let PAN = "";
     let Type = "";
+    let Branch = "";
+    let BranchId = 0;
+
 
     let Address = Address1 + ", " + Address2 + ", " + Address3 + ", " + Address4+ ", " + Address5;
 
     async function handleCreate() {
-        try {
-            // Send a POST request with the id and new username
-            const response = await fetch('/api/new-account', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ FN, MN, LN })
-            });
+      if (Branch === "Mangalore"){
+        BranchId = 501;
+      }else{
+        BranchId = 502;
+      }
+    try {
+        const response = await fetch('/api/new-account', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                FN, MN, LN,
+                Address1, Address2, Address3, Address4, Address5,
+                Gender, DOB, Phone, Email, Aadhaar, PAN, Type, BranchId
+            })
+        });
 
-            const result = await response.json();
-            if (result.success) {
-                message = "Username updated successfully!";
-            } else {
-                message = result.message || "Failed to update username.";
-            }
-        } catch (error) {
-            console.error("Error updating username:", error);
-            message = "An error occurred. Please try again.";
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Account created successfully!');
+            // Optionally redirect to another page
+        } else {
+            alert(result.message || 'Failed to create account.');
         }
+    } catch (error) {
+        console.error('Error creating account:', error);
+        alert('An error occurred. Please try again.');
     }
+  }
 
     /*function formatAadhaar(event) {
         // Remove non-numeric characters
@@ -63,6 +74,7 @@
         const formatted = input.match(/.{1,4}/g)?.join('-') || '';
         event.target.value = formatted;
         Aadhaar = formatted;
+        validateAadhaar(event);
     }
 
     function validateAadhaar(event) {
@@ -135,7 +147,7 @@
     <!-- Card -->
     <div class="w-full max-w-md p-6 rounded-lg shadow-lg bg-[#772035]">
       <!-- Form fields -->
-      <form class="space-y-4" on:submit|preventDefault={validateAadhaar} >
+      <form class="space-y-4" on:submit|preventDefault={handleCreate} >
         <!-- Name Section -->
         <div>
           <label for="name" class="block text-gray-200 font-semibold mb-1">Name:</label>
@@ -218,6 +230,18 @@
               <option value="" disabled selected class="" >Select The Type</option>
               <option value="Savings" class="bg-secondary text-primary">Savings</option>
               <option value="Current" class="bg-secondary text-primary">Current</option>
+          </select>
+        </div>
+        <div>
+          <label for="type" class="block text-gray-200 font-semibold mb-1">Branch:</label>
+          <select required
+              bind:value={Branch} 
+              id="type" 
+              class="w-full p-2 rounded bg-primary text-gray-900 hover:bg-primary focus:ring-2 focus:ring-[#A12A48]"
+          >
+              <option value="" disabled selected class="" >Select The Type</option>
+              <option value="Mangalore" class="bg-secondary text-primary">Mangalore</option>
+              <option value="Udupi" class="bg-secondary text-primary">Udupi</option>
           </select>
         </div>
   

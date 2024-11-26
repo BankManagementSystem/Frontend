@@ -98,7 +98,7 @@
         Fetch Details
     </button>-->
 
-    <div class="w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
+    <!--<div class="w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
         <div class="text-sm font-medium"></div>
         <div class="text-2xl font-bold mt-2">{accountNumber}</div>
         
@@ -108,7 +108,6 @@
                 <div class="text-sm font-light">Available Limit</div>
             </div>
 
-            <!-- Clickable Icon for toggling visibility -->
             <button
             class="btn w-8 h-8 flex items-center justify-center bg-white rounded-full text-black hover:bg-gray-200 transition"
             on:click={() => (isBalanceVisible = !isBalanceVisible)}
@@ -120,10 +119,70 @@
             {/if}
             </button>
         </div>
-    </div>
+    </div>-->
+    <div
+		class="ml-4 mt-4 relative w-96 h-56 bg-gradient-to-l from-purple-900 to-blue-950 rounded-xl p-4 shadow-xl text-white"
+	>
+		<!-- Gem Background -->
+		<div class="absolute inset-0">
+			<img
+				src="/images/jupyter.jpg"
+				alt="Jupyter"
+				class="object-cover w-full h-full rounded-xl opacity-60"
+			/>
+		</div>
+
+		<!-- Card Content -->
+		<div class="relative flex flex-col h-full">
+			<!-- Bank Logo -->
+			<div class="flex flex-row justify-between items-center h-[8dvh]">
+                <div class="text-2xl font-semibold">{accountNumber}</div>
+				<div class="text-lg font-bold">NITTE Bank</div>
+            </div>
+			<div class="flex flex-row justify-between items-center mt-3 ml-3">
+				<div class="flex items-center">
+					<img src="/images/chip.png" alt="Emerald Gem" class="w-10 h-10" />
+				</div>
+				<div class="flex flex-row items-center gap-2">
+					<span class="text-sm">Jupyter</span>
+					<img src="/images/contactless.png" alt="Emerald Gem" class="w-8 h-8" />
+				</div>
+			</div>
+			<!-- Card Details -->
+			<div class="mt-auto">
+				<!-- Card Holder -->
+				<div class="flex items-end justify-between">
+                    <div>
+                        <div class="text-2xl font-bold">₹ {isBalanceVisible ? availableBalance : 'X,XX,XXX'}</div>
+                        <div class="text-sm font-light">Available Limit</div>
+                    </div>
+        
+                    <button
+                    class="btn w-8 h-8 flex items-center justify-center bg-white rounded-full text-black hover:bg-gray-200 transition"
+                    on:click={() => (isBalanceVisible = !isBalanceVisible)}
+                    >
+                    {#if isBalanceVisible}
+                        <Icon src={FiEyeOff}/>
+                    {:else}
+                        <Icon src={FiEye}/>
+                    {/if}
+                    </button>
+                </div>
+				<!-- Valid Dates -->
+				<div class="flex justify-between items-center mt-1 text-sm">
+					<div>
+						<div class="text-lg font-semibold">NIDHISH SHETTIGAR</div>
+					</div>
+					<div>
+						<span>VALID THRU</span> <span class="font-bold">03/29</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="flex justify-center">
-<div class="flex flex-col bg-[#A91D3A] h-[29dvh] w-[170dvh] rounded-lg ml-10 mr-10 mt-6">
+<div class="flex flex-col bg-[#A91D3A] h-[29dvh] w-[170dvh] rounded-lg ml-10 mr-10 mt-6 mb-6">
     <div class="flex flex-row justify-between mt-4 ">
         <div class="flex font-bold ml-10 text-2xl text-[#D9D9D9] ">
             Credit Card

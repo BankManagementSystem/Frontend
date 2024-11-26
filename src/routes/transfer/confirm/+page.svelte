@@ -50,7 +50,7 @@
 </div>
 <div class=" ml-64 mr-64 mb-8 mt-8 bg-gray-200">
 	<div class="mb-6 pb-2 gap-2">
-		<div class="mb-6 border-b bg-secondary w-full flex flex-col border-black pb-2">
+		<div class="mb-6 border-b bg-secondary items-center w-full flex flex-row border-black h-[10dvh]">
 			<h2 class="font-semibold text-2xl  ml-10 text-white">General Transaction Details:</h2>
 		</div>
 		<div class="flex flex-col ml-10 space-y-6 text-xl">
@@ -94,12 +94,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="mb-6 border-b bg-secondary w-full flex flex-col border-black pb-2">
+	<div class="mb-6 border-b bg-secondary items-center w-full flex flex-row h-[10dvh] border-black pb-2">
 		<h2 class="font-semibold text-2xl ml-10 text-white">Confirmation detail:</h2>
 	</div>
-	<div class="flex flex-row gap-8 justify-center">
+	<div class="flex flex-row gap-6 items-center justify-center">
 		<div>
-			<label for="transactionPassword" class="block text-2xl font-medium text-black"
+			<label for="transactionPassword" class="block text-xl font-medium text-black"
 				>Transaction Password :</label
 			>
 		</div>
@@ -113,9 +113,10 @@
 			/>
 		</div>
 	</div>
-	<div class="flex mr-9 justify-end mb-14">
+	<div class="flex mr-9 justify-end mb-2">
 		<button on:click={confirmPayment} class="btn-primary mt-4">Confirm Payment</button>
 	</div>
+	<div class="h-[2dvh]"></div>
 </div>
 
 <style>

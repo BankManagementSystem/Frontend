@@ -60,6 +60,7 @@
                         
                     </div>
                     </a>
+                    <a href="/NewCreditCard">
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
                         <div class="flex flex-row ml-2 items-center justify-center"><Icon src={FaCreditCard} className="h-6 w-10 fill-black"/></div>
                         <div class="flex flex-col">
@@ -67,6 +68,7 @@
                             <div class="text-black">Get the right card for you</div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class=" flex flex-row justify-center gap-2">
                     <a href="./Loans">

@@ -33,11 +33,14 @@
 
     function closePopup() {
             showPopup = null;
-			successMessage = "Password changed Succesfully";
-			setTimeout(() => {
-                    successMessage = ''; // Hide popup after 3 seconds
-                }, 3000);
         }
+
+	function handlePopupSuccess() {
+        // Close the popup and navigate to the home page
+        closePopup();
+        successMessage = "PIN changed successfully!";
+        setTimeout(() => (successMessage = ""), 3000);
+    }
 
 		const isActive = (path) => {
 			return $page.url.pathname === path; // Compare the current path with the given path
@@ -105,19 +108,23 @@
         <!-- Background Blur Effect -->
         <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-all duration-300">
             <div class="w-full max-w-md p-6 rounded-lg shadow-lg transition-transform transform translate-y-full animate-slideUp">
-                <ChangeLogin on:close={closePopup} />
+                <ChangeLogin 
+					on:close={closePopup} 
+					on:submitSuccess={handlePopupSuccess}
+					/>
             </div>
         </div>
 		{/if}
-		{#if isLoading}
+		
+	</div>
+	{#if isLoading}
         <div class="popup">
-            <div class="popup-content">
-                <div class="spinner"></div>
-                <p>Logging out, please wait...</p>
+            <div class="popup-content flex flex-col justify-center items-center">
+                <div class="spinner"></div>   
+				<div class="text-secondary">Logging out, please wait...</div>
             </div>
         </div>
     {/if}
-	</div>
 
 	{#if successMessage}
 	<div class="top-[20%] left-[81%] flex justify-center items-center h-[10dvh] w-[40dvh] absolute bg-primary shadow-2xl rounded-xl" >

@@ -21,7 +21,7 @@
         }
         else if (newLoginPIN === confirmPIN) {
             successMessage = "Successfully changed the login PIN!";
-            dispatch('close');
+            dispatch('submitSuccess');
         }
         else {
             successMessage = "The new PIN and confirmation PIN do not match.";

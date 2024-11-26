@@ -32,6 +32,9 @@
     function handleProfile() {
         goto("/PersonalDeets");
     }
+    function handleDashBoard() {
+        goto("/DashBoard");
+    }
 
 </script>
 
@@ -53,7 +56,7 @@
             </button>
             
 
-            <button class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
+            <button on:click={handleDashBoard} class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
                 <Icon src={ BiSolidCalendarEvent } className="h-6 w-10 " />
                 <span>Digital Planner</span>
             </button>

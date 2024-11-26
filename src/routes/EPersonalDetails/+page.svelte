@@ -47,30 +47,19 @@
             </div>
         </div>
 
-        <!-- Gender -->
         <div>
-            <label for="gender" class="block text-white font-medium">Gender</label>
+            <label for="gender" class="block text-white font-medium">Branch</label>
             <div class="bg-white w-full mt-1 p-2 border rounded-lg">
-                Male
+                Branch
             </div>
         </div>
 
-        <!-- Aadhar Number -->
         <div>
-            <label for="aadharNumber" class="block text-white font-medium">Aadhar Number</label>
-            <div class="bg-white w-full mt-1 p-2 border rounded-lg focus:outline-none">
-                1234-5678-9102
-            </div>
-        </div>
-
-        <!-- PAN Number -->
-        <div>
-            <label for="panNumber" class="block text-white font-medium">PAN Number</label>
+            <label for="gender" class="block text-white font-medium">Manager</label>
             <div class="bg-white w-full mt-1 p-2 border rounded-lg">
-                ABCD1234E
+                Manager_Name
             </div>
         </div>
-
         <!-- Phone -->
         <div>
             <label for="phone" class="block text-white font-medium">Phone</label>

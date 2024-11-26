@@ -186,17 +186,17 @@
                 <div><button type="button" class="outline-button-class bg-primary text-secondary w-20 h-10 rounded-md hover:bg-[#C73659] hover:text-white" on:click={handleLogin}>
                     Login
                 </button></div>
-                <div class="flex flex-col mt-2 justify-start space-y-1.5 text-[#FDFDFD]">
+                <div class="flex flex-col mt-2 justify-start text-[#FDFDFD]">
                     <button on:click={handleForgotPassword}>Forgot password?</button>
                 </div>
                 </Card.Footer>
             </Card.Root>
         </div>
         <div>
-            <img class="w-full h-[66dvh] rounded-lg" src="images/login.png" alt="Login">
+            <img class="w-full h-[67dvh] rounded-lg" src="images/login.png" alt="Login">
         </div>
     </div>
-    <div class="flex row mt-16 ml-24 mr-24 justify-between">
+    <div class="flex row mt-16 ml-24 mr-24 mb-4 justify-between">
         <div>
             <h1>Contact Us: 1800 5700, 1800 5800</h1>
         </div>

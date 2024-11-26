@@ -29,7 +29,7 @@ const config = {
 					foreground: "hsl(var(--secondary-foreground) / <alpha-value>)"
 				},
 				destructive: {
-					DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+					DEFAULT: "#C73659",
 					foreground: "hsl(var(--destructive-foreground) / <alpha-value>)"
 				},
 				muted: {

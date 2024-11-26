@@ -102,7 +102,7 @@
         </div>
 
         <!-- View Statements Button -->
-        <a href="/CreditTransactions">
+        <a href="/Statements">
         <div class="mt-4">
             <button 
                 class="px-6 py-2 bg-primary text-secondary font-semibold rounded-lg shadow-md hover:bg-gray-200">
