@@ -1,11 +1,3 @@
-/*import mysql from 'mysql2/promise';
-
-const dbConfig = {
-	host: 'localhost',
-	user: 'root',
-	password: 'nidhish05',
-	database: 'bank'
-};*/
 import { db } from '$lib/db';
 
 export async function GET() {
