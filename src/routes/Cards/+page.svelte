@@ -54,7 +54,7 @@
             Add credit card and get access to all services.
         </div>
         <div class="ml-6">
-            <Button variant="outline" class="rounded-full text-[#FDFDFD] bg-[#772035]"> Apply Now </Button>
+            <Button variant="outline" class="rounded-full text-[#FDFDFD] bg-[#772035]" href="/NewCreditCard"> Apply Now </Button>
         </div>
     </div> 
     <div class = "flex flex-col gap-2 mt-5 h-[15dvh] justify-center rounded-2xl border-solid border-2 shadow-xl border-[#772035] ">

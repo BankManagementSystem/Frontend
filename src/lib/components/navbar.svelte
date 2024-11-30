@@ -38,13 +38,21 @@
 		event.preventDefault();
 		goto('/Settin');
 	}
+	async function handleProfile(event) {
+		event.preventDefault();
+		goto('/PersonalDeets');
+	}
 </script>
 
 <div class="flex flex-col bg-[#772035] h-[20vh] text-[#FDFDFD]">
 	<div class="flex flex-row justify-between ml-10 mr-10 mt-2 items-center h-[10dvh]">
 		<div class="text-2xl font-bold"><a href="/Home">NITTE Bank</a></div>
-		<div class="flex flex-row gap-4 text-white">
-			<div class="text-white"><Icon src={CgProfile} size="40" /></div>
+		<div class="flex flex-row gap-4 text-white">			
+			<div class="text-white">
+				<button class="rounded-full " on:click={handleProfile}>
+					<Icon src={CgProfile} size="40" />
+			</button>
+			</div>	
 			<!--<div class="text-white"><Icon src={IoSettingsOutline} size="40" /></div> -->
 			<div class="text-white">
 				<button class="bg-primary rounded-full hover:bg-gray-200" on:click={handleSetting}>

@@ -8,7 +8,7 @@
     import { BiLogOut } from "svelte-icons-pack/bi";
     import ChangeLogin from '../changelogin/+page.svelte';
     import ChangeTransaction from '../changeTransaction/+page.svelte';
-    
+    import {goto} from '$app/navigation';
     async function handleLogout() {
         // Remove the token from localStorage
         isLoading = true;
@@ -29,6 +29,13 @@
             showPopup = null;
         }
 
+    function handleProfile() {
+        goto("/PersonalDeets");
+    }
+    function handleDashBoard() {
+        goto("/DashBoard");
+    }
+
 </script>
 
 <div class="flex flex-col items-center min-h-screen bg-gray-100">
@@ -43,14 +50,13 @@
     <div class="bg-white shadow-md rounded-lg p-6 mt-24 ">
         <div class="grid grid-cols-2 gap-4">
         
-            <button class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
+            <button on:click={handleProfile} class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
                 <Icon src={ BiSolidUserDetail } className="h-6 w-10 " />
-                <a href="/PersonalDeets">
-                <span>Personal Details</span></a>
+                <span>Profile</span>
             </button>
             
 
-            <button class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
+            <button on:click={handleDashBoard} class="bg-[#772035] text-white rounded-lg flex flex-col items-center justify-center p-4 h-24">
                 <Icon src={ BiSolidCalendarEvent } className="h-6 w-10 " />
                 <span>Digital Planner</span>
             </button>

@@ -117,9 +117,11 @@
                     </button></a>
                 </div>
                 <div>
+                    <a href="/Statements">
                     <button class=" bg-[#FDFDFD] rounded-3xl w-[50dvh] h-[8dvh] text-black text-2xl font-semibold border-2 border-black shadow-lg hover:bg-gray-100 hover:text-[#772035]">
                         View statements
                     </button>
+                    </a>
                 </div>
         </div>
     </div>
