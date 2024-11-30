@@ -117,7 +117,7 @@
 				<tbody>
 					{#each lockers as locker}
 						<tr>
-							<td class="border px-4 py-2">{locker.accountId}</td>
+							<td class="border px-4 py-2">{locker.LockerNumber}</td>
 							<td class="border px-4 py-2">{locker.type}</td>
 							<td class="border px-4 py-2">{locker.size}</td>
 							<td class="border px-4 py-2">{locker.deposit}</td>

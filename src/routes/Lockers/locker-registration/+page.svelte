@@ -11,6 +11,7 @@
 	let endDate = '';
 	let deposit = '';
 	let rent = '';
+	let transactionPassword = '';
 	let termsAccepted = false;
 	let showPopup = writable(false);
 	function handleApplyNow() {
@@ -192,6 +193,20 @@
 				/>
 			</div>
 		</div>
+		<div>
+			<label for="transactionPassword" class="block text-lg font-medium text-white"
+				>Transaction Password :</label
+			>
+		</div>
+		<div>
+			<input
+				type="password"
+				id="transactionPassword"
+				bind:value={transactionPassword}
+				class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#772035] focus:outline-none"
+				placeholder="Enter your password"
+			/>
+		</div>
 		<div class="flex items-center">
 			<input
 				id="terms"
@@ -217,7 +232,7 @@
 						X
 					</button>
 					<p class="text-lg">
-						Your locker has been successfully created to the respective account.
+						Your locker has been successfully created for the respective account.
 						<a href="/Lockers" class="text-normal font-bold text-gray-300"><u>Continue</u></a>
 					</p>
 				</div>
