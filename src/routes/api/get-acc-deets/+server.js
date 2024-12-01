@@ -10,7 +10,7 @@ export async function GET({ url }) {
 
     try {
         // Query database based on the provided Id
-        const [rows] = await db.execute('Select B.IFSC, C.FirstName, C.LastName, B.Name as BName, AD.Address1, AD.City, AD.State, AD.country, C.MobileNo, C.Email, A1.Type, A.Date, A.status, A.balance FROM Customers C, Addresses AD, Accounts A, Accounttypes A1, Branches B WHERE C.Id = A.CustomerId AND A.Id = A1.AccountId AND B.Id = A.BranchId AND C.AddressId = AD.Id AND A.Id = ?', [id]);
+        const [rows] = await db.execute('Select B.IFSC, C.FirstName, C.LastName, B.Name as BName, AD.Address1, AD.City, AD.State, AD.country, C.MobileNo, C.Email, A1.Type, A.Date, A.Status, A.balance FROM Customers C, Addresses AD, Accounts A, Accountstype A1, Branches B WHERE C.Id = A.CustomerId AND A1.Id = A.AccountTypeId AND B.Id = A.BranchId AND C.AddressId = AD.Id AND A.Id = ?', [id]);
 
         
         return new Response(JSON.stringify(rows), { status: 200 });

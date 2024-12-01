@@ -1,9 +1,13 @@
 import { json } from "@sveltejs/kit";
 import nodemailer from "nodemailer";
 import { db } from "$lib/db"; // Assumes you're using a database abstraction layer
+import crypto from 'crypto';
 import dotenv from "dotenv";
 
+
 dotenv.config(); // Loads environment variables from the `.env` file
+const key = Buffer.from('44445555666677774444555566667777'); // 32 bytes key for AES-256
+const iv = Buffer.alloc(16, 0);
 
 export async function POST({ request }) {
     const { userId } = await request.json();
@@ -23,15 +27,19 @@ export async function POST({ request }) {
             return json({ error: "User not found" }, { status: 404 });
         }
 
-        const { email, password } = user;
-
+        //const { email, password } = user;
+        const email = user.Email;
+        const password = user.Password;
+        console.log(email, password)
+        const pass = decrypt(password);
+        console.log(pass);
         if (!email) {
             return json({ error: "Email not available for this user" }, { status: 404 });
         }
 
         // Message to send via email
         const subject = "Your Login Password";
-        const text = `Hello, your login password is: ${password}. Please keep it secure.`;
+        const text = `Hello, your login password is: ${pass}. Please keep it secure.`;
 
         // Send email
         const emailResult = await sendEmail(email, subject, text);
@@ -51,7 +59,7 @@ export async function POST({ request }) {
 async function getUserById(userId) {
     try {
         const [rows] = await db.query(
-            "SELECT C.Email AS email, CL.loginPin AS password FROM customers C, customerlogins CL WHERE C.Id = CL.CustomerId AND CL.Id = ?",
+            "SELECT Email, Password FROM customerlogins WHERE Id = ?",
             [userId]
         );
         console.log("Query result:", rows);
@@ -93,4 +101,11 @@ async function sendEmail(to, subject, text) {
         console.error("Error sending email:", error);
         return { success: false, error: "Failed to send email." };
     }
+}
+
+function decrypt(encryptedText) {
+    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+    let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
 }

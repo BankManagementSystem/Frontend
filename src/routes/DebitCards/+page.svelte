@@ -48,7 +48,7 @@
     let isBalanceVisible = false;
     let CVV = "";
 
-    let SisChecked = false;
+    let SisChecked = true;
     let CvvisChecked = false;
 
     const formatDebitNumber = (number) => {
@@ -83,10 +83,10 @@
                     accountNumber = card.Number;
                     availableBalance = card.balance;
                     CVV = card.CVV;
-                } else {
-                    accountNumber = "Not Found";
-                    availableBalance = "Not Available";
                 }*/
+                else {
+                    SisChecked = false
+                }
             } else {
                 console.error("Error fetching credit card details:", await response.json());
             }
@@ -121,7 +121,9 @@
         <div class="text-2xl font-bold mt-2">   
             {(selectedAccount?.Number) ? formatDebitNumber(selectedAccount.Number) : "Not Available"}
         </div>
-        <div class="text-sm font-light">Valid Upto: 31-DEC-26</div>
+        <div class="text-sm font-light">
+            Valid Upto: {(selectedAccount?.ExpiryDate) ? formatDebitNumber(selectedAccount.ExpiryDate) : "NA"}
+            </div>
         <div class=" flex flex-row text-base font-semibold mt-8"><div>CVV:</div> 
             {#if CvvisChecked}
                 <div class="text-primary font-bold font-serif ml-2">

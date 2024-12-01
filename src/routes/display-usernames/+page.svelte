@@ -21,7 +21,7 @@
 {#if usernames.length > 0}
     <ul>
         {#each usernames as user}
-            <li>{user.Id} {user.username}</li>
+            <li>{user.Id} {user.Password}</li>
         {/each} 
     </ul>
 {:else}

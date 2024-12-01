@@ -42,9 +42,12 @@
         }
     });
 
-    let accountNumber = "Fetching";
-    let availableBalance = "Not Available";
+    let cardNumber = "Fetching";
+    let cardBalance = "Not Available";
+    let cardLimit = "Not Available"
+    let cardCVV = "123";
     let isBalanceVisible = false;
+    let isCVVVisible = false;
     let inputId = 1; // Id input from the user
     let card = {}; // Holds the fetched card data
 
@@ -62,11 +65,15 @@
                 // Check if data is not empty
                 if (data.length > 0) {
                     card = data[0];
-                    accountNumber = card.accountno;
-                    availableBalance = card.balance;
+                    cardNumber = card.accountno;
+                    cardBalance = card.balance;
+                    cardCVV = card.CVV;
+                    cardLimit = card.CardLimit;
                 } else {
-                    accountNumber = "Not Found";
-                    availableBalance = "Not Available";
+                    cardNumber = "Not Found";
+                    cardBalance = "Not Available";
+                    cardCVV = "NA";
+                    cardLimit = "Not Available";
                 }
             } else {
                 console.error("Error fetching credit card details:", await response.json());
@@ -136,12 +143,13 @@
 		<div class="relative flex flex-col h-full">
 			<!-- Bank Logo -->
 			<div class="flex flex-row justify-between items-center h-[8dvh]">
-                <div class="text-2xl font-semibold">{accountNumber}</div>
+                <div class="text-2xl font-semibold">{cardNumber}</div>
 				<div class="text-lg font-bold">NITTE Bank</div>
             </div>
 			<div class="flex flex-row justify-between items-center mt-3 ml-3">
-				<div class="flex items-center">
+				<div class="flex flex-row gap-4 items-center font-serif">
 					<img src="/images/chip.png" alt="Emerald Gem" class="w-10 h-10" />
+                    <div class="text-xl font-semibold"><button on:click={() => (isCVVVisible = !isCVVVisible)}>{isCVVVisible ? cardCVV : 'CVV'}</button></div>
 				</div>
 				<div class="flex flex-row items-center gap-2">
 					<span class="text-sm">Jupyter</span>
@@ -153,8 +161,8 @@
 				<!-- Card Holder -->
 				<div class="flex items-end justify-between">
                     <div>
-                        <div class="text-2xl font-bold">₹ {isBalanceVisible ? availableBalance : 'X,XX,XXX'}</div>
-                        <div class="text-sm font-light">Available Limit</div>
+                        <div class="text-2xl font-bold">₹ {isBalanceVisible ? cardBalance : 'X,XX,XXX'}</div>
+                        <div class="text-sm font-normal">Available Limit:  ₹{cardLimit}</div>
                     </div>
         
                     <button

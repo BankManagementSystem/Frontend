@@ -80,12 +80,12 @@
                         </div>
                     </div>
                     </a>
-                    <a href="./Home">
+                    <a href="./LandingLockers">
                     <div class="flex flex-row gap-2 w-52 items-center justify-center ">
                         <div class="flex flex-row ml-2 items-center justify-center"><Icon src={BsCreditCard2Front} className="h-6 w-10 fill-black"/></div>
                         <div class="flex flex-col">
-                            <div class="text-black font-bold mr-4">Fixed Deposits</div>
-                            <div class="text-black">Invest wisely with our FD</div>
+                            <div class="text-black font-bold mr-4">Locker Options</div>
+                            <div class="text-black">Different locker options available  </div>
                         </div>
                     </div>
                     </a>

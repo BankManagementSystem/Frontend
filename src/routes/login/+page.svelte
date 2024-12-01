@@ -11,8 +11,6 @@
 
     let userId = "";
     let password = "";
-    let captcha = "W93BX";
-    let ocaptcha = "W93BX";
     let generatedCaptcha = "";
     let enteredCaptcha = "";
     let errorMessage = "";
@@ -56,6 +54,7 @@
     console.log("Function triggered");
     isLoading = true;
     try {
+        console.log(userId, password);
         const response = await fetch("/api/login", {
             method: "POST",
             headers: {
