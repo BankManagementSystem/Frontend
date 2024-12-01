@@ -2,18 +2,25 @@
 import { db } from '$lib/db';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 
 dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEYE = process.env.SECRET_KEYE;
+
+const key = Buffer.from(SECRET_KEYE); // 32 bytes key for AES-256
+const iv = Buffer.alloc(16, 0);
 
 export async function POST({ request }) {
     const { userId, password } = await request.json();
-
+    console.log("Login Api ",userId,password);
+    const pass = encrypt(password);
+    console.log("Encrypted = ",pass);
     try {
         const [rows] = await db.execute(
-            'SELECT EmployeeId FROM employeelogins WHERE Id = ? AND loginPin = ?',
-            [userId, password]
+            'SELECT EmployeeId FROM employeelogins WHERE Id = ? AND Password = ?',
+            [userId, pass]
         );
         //console.log('Query result:', rows); // Log the result for debugging
         if (rows.length > 0) {
@@ -33,4 +40,10 @@ export async function POST({ request }) {
         return new Response(JSON.stringify({ success: false, message: 'Server error. Please try again.' }), { status: 500 });
     }
     
+}
+function encrypt(text) {
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
 }

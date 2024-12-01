@@ -99,7 +99,7 @@
                             </button>
                         </td>
                         <td class="p-4 border border-gray-300">{account.Type}</td>
-                        <td class="p-4 border border-gray-300">{account.status}</td>
+                        <td class="p-4 border border-gray-300">{account.Status}</td>
                         <td class="p-4 border border-gray-300 flex flex-row items-center justify-end"><Icon src={TrOutlineCurrencyRupee}/> {account.balance}</td>
                     </tr>
                 {/each}

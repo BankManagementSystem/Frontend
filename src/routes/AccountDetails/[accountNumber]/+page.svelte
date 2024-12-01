@@ -31,25 +31,6 @@
             console.error("Fetch error:", error);
         }
     });
-
-    // Mock account details (replace with API call if needed)
-    let accountDetails = {
-        number: accountNumber,
-        ifsc: "UBIN0905968",
-        name: "NIDHISH SHETTIGAR",
-        branch: "MANGALORE - KADRI",
-        address: "SO NAVIN SHETTIGAR 3 137 15 303 ISLAND ENCORE KADRI KAMBLA ROAD MANGALORE",
-        city: "MANGALORE",
-        state: "Karnataka",
-        country: "India",
-        phone: "9901062621",
-        email: "nidhish.shettigar.06@gmail.com",
-        type: "Savings",
-        openDate: "07/11/2022",
-        status: "Active",
-        balance: "INR 1,09,654.00"
-    };
-
     // Function to handle "View Statements" click
     /*function viewStatements() {
         alert(Redirecting to statements for account: ${accountDetails.number});
@@ -71,16 +52,16 @@
         <!-- General Details Section -->
         <div class="text-2xl font-semibold text-primary border-b-2 border-black h-[7dvh]">General Details</div>
         <div class="flex justify-center border-b-2 border-black h-[55dvh]">
-            <div class="flex flex-row gap-20 items-center justify-center text-primary w-[110dvh]">
-                <div class="flex flex-col justify-center gap-7 w-1/2 ">
+            <div class="flex flex-row gap-20 mt-4 items-start justify-center text-primary w-[130dvh] h-[50dvh]">
+                <div class="flex flex-col justify-center gap-5 w-1/2 ml-2">
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Number:</div> <div>{accountNumber}</div></div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> Account Holder:</div> <div>{accountdeets.FirstName}{" "}{accountdeets.LastName}</div> </div>
-                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> Address: </div>  <div>{accountdeets.Address1}</div> </div>
+                    <div class="flex flex-row gap-4 items-end text-lg"> <div class="flex justify-start items-start gap-4"><div class="font-bold"> Address: </div>  <div>{accountdeets.Address1}</div></div> </div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> State: </div> <div>{accountdeets.State}</div>  </div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Phone:</div>  <div>{accountdeets.MobileNo}</div> </div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Type:</div>  <div>{accountdeets.Type}</div> </div>
                 </div>
-                <div class="flex flex-col justify-center gap-7 w-1/2 ">
+                <div class="flex flex-col justify-center gap-6 w-1/2 ">
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">IFSC:</div>  <div>{accountdeets.IFSC}</div> </div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Branch:</div>  <div>{accountdeets.BName}</div> </div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">City:</div>  <div>{accountdeets.City}</div> </div>
@@ -95,7 +76,7 @@
         <div class="mt-6 p-4 bg-gray-100 rounded-lg ">
             <div class="text-xl font-semibold text-[#732B41] mb-4">Balance Details</div>
             <div class="flex flex-row gap-4 text-lg ml-10 mr-10">
-                <div class="flex flex-row gap-4 items-end text-lg w-1/2"> <div class="font-bold">Status:</div> <div>{accountdeets.status}</div></div>
+                <div class="flex flex-row gap-4 items-end text-lg w-1/2"> <div class="font-bold">Status:</div> <div>{accountdeets.Status}</div></div>
                 <div class="flex flex-row gap-4 items-end text-lg w-1/2"> <div class="font-bold">Available Balance:</div> <div>₹ {accountdeets.balance}</div> </div>
             </div>
         </div>

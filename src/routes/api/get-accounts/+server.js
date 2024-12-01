@@ -10,7 +10,7 @@ export async function GET({ url }) {
 
     try {
         // Query database based on the provided Id
-        const [rows] = await db.execute('SELECT A.Id AS AccountId, A1.Id AS AccountTypeId, Type, status, balance FROM accounts A, accounttypes A1 WHERE A.Id = A1.AccountId AND A.CustomerId = ?', [id]);
+        const [rows] = await db.execute('SELECT A.Id AS AccountId, A1.Id AS AccountTypeId, Type, A.Status, balance FROM accounts A, accountstype A1 WHERE A.AccountTypeId = A1.Id AND A.CustomerId = ?', [id]);
         
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {

@@ -23,7 +23,7 @@ export async function POST({ request }) {
 
         // Update query for the limits table based on the provided user ID
         const [result] = await db.execute(
-            `UPDATE limits SET domistic = ?, international = ?, contact = ?, onlinee = ?, ATM = ?, QR = ? WHERE Id = ?`,
+            `UPDATE cardlimits SET DomisticAmount = ?, International = ?, Contactless = ?, Online = ?, ATM = ?, PosQR = ? WHERE CardId = ?`,
             [Domi, IisChecked ? 1 : 0, CisChecked ? 1 : 0, OisChecked ? 1 : 0, AisChecked ? 1 : 0, PisChecked ? 1 : 0, user]
         );
 

@@ -67,7 +67,9 @@ const config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans],
-				body: ['Nunito']
+				body: ['Nunito'],
+				ICA_Rubrik: ['"ICA Rubrik"', 'sans-serif'],
+                Poppins: ['"Poppins"', 'sans-serif']	
 			},
 			keyframes: {
 				"accordion-down": {
@@ -84,10 +86,11 @@ const config = {
 				},
 			},
 			animation: {
-        		"accordion-down": "accordion-down 0.2s ease-out",
-        		"accordion-up": "accordion-up 0.2s ease-out",
-       			"caret-blink": "caret-blink 1.25s ease-out infinite",
-      		},
+				"accordion-down": "accordion-down 0.2s ease-out",
+				"accordion-up": "accordion-up 0.2s ease-out",
+				"caret-blink": "caret-blink 1.25s ease-out infinite",
+				autoRun: 'autoRun 20s linear infinite',
+			},
 		},
 	},
 	plugins: [
