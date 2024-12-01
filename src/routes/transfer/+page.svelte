@@ -202,6 +202,7 @@
 								<option value="" disabled selected>Select your Mode</option>
 								<option value="NEFT">NEFT</option>
 								<option value="IMPS">IMPS</option>
+								<option value="CHECK">CHECK</option>
 							</select>
 						</div>
 					</div>
