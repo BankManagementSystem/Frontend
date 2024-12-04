@@ -1,7 +1,72 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import Navbar from "$lib/components/navbar.svelte";
+	import Navbar from '$lib/components/navbar.svelte';
+	import jwt_decode from 'jwt-decode';
+
+	function isTokenExpired(token: string): boolean {
+		try {
+			const decoded = jwt_decode<{ exp: number }>(token);
+			const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+			return decoded.exp < currentTime;
+		} catch (error) {
+			console.error('Error decoding token:', error);
+			return true; // Treat invalid tokens as expired
+		}
+	}
+
+	onMount(() => {
+		const token = localStorage.getItem('authToken');
+		if (token) {
+			if (isTokenExpired(token)) {
+				alert('Session expired. Please log in again.');
+				localStorage.removeItem('authToken');
+				goto('/login'); // Redirect to login
+			} else {
+				const decoded = jwt_decode<{ id: string }>(token);
+				customerId = decoded.id; // Extract the Customer ID
+			}
+		} else {
+			alert('No token found. Please log in.');
+			goto('/login'); // Redirect to login
+		}
+	});
+
+	let Account = '';
+	let accounts = [];
+	let selectedAccount = null;
+	let customerId = '';
+	let balance = 0;
+
+	let validationError = '';
+
+	$: selectedAccount = accounts.find((account) => account.AccountId === Account);
+	$: balance = selectedAccount ? selectedAccount.balance : 0;
+
+	onMount(() => {
+		const token = localStorage.getItem('authToken');
+		if (token) {
+			const decoded = jwt_decode(token);
+			customerId = decoded.id; // Extract the Customer ID
+		}
+	});
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`/api/get-accounts?id=${customerId}`);
+			if (response.ok) {
+				accounts = await response.json();
+				if (accounts.length > 0) {
+					Account = accounts[0].AccountId;
+					selectedAccount = accounts[0];
+				}
+			} else {
+				console.error('Error fetching accounts:', await response.json());
+			}
+		} catch (error) {
+			console.error('Fetch error:', error);
+		}
+	});
 
 	// Form data
 	let transactionRefName = '';
@@ -11,43 +76,40 @@
 	let payeesIFSC = '';
 	let amount = '';
 	let transactionMode = '';
-
-	// Array to store account numbers
-	let accountNumbers = [];
-
-	// Fetch account numbers (replace this with your actual database/API call)
-	onMount(async () => {
-		try {
-			// Simulating an API call to fetch account numbers
-			accountNumbers = await fetch('/api/get-account')
-			.then(res => res.json())
-			.then(data => data.accounts);
-		} catch (error) {
-			console.error('Error fetching account numbers:', error);
-		}
-	});
+	let type = 'Transfer';
 
 	async function handleSubmit(event) {
-		// Prevent the default form submission behavior
 		event.preventDefault();
+		validationError = '';
+
 		if (
-		transactionRefName &&
-		transactionDate &&
-		payFromAccount &&
-		payeesAccountNo &&
-		payeesIFSC &&
-		amount &&
-		transactionMode
-    ) {
+			!transactionRefName ||
+			!transactionDate ||
+			!payFromAccount ||
+			!payeesAccountNo ||
+			!payeesIFSC ||
+			!amount ||
+			!transactionMode
+		) {
+			validationError = 'Please fill in all fields.';
+			return;
+		}
+
+		if (parseFloat(amount) > balance) {
+			validationError = '*Insufficient Balance*';
+			return;
+		}
+
 		// Prepare the form details
 		const details = {
-		transactionRefName,
-		transactionDate,
-		payFromAccount,
-		payeesAccountNo,
-		payeesIFSC,
-		amount,
-		transactionMode,
+			transactionRefName,
+			transactionDate,
+			payFromAccount,
+			payeesAccountNo,
+			payeesIFSC,
+			amount,
+			transactionMode,
+			type
 		};
 
 		// Store the details in localStorage or use the API to persist them
@@ -55,9 +117,6 @@
 
 		// Redirect to the confirm page
 		goto('/transfer/confirm', { state: details });
-		} else {
-		alert('Please fill in all fields.');
-		}
 	}
 
 	function handleReset() {
@@ -69,6 +128,7 @@
 		payeesIFSC = '';
 		amount = '';
 		transactionMode = '';
+		validationError = '';
 	}
 </script>
 
@@ -133,8 +193,8 @@
 								required
 							>
 								<option value="" disabled selected>Select an account</option>
-								{#each accountNumbers as account}
-								<option value={account}>{account}</option>
+								{#each accounts as account}
+									<option value={account.AccountId}>{account.AccountId}</option>
 								{/each}
 							</select>
 						</div>
@@ -180,6 +240,9 @@
 								class="w-[30dvh] border rounded-md p-2 text-black"
 								required
 							/>
+							{#if validationError}
+								<p class="text-red-500 mt-2">{validationError}</p>
+							{/if}
 						</div>
 					</div>
 				</div>
@@ -202,7 +265,6 @@
 								<option value="" disabled selected>Select your Mode</option>
 								<option value="NEFT">NEFT</option>
 								<option value="IMPS">IMPS</option>
-								<option value="CHECK">CHECK</option>
 							</select>
 						</div>
 					</div>
@@ -212,7 +274,7 @@
 				<button
 					type="submit"
 					class="bg-[#FFFFFF] text-BLACK shadow-lg px-6 py-2 rounded-md hover:bg-[#C73659] hover:text-primary"
-                    on:click={handleSubmit}
+					on:click={handleSubmit}
 				>
 					Continue
 				</button>

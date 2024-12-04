@@ -1,7 +1,14 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar2.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
+	import { goto } from '$app/navigation';
+
+	const numbs = [1, 2, 3, 4, 5, 6, 7];
+
 	let loanApplications = [];
 	let error = null;
 
@@ -19,94 +26,60 @@
 
 <Navbar />
 <slot />
-
-<div class="min-h-screen bg-gray-100">
-	<div class="container mx-auto py-8">
-		<h1 class="text-2xl font-bold mb-6 text-secondary">Loans Applications</h1>
-
-		{#if error}
-			<p class="text-red-500 text-center">{error}</p>
-		{:else if loanApplications.length === 0}
-			<p class="text-center">No loan applications available.</p>
-		{:else}
-			<div class="space-y-6">
-				{#each loanApplications as loan}
-					<div
-						class="flex flex-col ml-40 mr-40 shadow-md text-xl gap-6 w-[150dvh] bg-gray-200 justify-center rounded-lg p-6 border border-gray-300"
-					>
-						<!-- Outer wrapper for centering -->
-						<div class="flex flex-col items-center">
-							<!-- First Yellow Div -->
-							<div
-								class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md"
-							>
-								<div>
-									<p class="font-bold text-secondary">
-										Loan Application Id: <span class="font-normal">{loan.Id}</span>
-									</p>
-								</div>
-								<div>
-									<p class="font-bold text-secondary">
-										Name: <span class="font-normal"
-											>{loan.Firstname} {loan.Middlename} {loan.Lastname}</span
-										>
-									</p>
-								</div>
-								<div>
-									<p class="font-bold text-secondary">
-										Type: <span class="font-normal">Personal</span>
-									</p>
-								</div>
-							</div>
-
-							<!-- Second Yellow Div -->
-							<div
-								class="flex flex-row w-[110dvh] gap-8 justify-between items-center px-4 py-2 rounded-md mt-4"
-							>
-								<div>
-									<p class="font-bold text-secondary">
-										Loan Amount: <span class="font-normal">₹25,00,000</span>
-									</p>
-								</div>
-								<div>
-									<p class="font-bold text-secondary">
-										Tenure: <span class="font-normal">40</span>
-									</p>
-								</div>
-								<div>
-									<p class="font-bold text-secondary">
-										Rate of Interest: <span class="font-normal">17%</span>
-									</p>
-								</div>
-							</div>
+<div class="mt-6 ml-10 h-[10dvh]">
+	<h1 class="text-2xl font-bold mb-6 text-secondary">Loans Applications</h1>
+</div>
+{#if error}
+	<p class="text-red-500 text-center">{error}</p>
+{:else if loanApplications.length === 0}
+	<p class="text-center">No loan applications available.</p>
+{:else}
+	<div
+		class="sm:grid sm:grid-cols-3 sm:gap-16 lg:grid-cols-3 sm:w-full sm:px-16 flex justify-center items-center"
+	>
+		{#each loanApplications as loan}
+			<Card.Root class="w-[350px] bg-secondary text-primary shadow-md shadow-secondary">
+				<Card.Header>
+					<Card.Title class="text-2xl ">Loan Application Id: {loan.Id}</Card.Title>
+					<hr />
+				</Card.Header>
+				<Card.Content>
+					<div class="text-xl">
+						<div class="flex flex-row w-full items-center gap-2">
+							<div class="font-semibold">Name:</div>
+							<div>{loan.Firstname} {loan.Middlename} {loan.Lastname}</div>
 						</div>
-						<div class="flex flex-row justify-center space-x-14">
-							<button
-								class="bg-secondary w-[20dvh] text-white px-4 py-2 rounded-lg hover:bg-maroon-900"
-							>
-								Approve
-							</button>
-							<button
-								class="bg-secondary w-[20dvh] text-white px-4 py-2 rounded-lg hover:bg-maroon-900"
-							>
-								Reject
-							</button>
+						<div class="flex flex-row w-full items-center gap-2">
+							<div class="font-semibold">Type:</div>
+							<div>{loan.Type}</div>
+						</div>
+						<div class="flex flex-row w-full items-center gap-2">
+							<div class="font-semibold">Loan Amount:</div>
+							<div>₹{loan.LoanAmount}</div>
+						</div>
+						<div class="flex flex-row w-full items-center gap-2">
+							<div class="font-semibold">Tenure:</div>
+							<div>{loan.Tenure}</div>
+						</div>
+						<div class="flex flex-row w-full items-center gap-2">
+							<div class="font-semibold">ROI:</div>
+							<div>{loan.ROI}%</div>
 						</div>
 					</div>
-				{/each}
-			</div>
-		{/if}
+					<div class="flex flex-row mt-4 justify-center gap-10">
+						<button
+							class="bg-primary w-[20dvh] text-secondary px-4 py-2 rounded-lg hover:bg-[#C73659] hover:text-white"
+						>
+							Approve
+						</button>
+						<button
+							class="bg-primary w-[20dvh] text-secondary px-4 py-2 rounded-lg hover:bg-[#C73659] hover:text-white"
+						>
+							Reject
+						</button>
+					</div>
+				</Card.Content>
+			</Card.Root>
+		{/each}
 	</div>
-</div>
-
-<style>
-	:global(.text-maroon-800) {
-		color: #772035;
-	}
-	:global(.bg-maroon-800) {
-		background-color: #772035;
-	}
-	:global(.hover\:bg-maroon-900:hover) {
-		background-color: #5a1729;
-	}
-</style>
+{/if}
