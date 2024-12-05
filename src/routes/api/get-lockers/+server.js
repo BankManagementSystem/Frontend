@@ -11,7 +11,7 @@ export async function GET({ url }) {
 
     try {
         // Fetch lockers where accountId matches the selected account
-        const [rows] = await db.execute('SELECT * FROM lockers WHERE accountId = ?', [selectedAccount]);
+        const [rows] = await db.execute('SELECT LockerNumber,Type,Size,Rent,Deposit,StartDate,EndDate FROM Lockers WHERE AccountId = ?', [selectedAccount]);
         return json(rows); // Return locker details
     } catch (error) {
         console.error('Error fetching lockers:', error);

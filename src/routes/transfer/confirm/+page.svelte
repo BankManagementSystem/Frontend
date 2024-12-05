@@ -1,8 +1,40 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
+	import jwt_decode from 'jwt-decode';
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
+	let errorMessage = '';
+	let showSuccessPopup = false;
+	let customerId = '';
 	let transactionDetails = {};
 	let transactionPassword = '';
 	// Load details from localStorage or a state management store
@@ -19,26 +51,33 @@
 	
 
 	async function confirmPayment() {
-		// Logic to handle payment confirmation
-		// You might send these details to your backend server
-		try {
-			const response = await fetch('/api/confirm', {
-				method: 'POST',
-				body: JSON.stringify(transactionDetails),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			const data = await response.json();
-			if (response.ok) {
-				alert('Payment confirmed successfully!');
-			} else {
-				alert('Error confirming payment: ' + data.message);
-			}
-		} catch (error) {
-			alert('An error occurred: ' + error.message);
-		}
-	}
+    // Attach the transaction password to transaction details
+    transactionDetails.transactionPassword = transactionPassword;
+    try {
+        const response = await fetch('/api/confirm', {
+            method: 'POST',
+            body: JSON.stringify(transactionDetails),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (response.ok) {
+            errorMessage = ''; // Clear error message
+            showSuccessPopup = true; // Update popup state
+        } else {
+            errorMessage = data.message || '*Invalid Transaction Password*';
+        }
+    } catch (error) {
+        errorMessage = 'An error occurred: ' + error.message;
+    }
+}
+
+// Close the success popup
+function closePopup() {
+    showSuccessPopup = false;
+}
+
 </script>
 
 <Navbar />
@@ -58,6 +97,10 @@
 				<div class="flex flex-row gap-6 justify-center">
 					<div class="flex w-[40dvh] justify-end font-bold">Transaction Ref Name :</div>
 					<div class="flex w-[40dvh] font-bold">{transactionDetails.transactionRefName}</div>
+				</div>
+				<div class="flex flex-row gap-6 justify-center">
+					<div class="flex w-[40dvh] justify-end font-bold">Transaction Type :</div>
+					<div class="flex w-[40dvh] font-bold">{transactionDetails.type}</div>
 				</div>
 				<div class="flex flex-row gap-6 justify-center">
 					<div class="flex w-[40dvh] justify-end font-bold text-xl">Pay From Account :</div>
@@ -111,6 +154,9 @@
 				class="w-[24dvh] px-3 py-2 border border-gray-300 rounded shadow focus:outline-none focus:ring focus:border-blue-300"
 				placeholder="Enter your password"
 			/>
+			{#if errorMessage}
+				<div class="mt-2 text-red-600 text-sm font-medium">{errorMessage}</div>
+			{/if}
 		</div>
 	</div>
 	<div class="flex mr-9 justify-end mb-2">
@@ -128,3 +174,14 @@
 		border-radius: 4px;
 	}
 </style>
+{#if showSuccessPopup}
+<div class="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center">
+	<div class="bg-[#772035] text-white p-12 rounded-md shadow-md max-w-md w-full relative">
+		<button class="absolute top-2 right-2 text-white font-bold" on:click={closePopup}>
+			X
+		</button>
+        <h2 class="text-lg font-bold mb-2">Payment Successful!</h2>
+        <p class="text-lg">Your transaction has been completed.</p>
+    </div>
+</div>
+{/if}
