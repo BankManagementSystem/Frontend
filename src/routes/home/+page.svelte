@@ -43,6 +43,7 @@
     const numbs = [1,2,3];
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
+    let type = "Null";
     let isBalanceVisible = false;
     let card = {}; // Holds the fetched card data
 
@@ -65,6 +66,7 @@
                     card = data[0];
                     accountNumber = card.Number;
                     availableBalance = card.balance;
+                    type = card.Type;
                 } else {
                     accountNumber = "Not Found";
                     availableBalance = "Not Available";
@@ -88,10 +90,10 @@
 <div class="flex flex-row">
     <div class="w-[80vh] h-[80vh] flex flex-col">
         <div class="ml-14 mt-14 w-[60dvh] h-[35dvh] bg-gradient-to-r from-[#1D1A3E] to-[#3F5E75] rounded-2xl shadow-lg p-5 text-white relative">
-            <div class="text-sm font-light">Savings account</div>
+            <div class="text-sm font-light">{type} card</div>
             <div class="text-2xl font-bold mt-2">{formatDebitNumber(accountNumber)}</div>
             
-            <div class="flex items-end justify-between mt-14">
+            <div class="flex items-end justify-between mt-20">
                 <div>
                     <div class="text-2xl font-bold">₹ {isBalanceVisible ? availableBalance : 'X,XX,XXX'}</div>
                     <div class="text-sm font-light">Available balance</div>

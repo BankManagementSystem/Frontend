@@ -6,7 +6,7 @@ export async function GET() {
         const [activeAccounts] = await db.execute('SELECT COUNT(*) AS count FROM accounts');
 		const [activeLoans] = await db.execute('SELECT COUNT(*) AS count FROM loans');
 		const [pendingApprovals] = await db.execute('SELECT COUNT(*) AS count FROM loanapplication');
-		const [transactions] = await db.execute('SELECT COUNT(*) AS count FROM transaction');
+		const [transactions] = await db.execute('SELECT COUNT(*) AS count FROM transactions');
 
 		const metrics = {
             activeAccounts: activeAccounts[0].count,
@@ -14,6 +14,7 @@ export async function GET() {
 			pendingApprovals: pendingApprovals[0].count,
 			transactions: transactions[0].count,
 		};
+		console.log(metrics)
 
 		// Fetch data for bar chart (Accounts Opened Per Month)
 		const [monthlyAccounts] = await db.execute(`
@@ -22,14 +23,14 @@ export async function GET() {
 			GROUP BY MONTH(Date)
 			ORDER BY MONTH(Date);
 		`);
-
+			console.log(monthlyAccounts);
 		// Fetch data for pie chart (Gender Distribution)
 		const [genderDistribution] = await db.execute(`
 			SELECT Gender, COUNT(*) AS count
 			FROM customers
 			GROUP BY Gender;
 		`);
-
+			console.log(genderDistribution);
 		// Combine all data into a single response
 		const data = {
 			metrics,

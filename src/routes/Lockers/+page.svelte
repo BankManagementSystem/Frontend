@@ -132,7 +132,7 @@
 	</div>
 </div>
 <div class="h-[50dvh] ml-40 mr-40 bg-white flex flex-row space-x-20 py-20">
-	<div class="w-[50dvh] h-[50dvh] justify-end bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
+	<div class="w-[50dvh] h-[40dvh] justify-end bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
 		<h2 class="text-2xl font-semibold text-black mb-4">Features</h2>
 		<ul class="list-disc ml-5 flex flex-col justify-center space-y-2 text-black">
 			<li>Secure storage for your valuables</li>
@@ -142,7 +142,7 @@
 		</ul>
 	</div>
 
-	<section class="w-[50dvh] h-[50dvh] bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
+	<section class="w-[50dvh] h-[40dvh] bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
 		<h2 class="text-2xl font-semibold text-black mb-4">Benefits</h2>
 		<ul class="list-disc ml-5 space-y-2">
 			<li>Peace of mind for your belongings</li>
@@ -152,7 +152,7 @@
 		</ul>
 	</section>
 
-	<section class="w-[50dvh] h-[50dvh] bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
+	<section class="w-[50dvh] h-[40dvh] bg-[#EEC1CC] p-6 rounded-lg shadow-lg mb-6">
 		<h2 class="text-2xl font-semibold text-black mb-4">Eligibility Criteria</h2>
 		<ul class="list-disc ml-5 space-y-2">
 			<li>Must have a savings or current account with the bank</li>
@@ -162,7 +162,7 @@
 	</section>
 </div>
 
-<div class="bg-white flex flex-col items-center mt-20 py-8">
+<div class="bg-white flex flex-col items-center mt-10 py-8">
 	<h1 class="text-3xl font-bold text-[#772035] mb-5">FEES STRUCTURE</h1>
 </div>
 <div class=" flex justify-center items-center min-w-full">

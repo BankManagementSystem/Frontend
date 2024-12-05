@@ -3,6 +3,21 @@
     import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
     import { goto } from '$app/navigation';
     import jwt_decode from 'jwt-decode';
+    import { onMount } from 'svelte';
+    let branches = [];
+
+    onMount(async () => {
+        try {
+            const response = await fetch('/api/new-account');
+            if (response.ok) {
+                branches = await response.json();
+            } else {
+                console.error("Error fetching usernames:", await response.json());
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    });
   
     // Function to navigate back
     let FN = "";
@@ -20,18 +35,11 @@
     let Aadhaar = "";
     let PAN = "";
     let Type = "";
-    let Branch = "";
-    let BranchId = 0;
-
+    let BranchName = "";
 
     let Address = Address1 + ", " + Address2 + ", " + Address3 + ", " + Address4+ ", " + Address5;
 
     async function handleCreate() {
-      if (Branch === "Mangalore"){
-        BranchId = 501;
-      }else{
-        BranchId = 502;
-      }
     try {
         const response = await fetch('/api/new-account', {
             method: 'POST',
@@ -39,7 +47,7 @@
             body: JSON.stringify({
                 FN, MN, LN,
                 Address1, Address2, Address3, Address4, Address5,
-                Gender, DOB, Phone, Email, Aadhaar, PAN, Type, BranchId
+                Gender, DOB, Phone, Email, Aadhaar, PAN, Type, BranchName,
             })
         });
 
@@ -107,7 +115,6 @@
         try {
             const decoded = jwt_decode<{ exp: number }>(token);
             const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-
             if (decoded.exp < currentTime) {
                 // Token has expired
                 alert('Session expired. Please log in again.');
@@ -229,19 +236,20 @@
           >
               <option value="" disabled selected class="" >Select The Type</option>
               <option value="Savings" class="bg-secondary text-primary">Savings</option>
-              <option value="Current" class="bg-secondary text-primary">Current</option>
+              <option value="Checking" class="bg-secondary text-primary">Current</option>
           </select>
         </div>
         <div>
           <label for="type" class="block text-gray-200 font-semibold mb-1">Branch:</label>
           <select required
-              bind:value={Branch} 
+              bind:value={BranchName} 
               id="type" 
               class="w-full p-2 rounded bg-primary text-gray-900 hover:bg-primary focus:ring-2 focus:ring-[#A12A48]"
           >
               <option value="" disabled selected class="" >Select The Type</option>
-              <option value="Mangalore" class="bg-secondary text-primary">Mangalore</option>
-              <option value="Udupi" class="bg-secondary text-primary">Udupi</option>
+              {#each branches as branch}
+              <option value={branch.Name} class="bg-secondary text-primary">{branch.Name}</option>
+              {/each}
           </select>
         </div>
   

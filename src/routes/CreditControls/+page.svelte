@@ -1,13 +1,18 @@
-<script>
+<script lang="ts">
     import { BiSolidLeftArrow } from "svelte-icons-pack/bi";
     import { Icon } from "svelte-icons-pack";
 	import Button from "$lib/components/ui/button/button.svelte";
     import { Switch } from "$lib/components/ui/switch/index.js";
-    import { onMount } from "svelte";
+    import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
+    import jwt_decode from 'jwt-decode';
     import ToggleSwitch from "$lib/components/ToggleSwitch.svelte";
 
+    let cardNumber = "";
+    let customerId = '';
     let cards = [];
     let card = {};
+    let cardid = '';
     let Domi = 0;
     let IisChecked = false;
     let CisChecked = false;
@@ -19,16 +24,51 @@
     let savedMessage = "";
     let showPopup = false;
 
+    onMount(() => {
+        const details = localStorage.getItem('creditcardNumber');
+        if (details) {
+            cardNumber = JSON.parse(details);
+        }
+    });
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login');
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id;
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login');
+        }
+    });
+
     async function handleSave() {
         console.log("Button clicked, handleSave function called");
         try {
             // Send a POST request with the id and new username
-            const response = await fetch('/api/credit-limits', {
+            const response = await fetch('/api/card-limits', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({user, Domi, IisChecked, CisChecked, OisChecked, AisChecked, PisChecked})
+                body: JSON.stringify({cardid, Domi, IisChecked, CisChecked, OisChecked, AisChecked, PisChecked})
             }).catch(error => console.error("Fetch error:", error));
 
             const result = await response.json();
@@ -46,20 +86,20 @@
             message = "An error occurred. Please try again.";
         }
     }   
-
+    
     onMount(async () => {
         try {
-            const response = await fetch('/api/credit-limits');
+            const response = await fetch(`/api/card-limits?${cardNumber}`);
             if (response.ok) {
                 cards = await response.json();
                 card = cards[0];
+                cardid = card.Id;
                 Domi = card.domistic;
                 IisChecked = card.international;
                 CisChecked = card.contact;
                 OisChecked = card.onlinee;
                 AisChecked = card.ATM;
                 PisChecked = card.QR;
-                user = card.Id;
             } else {
                 console.error("Error fetching usernames:", await response.json());
             }
@@ -67,6 +107,11 @@
             console.error("Fetch error:", error);
         }
     });
+
+    async function handleBack(){
+        localStorage.removeItem('cardNumber');
+        goto("/CreditCards");
+    }
 </script>
 
 
@@ -74,9 +119,9 @@
 <form on:submit|preventDefault={handleSave}>
 <div class="flex items-center justify-between relative bg-[#FDFDFD] text-[#772035] h-[10dvh] border-secondary border-b-2 font-bold text-3xl">
     <div class="ml-4">
-        <a href="/CreditCards">
+        <button on:click={handleBack}>
         <Icon src={BiSolidLeftArrow}/>
-        </a>
+        </button>
     </div>
     <div>Credit Card Limits</div>
     <div class="mr-4"></div>

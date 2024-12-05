@@ -7,33 +7,83 @@
     let showPassword1 = false;
     let showPassword2 = false;
     let showPassword3 = false;
+    let onmessage = "";
 
     // State variables to store the input values
-    let loginPIN = '';
+    let currentPin = "";
+    let loginPin = '';
     let newLoginPIN = '';
     let confirmPIN = '';
-    let successMessage = '';
+    let CustomerId = 1;
     
-    function handleSubmit() {
+    // function handleSubmit() {
 
-        if (!loginPIN || !newLoginPIN || !confirmPIN) {
-            successMessage = "Please fill in all fields.";
+    //     if (EloginPIN === loginPin){
+    //         successMessage = "Login Pin does not Match";
+    //     }
+    //     else if (!loginPin || !newLoginPIN || !confirmPIN) {
+    //         successMessage = "Please fill in all fields.";
+    //     }
+    //     else if (newLoginPIN === confirmPIN) {
+    //         successMessage = "Successfully changed the login PIN!";
+    //         goto('./Settin'); 
+    //     }
+    //     else {
+    //         successMessage = "The new PIN and confirmation PIN do not match.";
+    //     }
+    // }
+
+    // Fetch current PIN on component moun
+
+    // Function to handle PIN update
+    async function handleChangePin() {
+        // Front-end validation
+        if (!currentPin || !newLoginPIN || !confirmPIN) {
+            onmessage = 'Please fill in all fields.';
+            return;
         }
-        else if (newLoginPIN === confirmPIN) {
-            successMessage = "Successfully changed the login PIN!";
-            goto('./Settin'); 
+
+        if (newLoginPIN != confirmPIN) {
+            onmessage = 'The new PIN and confirmation PIN do not match.';
+            return;
         }
-        else {
-            successMessage = "The new PIN and confirmation PIN do not match.";
+
+        try {
+            const response = await fetch('/api/login-pin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    CustomerId,
+                    currentPin,
+                    newLoginPIN,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                onmessage = result.message; // Successfully changed the PIN
+                // Clear input fields
+                currentPin = '';
+                newLoginPIN = '';
+                confirmPIN = '';
+                dispatch("submitSuccess");
+            } else {
+                onmessage = result.message; // Error message from the backend
+            }
+        } catch (error) {
+            console.error('Error changing PIN:', error);
+            onmessage = 'An error occurred. Please try again later.';
         }
     }
-
     // Function to close (navigate or handle logic)
     function handleClose() {
         // Emit the 'close' event to the parent
         dispatch('close');
     }
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     const dispatch = createEventDispatcher();
 </script>
 
@@ -56,9 +106,9 @@
                 type={showPassword1 ? "text" : "password"}
                 placeholder="Enter login PIN"
                 class="w-full px-4 py-2 rounded-md text-gray-900"
-                bind:value={loginPIN} 
+                bind:value={currentPin} 
                 maxlength="4"
-                on:input={(e) => loginPIN = e.target.value.replace(/[^0-9]/g, "")} 
+                on:input={(e) => currentPin.replace(/[^0-9]/g, "")} 
             />
             <button
                 on:click={() => (showPassword1 = !showPassword1)}
@@ -80,7 +130,7 @@
                 class="w-full px-4 py-2 rounded-md text-gray-900"
                 bind:value={newLoginPIN} 
                 maxlength="4"
-                on:input={(e) => newLoginPIN = e.target.value.replace(/[^0-9]/g, "")} 
+                on:input={(e) => newLoginPIN.replace(/[^0-9]/g, "")} 
             />
             <button
                 on:click={() => (showPassword2 = !showPassword2)}
@@ -102,7 +152,7 @@
                 class="w-full px-4 py-2 rounded-md text-gray-900"
                 bind:value={confirmPIN} 
                 maxlength="4"
-                on:input={(e) => confirmPIN = e.target.value.replace(/[^0-9]/g, "")} 
+                on:input={(e) => confirmPIN.replace(/[^0-9]/g, "")} 
             />
             <button
                 on:click={() => (showPassword3 = !showPassword3)}
@@ -118,12 +168,12 @@
     </div>
 
     <!-- Submit Button -->
-    <button on:click={handleSubmit} class="bg-white text-[#772035] w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
+    <button on:click={handleChangePin} class="bg-white text-[#772035] w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
         <span>Submit</span>
     </button>
 
     <!-- Success Message -->
-    {#if successMessage}
-        <p class="text-white mt-4 text-center">{successMessage}</p>
+    {#if onmessage}
+        <p class="text-white mt-4 text-center">{onmessage}</p>
     {/if}
 </div>

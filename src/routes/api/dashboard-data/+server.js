@@ -4,7 +4,7 @@ export async function GET() {
     // Example queries (adjust as needed for your database schema)
     const spendingQuery = `
         SELECT MONTHNAME(MAX(transactionDate)) AS month, SUM(amount) AS amount
-        FROM transaction
+        FROM dbtransaction
         WHERE Type = 'DR'
         GROUP BY MONTH(transactionDate)
         ORDER BY MONTH(transactionDate)
@@ -15,7 +15,7 @@ export async function GET() {
             DATE_FORMAT(transactionDate, '%Y-%m') AS date,
             AVG(balance) AS balance
         FROM 
-            transaction
+            dbtransaction
         GROUP BY 
             DATE_FORMAT(transactionDate, '%Y-%m')
         ORDER BY 
@@ -31,7 +31,7 @@ export async function GET() {
         SELECT
             SUM(CASE WHEN Type = 'CR' THEN amount ELSE 0 END) AS deposits,
             SUM(CASE WHEN Type = 'DR' THEN amount ELSE 0 END) AS withdrawals
-        FROM transaction
+        FROM dbtransaction
         WHERE MONTH(transactionDate) = MONTH(CURRENT_DATE())
     `;
 

@@ -9,6 +9,7 @@
     import { goto } from '$app/navigation';
     import { AiOutlineReload } from "svelte-icons-pack/ai";
 
+    let h = 60;
     let userId = "";
     let password = "";
     let generatedCaptcha = "";
@@ -140,9 +141,9 @@
         </div>
         {/if}
     </div>
-    <div class="flex justify-center h-[65dvh]">
+    <div class="flex justify-center h-[{h}dvh]">
         <div>
-            <Card.Root class="w-[350px] bg-[#732B41]">
+            <Card.Root class="w-[365px] bg-[#732B41] h-full">
                 <Card.Content>
                 <form on:submit={handleLogin}>
                     <div class="grid w-full items-center gap-4">
@@ -192,10 +193,10 @@
             </Card.Root>
         </div>
         <div>
-            <img class="w-full h-[67dvh] rounded-lg" src="images/login.png" alt="Login">
+            <img class="w-full h-[{h}dvh] rounded-lg" src="images/login.png" alt="Login">
         </div>
     </div>
-    <div class="flex row mt-16 ml-24 mr-24 mb-4 justify-between">
+    <div class="flex row mt-12 text-2xl ml-24 mr-24 justify-between">
         <div>
             <h1>Contact Us: 1800 5700, 1800 5800</h1>
         </div>

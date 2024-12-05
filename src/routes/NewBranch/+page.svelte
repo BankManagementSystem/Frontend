@@ -12,8 +12,34 @@
     let Address3 = "";
     let Address4 = "";
     let Address5 = "";
-    let PN = '';
-    let Address = Address1 + ", " + Address2 + ", " + Address3 + ", " + Address4+ ", " + Address5;
+    let Phone = '';
+    let Email = '';
+
+    async function handleCreate() {
+    try {
+        const response = await fetch('/api/new-branch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Name, IFSC,
+                Address1, Address2, Address3, Address4, Address5,
+                Manager ,NOE, Phone, Email
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Branch created successfully!');
+            // Optionally redirect to another page
+        } else {
+            alert(result.message || 'Failed to create Branch.');
+        }
+    } catch (error) {
+        console.error('Error creating Branch:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
 
 
     async function handleBack(event) {
@@ -55,8 +81,8 @@
                 </div>
             </div>
         <div>
-            <label for="mname" class="block text-gray-200 font-semibold mb-1">Branch Manager:</label>
-            <input required  bind:value={Manager} id="mname" type="text" placeholder="Enter Branch Manager name" class="w-full p-2 rounded mb-2 bg-primary"  />
+            <label for="mname" class="block text-gray-200 font-semibold mb-1">Branch Manager Id:</label>
+            <input required  bind:value={Manager} id="mname" type="text" placeholder="Enter Branch Manager Id" class="w-full p-2 rounded mb-2 bg-primary"  />
         </div>
         <div>
             <label for="number" class="block text-gray-200 font-semibold mb-1">Number of Emplyees:</label>
@@ -64,10 +90,14 @@
         </div>
         <div>
             <label for="number" class="block text-gray-200 font-semibold mb-1">Phone Number:</label>
-            <input required  bind:value={PN} id="number" type="number" placeholder="Enter Phone Number" class="w-full p-2 rounded mb-2 bg-primary border"  />
+            <input required  bind:value={Phone} id="number" type="number" placeholder="Enter Phone Number" class="w-full p-2 rounded mb-2 bg-primary border"  />
+        </div>
+        <div>
+            <label for="number" class="block text-gray-200 font-semibold mb-1">Email:</label>
+            <input required  bind:value={Email} id="number" type="email" placeholder="Enter Email" class="w-full p-2 rounded mb-2 bg-primary border"  />
         </div>
         <div class="flex justify-center mt-4">
-            <button type="submit" class="w-1/3 p-2 rounded bg-gray-100 font-semibold text-[#772035]">Add Branch</button>
+            <button on:click={handleCreate} class="w-1/3 p-2 rounded bg-gray-100 font-semibold text-[#772035]">Add Branch</button>
         </div>
     </div>
 </div>

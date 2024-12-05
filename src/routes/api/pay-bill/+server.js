@@ -1,8 +1,15 @@
 import { db } from '$lib/db'; // Import your database connection
 import { json } from "@sveltejs/kit";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
 import crypto from 'crypto';
+
+dotenv.config();
+
+const SECRET_KEYT = process.env.SECRET_KEYT;
+
+// Define key and initialization vector (IV)
+const key = Buffer.from(SECRET_KEYT); // 32 bytes key for AES-256
+const iv = Buffer.alloc(16, 0);
 
 export async function GET({ url }) {
     const id = url.searchParams.get('id'); // Get Id from query parameter
@@ -14,8 +21,8 @@ export async function GET({ url }) {
 
     try {
         // Query database based on the provided Id
-        const [rows] = await db.execute('SELECT A.Id AS AccountId, status, balance, TPin FROM accounts A WHERE A.CustomerId = ?', [id]);
-        
+        const [rows] = await db.execute('SELECT Id, Balance, TPIN FROM accounts WHERE CustomerId = ?', [id]);
+        console.log("Accounts Fecthed", rows);
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
         console.error("Database query error:", error);
@@ -25,24 +32,47 @@ export async function GET({ url }) {
 
 export async function POST({ request }) {
     try {
-        const { customerId, accountId, amount, hashedPIN } = await request.json();
+        const { cardNumber, Account, amount, PIN} = await request.json();
+        console.log(cardNumber, Account, amount, PIN)
 
-        if (!accountId || !amount || !hashedPIN) {
+        if (!cardNumber || !Account || !amount || !PIN ) {
             return new Response(JSON.stringify({ success: false, message: "Missing required fields" }), { status: 400 });
         }
 
         // Fetch stored PIN hash for the account
         const [rows] = await db.execute(
-            `SELECT TPin FROM accounts WHERE Id = ? AND CustomerId = ?`,
-            [accountId, customerId]
+            `SELECT TPIN, Balance FROM accounts WHERE Id = ?`,
+            [Account]
         );
+
+        const [rows2] = await db.execute(
+            `SELECT Balance as CardBalance, CardLimit FROM cards WHERE Number = ?`,
+            [cardNumber]
+        );
+
 
         if (rows.length === 0) {
             return new Response(JSON.stringify({ success: false, message: "Account not found" }), { status: 404 });
         }
+        if (rows.length === 0) {
+            return new Response(JSON.stringify({ success: false, message: "Card not found" }), { status: 404 });
+        }
 
         const storedHashedPIN = rows[0].TPin;
+        const balance = rows[0].Balance;
+        const cardBalance = rows2[0].CardBalance;
+        const Limit = rows2[0].CardLimit;
 
+        if (balance < amount) {
+            return new Response(JSON.stringify({ success: false, message: "Amount exceeds bank balance" }), { status: 403 });
+        }
+
+        if (cardBalance + amount > Limit) {
+            return new Response(JSON.stringify({ success: false, message: "Amount exceeds the Credit Card Limit" }), { status: 403 });
+        }
+
+        const hashedPIN = encrypt(PIN);
+        console.log(hashedPIN);
         // Compare the stored hashed PIN with the provided hashed PIN
         if (storedHashedPIN != hashedPIN) {
             return new Response(JSON.stringify({ success: false, message: "Invalid transaction PIN" }), { status: 403 });
@@ -51,38 +81,17 @@ export async function POST({ request }) {
         // Perform the balance update in a transaction
         const connection = await db.getConnection();
         await connection.beginTransaction();
-        /* To send an Email
-        const user = await getUserById(userId);
-        console.log("User details fetched successfully:", user);
-
-        if (!user) {
-            return json({ error: "User not found" }, { status: 404 });
-        }
-
-        const { email, password } = user;
-
-        if (!email) {
-            return json({ error: "Email not available for this user" }, { status: 404 });
-        }
-
-        // Message to send via email
-        const subject = "Your Login Password";
-        const text = `Hello, your login password is: ${password}. Please keep it secure.`;
-
-        // Send email
-        const emailResult = await sendEmail(email, subject, text);
-        */
         try {
             // Update debit card balance
             const [accountResult] = await connection.execute(
-                `UPDATE accounts SET balance = balance - ? WHERE Id = ?`,
-                [amount, accountId]
+                `UPDATE accounts SET Balance = Balance - ? WHERE Id = ?`,
+                [amount, Account]
             );
 
             // Update credit card balance
             const [creditCardResult] = await connection.execute(
-                `UPDATE credits SET balance = balance + ? WHERE Id = ?`,
-                [amount, 1]
+                `UPDATE cards SET Balance = Balance + ? WHERE Number = ?`,
+                [amount, cardNumber]
             );
 
             // Check if both updates succeeded
@@ -110,6 +119,12 @@ export async function POST({ request }) {
         console.error("Error handling request:", error);
         return new Response(JSON.stringify({ success: false, message: "Internal server error" }), { status: 500 });
     }
+}
+function encrypt(text) {
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
 }
 
 /*

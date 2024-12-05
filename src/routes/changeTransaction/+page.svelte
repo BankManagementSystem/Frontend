@@ -1,30 +1,123 @@
-<script>
+<script lang="ts">
     import { Icon } from 'svelte-icons-pack';
     import { AiOutlineCloseCircle } from "svelte-icons-pack/ai";;
     import { AiOutlineEye } from "svelte-icons-pack/ai";
     import { AiOutlineEyeInvisible } from "svelte-icons-pack/ai";
+    import jwt_decode from 'jwt-decode';
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
     let showPassword1 = false;
     let showPassword2 = false;
     let showPassword3 = false;
+    let onmessage = "";
 
     // State variables to store the input values
+    let currentPin = "";
     let TransactionPIN = '';
     let newTransactionPIN = '';
     let confirmPIN = '';
-    let successMessage = '';
-     
-    function handleSubmit() {
+    
+    
 
-         if (!TransactionPIN || !newTransactionPIN || !confirmPIN) {
-            successMessage = "Please fill in all fields.";
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
         }
-        else if (newTransactionPIN === confirmPIN) {
-            successMessage = "Successfully changed the transaction PIN!";
-            goto('/Settin'); 
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                customerId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
         }
-        else {
-            successMessage = "The new PIN and confirmation PIN do not match.";
+    });
+
+    let customerId = '';
+    // function handleSubmit() {
+
+    //      if (!TransactionPIN || !newTransactionPIN || !confirmPIN) {
+    //         successMessage = "Please fill in all fields.";
+    //     }
+    //     else if (newTransactionPIN === confirmPIN) {
+    //         successMessage = "Successfully changed the transaction PIN!";
+    //         goto('/Settin'); 
+    //     }
+    //     else {
+    //         successMessage = "The new PIN and confirmation PIN do not match.";
+    //     }
+    // }
+
+    // Fetch current PIN on component mount
+    onMount(async () => {
+        try {
+            const response = await fetch('/api/transaction-pin');
+            if (response.ok) {
+                const data = await response.json();
+                TransactionPIN = data.TransactionPIN; // Current PIN from the database
+            } else {
+                console.error("Error fetching login PIN:", await response.json());
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    });
+
+    // Function to handle PIN update
+    async function handleChangePin() {
+        // Front-end validation
+        if ( !currentPin || !newTransactionPIN || !confirmPIN) {
+            onmessage = 'Please fill in all fields.';
+            return;
+        }
+
+        if (newTransactionPIN != confirmPIN) {
+            onmessage = 'The new PIN and confirmation PIN do not match.';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/transaction-pin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customerId,
+                    currentPin,
+                    newTransactionPIN,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                onmessage = result.message; // Successfully changed the PIN
+                // Clear input fields
+                currentPin = '';
+                newTransactionPIN = '';
+                confirmPIN = '';
+                dispatch("submitSuccess");
+            } else {
+                onmessage = result.message; // Error message from the backend
+            }
+        } catch (error) {
+            console.error('Error changing PIN:', error);
+            onmessage = 'An error occurred. Please try again later.';
         }
     }
 
@@ -56,7 +149,7 @@
                 type={showPassword1 ? "text" : "password"}
                 placeholder="Enter transaction PIN"
                 class="w-full px-4 py-2 rounded-md text-gray-900"
-                bind:value={TransactionPIN} 
+                bind:value={currentPin} 
                 maxlength="6"
                 on:input={(e) => TransactionPIN = e.target.value.replace(/[^0-9]/g, "")} 
             />
@@ -118,12 +211,12 @@
     </div>
 
     <!-- Submit Button -->
-    <button on:click={handleSubmit} class="bg-white text-[#772035] w-60 mt-6 py-2 rounded-lg font-semibold mx-auto block">
+    <button on:click={handleChangePin} class="bg-white text-[#772035] w-60 mt-6 py-2 rounded-lg font-semibold mx-auto block">
         <span>Submit</span>
     </button>
 
     <!-- Success Message -->
-    {#if successMessage}
-        <p class="text-primary mt-4 text-center">{successMessage}</p>
+    {#if onmessage}
+        <p class="text-primary mt-4 text-center">{onmessage}</p>
     {/if}
 </div>

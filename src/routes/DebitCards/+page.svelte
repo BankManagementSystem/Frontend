@@ -57,15 +57,21 @@
 
     let Account = '';
     let customerId = ''; // Id input from the user
-    let card = {}; // Holds the fetched card data
+    let cardid = ""; // Holds the fetched card data
     let accounts = [];
-
+    let Number = "";
 
     //const selectedAccount = accounts.find(account => account.AccountId === Account);
     let selectedAccount = null; // Holds the currently selected account details
 
     // Reactive statement to update selectedAccount based on the selected Account ID
     $: selectedAccount = accounts.find(account => account.AccountId === Account);
+    $: Number = selectedAccount ? selectedAccount.Number : 0;
+
+    function handleLimits(){
+        localStorage.setItem('debitcardNumber', JSON.stringify(Number));
+        goto('/DebitControls');
+    }
 
     // Function to fetch credit card details based on Id
     onMount(async () => {
@@ -74,6 +80,7 @@
             if (response.ok) {
                 accounts = await response.json();
                 if (accounts.length > 0) {
+                    cardid = accounts[0].CardId;
                     Account = accounts[0].AccountId;
                     selectedAccount = accounts[0];
                 }
@@ -181,7 +188,7 @@
     </div>
     <div class="flex flex-row justify-between mt-4 w-[60dvh] ">
         <div class="ml-4"> <Button variant="outline" class=" text-red-600 h-11 rounded-md px-6 text-lg font-bold bg-[#FDFDFD] shadow-xl">Block Card</Button> </div>
-        <div class="mr-4"> <Button variant="outline" href="/DebitControls" class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</Button> </div>
+        <div class="mr-4"> <button on:click={handleLimits} class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</button> </div>
     </div>
 </div>
 <div class="w-[132dvh] flex items-center justify-center">
