@@ -1,40 +1,88 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto } from '$app/navigation';
+	import { Icon } from 'svelte-icons-pack';
+	import { BiSolidLeftArrow } from 'svelte-icons-pack/bi';
+	import jwt_decode from 'jwt-decode';
 
-    // Function to navigate to the Loan Application page
-    function navigateToLoanApplication() {
-        goto('/Loan-application');
-    }
+	// Input values
+	let LoanTypeId = 0;
+	let LoanType = 'Home';
+	let loanAmount = 800000;
+	let tenure = 36;
+	let ROI = 3;
+	let emi = 0;
 
-    // Input values
-    let loanAmount = 1250000; // Initial loan amount
-    let tenure = 40; // Initial tenure in months
-    let reducingRate = 17; // Initial interest rate in percentage
-    let emi = 0; // Calculated EMI
+	function checkEligibility() {
+		const details = {
+			LoanTypeId, LoanType, loanAmount, tenure, ROI
+		};
 
-    // Reactive block to calculate EMI whenever values change
-    $: {
-        let principal = loanAmount;
-        let monthlyRate = reducingRate / 12 / 100; // Convert annual rate to monthly
-        let n = tenure;
+		// Store the details in localStorage or use the API to persist them
+		localStorage.setItem('emidetails', JSON.stringify(details));
 
-        // Calculate EMI using the formula
-        if (monthlyRate > 0) {
-        emi = Math.round(
-            (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-            (Math.pow(1 + monthlyRate, n) - 1)
-        );
-        } else {
-        emi = Math.round(principal / n); // Handle zero interest rate
-        }
-    }
-    </script>
+		// Redirect to the confirm page
+		goto('/Loan-application', { state: details });
+	}
 
-<div class="bg-gray-100p-8">
-    <h1 class="text-red-800 text-center text-3xl font-bold">EMI Calculator</h1>
+	// Reactive block to calculate EMI whenever values change
+	$: {
+		let principal = loanAmount;
+		let monthlyRate = ROI / 12 / 100; // Convert annual rate to monthly
+		let n = tenure;
+
+		// Calculate EMI using the formula
+		if (monthlyRate > 0) {
+			emi = Math.round(
+				(principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
+					(Math.pow(1 + monthlyRate, n) - 1)
+			);
+		} else {
+			emi = Math.round(principal / n); // Handle zero interest rate
+		}
+	}
+	async function handleBack(event) {
+		event.preventDefault(); // Prevent default behavior for the back action
+
+		const token = localStorage.getItem('authToken'); // Retrieve the token
+
+		if (token) {
+			try {
+				const decoded = jwt_decode<{ exp: number }>(token);
+				const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+				if (decoded.exp < currentTime) {
+					// Token has expired
+					alert('Session expired. Please log in again.');
+					localStorage.removeItem('authToken'); // Clear the expired token
+					goto('/Home'); // Redirect to login or home page
+				} else {
+					// Token is valid
+					goto('/Home'); // Redirect to accounts page
+				}
+			} catch (error) {
+				console.error('Error decoding token:', error);
+				alert('Invalid session. Please log in again.');
+				localStorage.removeItem('authToken'); // Clear invalid token
+				goto('/'); // Redirect to login or home page
+			}
+		} else {
+			// No token found
+			goto('/'); // Redirect to login or home page
+		}
+	}
+</script>
+
+<div
+	class="flex items-center justify-between bg-gray-200 text-[#772035] h-[10dvh] font-bold text-3xl w-full"
+>
+	<div class="ml-4 cursor-pointer">
+		<button><a href="/Loans"> <Icon src={BiSolidLeftArrow} /></a> </button>
+	</div>
+	<div>EMI Calculator</div>
+	<div class="mr-4"></div>
 </div>
 
 <div class="bg-gray-100 min-h-screen p-8">
@@ -62,12 +110,12 @@
             <input 
                 type="range"
                 class="w-full range accent-[#772035]"
-                min="0"
-                max="2500000"
+                min="800000"
+                max="5000000"
                 step="5000"
                 bind:value={loanAmount}
             />
-            <p class="text-sm text-gray-500 text-right">Max ₹25,00,000</p>
+            <p class="text-sm text-gray-500 text-right">Max ₹50,00,000</p>
         </div>
 
         <!-- Tenure -->
@@ -82,12 +130,12 @@
             <input
                 type="range"
                 class="w-full range accent-[#772035]"
-                min="1"
-                max="60"
+                min="36"
+                max="120"
                 step="1"
                 bind:value={tenure}
             />
-            <p class="text-sm text-gray-500 text-right">Max 60 months</p>
+            <p class="text-sm text-gray-500 text-right">Max 120 months</p>
         </div>
 
         <!-- Monthly Reducing Rate -->
@@ -97,15 +145,15 @@
                 id="rate"
                 type="text"
                 class="w-full border border-gray-300 rounded-md p-2 mb-2"
-                bind:value={reducingRate}
+                bind:value={ROI}
             />
             <input
                 type="range"
                 class="w-full range accent-[#772035]"
-                min="1"
+                min="3"
                 max="40"
                 step="0.1"
-                bind:value={reducingRate}
+                bind:value={ROI}
             />
             <p class="text-sm text-gray-500 text-right">Max 40%</p>
         </div>
@@ -120,7 +168,7 @@
         <div class="flex justify-center items-center mt-4">
             <button
                 class="bg-gray-300 text-black px-6 py-1 rounded-lg font-semibold text-sm"
-                on:click={navigateToLoanApplication}
+                on:click={checkEligibility}
             >
                 Check Eligibility
             </button>

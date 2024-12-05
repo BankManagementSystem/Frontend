@@ -76,7 +76,7 @@
 	let payeesIFSC = '';
 	let amount = '';
 	let transactionMode = '';
-	let type = 'Transfer';
+	let type = 'Dr';
 
 	async function handleSubmit(event) {
 		event.preventDefault();
