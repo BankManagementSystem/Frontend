@@ -102,6 +102,27 @@
         }
     });
 
+    async function handleStatus(){
+        try {
+            const response = await fetch('/api/activate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cardid ,SisChecked})
+            }).catch(error => console.error("Fetch error:", error));
+            const result = await response.json();
+            if (result.success) {
+            } else {
+                message = result.message || "Failed to update username.";
+            }
+        } catch (error) {
+            console.error("Error updating username:", error);
+            message = "An error occurred. Please try again.";
+        }
+    } 
+
+    let message = "";
 </script>
 <Navbar/>
 <slot/>
@@ -177,7 +198,13 @@
     <div class="flex flex-row mt-2 justify-between items-center w-[60dvh] h-[9dvh]">
         <div class="font-bold ml-2 text-2xl">Switch Card On/Off </div>
         <div class="flex mr-2">
-            <ToggleSwitch bind:checked={SisChecked} />
+            <ToggleSwitch
+                bind:checked={SisChecked}
+                onChange={(newChecked) => {
+                    console.log("ToggleSwitch changed to:", newChecked);
+                    handleStatus();
+                }}
+            />
         </div>
     </div>
     <div class="flex flex-row justify-between items-center w-[60dvh] h-[9dvh]">
@@ -188,7 +215,7 @@
     </div>
     <div class="flex flex-row justify-between mt-4 w-[60dvh] ">
         <div class="ml-4"> <Button variant="outline" class=" text-red-600 h-11 rounded-md px-6 text-lg font-bold bg-[#FDFDFD] shadow-xl">Block Card</Button> </div>
-        <div class="mr-4"> <button on:click={handleLimits} class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</button> </div>
+        <div class="mr-4"> <button on:change={handleLimits} class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</button> </div>
     </div>
 </div>
 <div class="w-[132dvh] flex items-center justify-center">

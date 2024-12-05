@@ -65,7 +65,7 @@
                 if (data.length > 0) {
                     card = data[0];
                     accountNumber = card.Number;
-                    availableBalance = card.balance;
+                    availableBalance = card.Balance;
                     type = card.Type;
                 } else {
                     accountNumber = "Not Found";

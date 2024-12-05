@@ -227,11 +227,11 @@
     <!-- Deposits and Withdrawals -->
     <div class="flex flex-row gap-10 justify-center items-center">
         <div class="bg-white w-[80dvh] p-6 rounded-lg shadow">
-            <h2 class="text-xl font-bold text-secondary">Total Deposits this Month</h2>
+            <h2 class="text-xl font-bold text-secondary">Total debited amount this Month</h2>
             <p class="text-2xl font-bold">{deposits}</p>
         </div>
         <div class="bg-white w-[80dvh] p-6 rounded-lg shadow">
-            <h2 class="text-xl font-bold text-[#C73659]">Total Withdrawals this Month</h2>
+            <h2 class="text-xl font-bold text-[#C73659]">Total credited amount this Month</h2>
             <p class="text-2xl font-bold">{withdrawals}</p>
         </div>
     </div>

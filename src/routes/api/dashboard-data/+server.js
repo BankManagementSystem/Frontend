@@ -32,7 +32,7 @@ export async function GET() {
             SUM(CASE WHEN Type = 'CR' THEN amount ELSE 0 END) AS deposits,
             SUM(CASE WHEN Type = 'DR' THEN amount ELSE 0 END) AS withdrawals
         FROM dbtransaction
-        WHERE MONTH(transactionDate) = MONTH(CURRENT_DATE())
+        WHERE MONTH(transactionDate) = MONTH(CURDATE())
     `;
 
     try {

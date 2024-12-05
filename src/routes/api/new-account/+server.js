@@ -69,12 +69,18 @@ export async function POST({ request }) {
             console.log("BranchId fetched:", branch);
             const BranchId = branch[0].Id;
             console.log("BranchId", BranchId);
-
+            /*
             const [accountTypeResult] = await connection.execute(
                 `INSERT INTO accountstype (Type, MinBalance) VALUES (?, 0)`,
                 [Type]
-            );
-            const accounttypeId = accountTypeResult.insertId;
+            );*/
+            const senderInfo = await getId(Type);
+            if (!senderInfo) {
+                throw new Error("Not found");
+            }
+
+            const accounttypeId =senderInfo[0].Id;
+
             console.log("Account type inserted:", accountTypeResult);
             // Step 3: Insert into AccountsTable
             const [accountResult] = await connection.execute(
@@ -152,5 +158,23 @@ export async function GET() {
     } catch (error) {
         console.error("Database query error:", error);
         return new Response(JSON.stringify({ error: "Failed to fetch credit card details" }), { status: 500 });
+    }
+}
+async function getId(Type) {
+    try {
+        const [rows] = await db.query(
+            `SELECT Id FROM accountstype WHERE Type=?`,[Type]
+        );
+        console.log("Query result:", rows);
+
+        if (rows && rows.length > 0) {
+            return rows[0]; // Return the first row
+        } else {
+            console.error("No user found with the provided ID:", Type);
+            return null; // No matching user
+        }
+    } catch (error) {
+        console.error("Database error:", error);
+        throw new Error("Database query failed");
     }
 }
