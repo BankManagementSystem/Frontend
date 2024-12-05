@@ -4,6 +4,7 @@
     import { BsCreditCard2Front } from "svelte-icons-pack/bs";
     import { TrOutlineDeviceIpadHorizontalSearch } from "svelte-icons-pack/tr";
     import { TrOutlineCreditCardOff } from "svelte-icons-pack/tr";
+    import { TrOutlineCreditCard } from "svelte-icons-pack/tr";
     import { RiDocumentArticleLine } from "svelte-icons-pack/ri";
     import { CgPassword } from "svelte-icons-pack/cg";
     import { Icon } from "svelte-icons-pack";
@@ -48,6 +49,7 @@
     let cardCVV = "123";
     let isBalanceVisible = false;
     let isCVVVisible = false;
+    let cardIsActive = false;
     let inputId = 1; // Id input from the user
     let card = {}; // Holds the fetched card data
 
@@ -69,11 +71,13 @@
                     cardBalance = card.balance;
                     cardCVV = card.CVV;
                     cardLimit = card.CardLimit;
+                    cardIsActive = card.IsActive;
                 } else {
                     cardNumber = "Not Found";
                     cardBalance = "Not Available";
                     cardCVV = "NA";
                     cardLimit = "Not Available";
+
                 }
             } else {
                 console.error("Error fetching credit card details:", await response.json());
@@ -82,6 +86,51 @@
             console.error("Fetch error:", error);
         }
     });
+
+    function handleLimits(){
+        localStorage.setItem('creditcardNumber', JSON.stringify(cardNumber));
+        goto('/CreditControls')
+    }
+
+    function handleSetPin(){
+        localStorage.setItem('creditcardNumber', JSON.stringify(cardNumber));
+        goto('/SetPin')
+    }
+
+    function handlePayBill(){
+        localStorage.setItem('creditcardNumber', JSON.stringify(cardNumber));
+        goto('/PayBill')
+    }
+    let message= '';
+    let isSelected = false;
+
+    async function handleBlock() {
+        
+        cardIsActive = !cardIsActive;
+        try {
+            // Send a POST request with the id and new username
+            const response = await fetch('/api/block', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cardNumber, cardIsActive })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                isSelected = !isSelected;
+                message = "Card is Blocked!";
+                alert(message);
+            } else {
+                message = result.message || "Failed to Block.";
+                alert(message);
+            }
+        } catch (error) {
+            console.error("Error blocking card:", error);
+            message = "An error occurred. Please try again.";
+        }
+    }
 </script>
 <Navbar/>
 <slot/>
@@ -89,7 +138,9 @@
 <div class="text-black font-bold text-3xl ml-10 mt-6">
     Credit Card
 </div>
-
+<!--{#if cardNumber === "Not Found"}
+        <div class="text-black font-semibold top-[50%] left-[40%] text-2xl absolute">You dont have a Credit Card</div>
+    {:else}-->
 <div class="flex flex-col items-center">
     <!-- Input field to enter Id -->
     <!--<input
@@ -127,6 +178,7 @@
             </button>
         </div>
     </div>-->
+    
     <div
 		class="ml-4 mt-4 relative w-96 h-56 bg-gradient-to-l from-purple-900 to-blue-950 rounded-xl p-4 shadow-xl text-white"
 	>
@@ -204,28 +256,42 @@
         </div>
     </div>    
     <div class="flex flex-row justify-center mt-8 gap-24 h-20">
-        <a href="./CreditControls">
+        <button on:click={handleLimits}>
         <div class="flex flex-col justify-center items-center">
             <div class="flex bg-[#F7E1E6] w-32 h-12 rounded-xl justify-center items-center"><Icon src={BsCreditCard2Front} size="30" /></div>
             <div class="text-[#D9D9D9]">Card Controls</div>
         </div>
-        </a>
-        <a href="./SetPin">
+        </button>
+        <button on:click={handleSetPin}>
             <div class="flex flex-col justify-center items-center">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={CgPassword} size="30" /></div>
             <div class="text-[#D9D9D9]">Set Pin</div>
             </div>  
-        </a>
-        <a href="./PayBill">
+        </button>
+        <button on:click={handlePayBill}>
         <div class="flex flex-col justify-center items-center ">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={RiDocumentArticleLine} size="30" /></div>
             <div class="text-[#D9D9D9]">Pay Bill</div>
         </div>
-        </a>
+        </button>
+        <button on:click={handleBlock}>
         <div class="flex flex-col justify-center items-center">
-            <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={TrOutlineCreditCardOff} size="30" /></div>
-            <div class="text-[#D9D9D9]">Block Card</div>
+            <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center">
+                {#if isSelected}
+                    <Icon src={TrOutlineCreditCard} size="30" />
+                {:else}
+                    <Icon src={TrOutlineCreditCardOff} size="30" />
+                {/if}
+            </div>
+            <div class="text-[#D9D9D9]">
+                {#if isSelected}
+                    UnBlock Card
+                {:else}
+                    Block Card
+                {/if}
+                </div>
         </div>
+        </button>
         <!--<div class="flex flex-col justify-center items-center">
             <div class="bg-[#F7E1E6] w-32 h-12 rounded-xl flex justify-center items-center"><Icon src={TrOutlineDeviceIpadHorizontalSearch} size="30" /></div>
             <div class="text-[#D9D9D9]">View More</div>

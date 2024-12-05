@@ -3,6 +3,53 @@
     import { onMount } from 'svelte';
     import Chart from "chart.js/auto";
     import {  BarController, BarElement, PieController, ArcElement, CategoryScale, LinearScale } from 'chart.js';
+    import jwt_decode from 'jwt-decode';
+    import { goto } from '$app/navigation';
+    let employees = [];
+    let employee = {};
+    onMount(async () => {
+        try {
+            const response = await fetch(`/api/get-employee?${employeeId}`);
+            if (response.ok) {
+                employees = await response.json();
+                employee = employees[0];
+            } else {
+                console.error("Error fetching usernames:", await response.json());
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    });
+    /*
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/employeelogin'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                employeeId = decoded.id; // Extract the employee ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/employeelogin'); // Redirect to login
+        }
+    });
+    */
+    let employeeId = '';
 
     Chart.register(BarController, BarElement, PieController, ArcElement, CategoryScale, LinearScale);
 
@@ -17,10 +64,8 @@
     let error = null;
     let barChart, pieChart;
     let EName = "John";
-    genderData = [
-    { Gender: 'Male', count: 30 },
-    { Gender: 'Female', count: 20 }
-    ];
+    
+
 
     onMount(async () => {
         try {
@@ -30,6 +75,7 @@
             const { metrics: fetchedMetrics, monthlyAccounts, genderDistribution } = await response.json();
             metrics = fetchedMetrics;
             accountsData = monthlyAccounts;
+            genderData = genderDistribution;
             //genderData = genderDistribution;
 
             setupBarChart();
@@ -205,7 +251,7 @@
 <slot />
 
 <main class="p-8 bg-gray-100 min-h-screen">
-    <div class="text-2xl font-semibold text-secondary ">Welcome back, {EName}! Here's your Dashboard</div>
+    <div class="text-2xl font-semibold text-secondary ">Welcome back, {employee.FirstName} {employee.MiddleName} {employee.Lastname}, {employee.Designation} Here's your Dashboard</div>
     <h1 class="mt-10 text-2xl text-center font-bold text-secondary mb-4">Dashboard</h1>
     {#if error}
         <p class="text-red-600">{error}</p>

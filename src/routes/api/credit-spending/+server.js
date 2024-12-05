@@ -10,16 +10,16 @@ export async function GET({ url }) {
         // Fetch total spending grouped by month
         const spendingQuery = `
             SELECT 
-                DATE_FORMAT(transaction_date, '%Y-%m') AS month,
+                MONTHNAME(MAX(transaction_Date)) AS month,
                 SUM(amount) AS total_spending
             FROM 
                 credit_card_transactions
             WHERE 
                 customer_id = ?
             GROUP BY 
-                DATE_FORMAT(transaction_date, '%Y-%m')
+                MONTH(transaction_Date)
             ORDER BY 
-                DATE_FORMAT(transaction_date, '%Y-%m')
+                MONTH(transaction_Date)
         `;
 
         const [spendingData] = await db.execute(spendingQuery, [customerId]);

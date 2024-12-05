@@ -4,37 +4,81 @@
     import { AiOutlineEyeInvisible } from "svelte-icons-pack/ai";
     import { AiOutlineEye } from "svelte-icons-pack/ai";
     import { AiOutlineCloseCircle } from "svelte-icons-pack/ai";
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
 
+    let cardNumber = "";
     let creditPin = '';
     let Pin = '';
     let showPassword1 = false;
     let showPassword2 = false;
     let showPassword3 = false;
     let confirmPIN = '';
+    let onmessage = "";
     let successMessage = '';
 
-    function handleSubmit() {
+    onMount(() => {
+        console.log("inside mount")
+		const details = localStorage.getItem('creditcardNumber');
+		if (details) {
+			cardNumber = JSON.parse(details);
+            console.log(cardNumber);
+		}
+	});
 
-    if (!creditPin || !confirmPIN) {
+    async function handleChangePin() {
+        // Front-end validation
+        if (!creditPin || !confirmPIN || !Pin) {
         successMessage = "Please fill in all fields.";
-    }
-    else if (creditPin === confirmPIN) {
-        successMessage = "Successfully changed the login PIN!"; 
-    }
-    else {
-        successMessage = "The new PIN and confirmation PIN do not match.";
-    }
-    setTimeout(() => {
+        }
+        else if (creditPin != confirmPIN) {
+            successMessage = "The new PIN and confirmation PIN do not match.";
+            
+        }
+
+        try {
+            const response = await fetch('/api/login-pin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cardNumber , Pin, creditPin,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                onmessage = result.message; // Successfully changed the PIN
+                // Clear input fields
+                creditPin = '';
+                Pin = '';
+                confirmPIN = '';
+                successMessage = "Successfully changed the login PIN!"; 
+            } else {
+                onmessage = result.message; // Error message from the backend
+            }
+            setTimeout(() => {
                     successMessage = ''; // Hide popup after 3 seconds
-                }, 3000);
+            }, 3000);
+        } catch (error) {
+            console.error('Error changing PIN:', error);
+            onmessage = 'An error occurred. Please try again later.';
+        }
+    }
+
+    function handleBack(){
+        localStorage.removeItem('creditcardNumber');
+        goto(`/CreditCards`);
     }
 </script>
 
 <div class="flex items-center justify-between bg-[#FDFDFD] text-[#772035] h-[10dvh] font-bold text-3xl border-2 border-black">
     <div class="ml-4">
-        <a href="/CreditCards">
+        <button on:click={handleBack}>
         <Icon src={BiSolidLeftArrow}/>
-        </a>
+        </button>
     </div>
     <div>Set New PIN</div>
     <div class="mr-4"></div>
@@ -111,7 +155,7 @@
             </button>
         </div>
         <div>
-            <button on:click={handleSubmit} class="bg-primary text-secondary hover:bg-gray-200 w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
+            <button on:click={handleChangePin} class="bg-primary text-secondary hover:bg-gray-200 w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
                 <span>Submit</span>
             </button>
         </div>

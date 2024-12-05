@@ -1,10 +1,16 @@
-// src/routes/api/get-usernames/+server.js
 import { db } from '$lib/db'; // Import the database connection
 
-export async function GET() {
+export async function GET({url}) {
+    const cardNumber = url.searchParams.get('id'); // Get Id from query parameter
+    console.log("CardNumber",cardNumber);
+    // If Id is not provided, return an error
+    if (!cardNumber) {
+        return new Response(JSON.stringify({ error: "Id is required" }), { status: 400 });
+    }
+
     try {
         // Query all usernames from the users table
-        const [rows] = await db.execute('SELECT * FROM limits WHERE Id = 11');
+        const [rows] = await db.execute('SELECT CL.Id, CL.DomesticAmount, CL.International, CL.Contactless, CL.Online, CL.ATM, CL.PosQr FROM cardlimits CL, Cards C WHERE CL.CardId = C.Id AND C.Number = ?',[cardNumber]);
 
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
@@ -17,14 +23,14 @@ export async function GET() {
 
 export async function POST({ request }) {
     try {
-        const { user, Domi, IisChecked, CisChecked, OisChecked, AisChecked, PisChecked } = await request.json();
-
+        const { cardid, Domi, IisChecked, CisChecked, OisChecked, AisChecked, PisChecked } = await request.json();
+        console.log("Card Limit Card Id",cardid)
         // Log received data to ensure it matches what's being sent
 
         // Update query for the limits table based on the provided user ID
         const [result] = await db.execute(
-            `UPDATE cardlimits SET DomisticAmount = ?, International = ?, Contactless = ?, Online = ?, ATM = ?, PosQR = ? WHERE CardId = ?`,
-            [Domi, IisChecked ? 1 : 0, CisChecked ? 1 : 0, OisChecked ? 1 : 0, AisChecked ? 1 : 0, PisChecked ? 1 : 0, user]
+            `UPDATE cardlimits SET DomesticAmount = ?, International = ?, Contactless = ?, Online = ?, ATM = ?, PosQr = ? WHERE Id = ?`,
+            [Domi, IisChecked ? 1 : 0, CisChecked ? 1 : 0, OisChecked ? 1 : 0, AisChecked ? 1 : 0, PisChecked ? 1 : 0, cardid]
         );
 
         if (result.affectedRows > 0) {

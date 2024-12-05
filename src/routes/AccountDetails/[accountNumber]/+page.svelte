@@ -5,6 +5,7 @@
     import { page } from '$app/stores';
     import {onMount} from 'svelte';
     import dayjs from 'dayjs';
+	import { goto } from "$app/navigation";
 
     function formatDate(dateString) {
         return dayjs(dateString).format('DD-MM-YYYY'); // Format with Day.js
@@ -36,6 +37,10 @@
         alert(Redirecting to statements for account: ${accountDetails.number});
         // You can replace this alert with routing logic or API call
     }*/
+    function handleStatements(){
+        localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
+        goto('/Statements')
+    }
 </script>
 
 <Navbar />
@@ -51,8 +56,8 @@
     <div class="mt-1 p-8 bg-secondary shadow-2xl rounded-lg w-[70%] h-[104dvh] ">
         <!-- General Details Section -->
         <div class="text-2xl font-semibold text-primary border-b-2 border-black h-[7dvh]">General Details</div>
-        <div class="flex justify-center border-b-2 border-black h-[55dvh]">
-            <div class="flex flex-row gap-20 mt-4 items-start justify-center text-primary w-[130dvh] h-[50dvh]">
+        <div class="flex justify-center items-center border-b-2 border-black h-[55dvh]">
+            <div class="flex flex-row gap-20 items-start justify-center text-primary w-[130dvh] h-[45dvh]">
                 <div class="flex flex-col justify-center gap-5 w-1/2 ml-2">
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold">Account Number:</div> <div>{accountNumber}</div></div>
                     <div class="flex flex-row gap-4 items-end text-lg"> <div class="font-bold"> Account Holder:</div> <div>{accountdeets.FirstName}{" "}{accountdeets.LastName}</div> </div>
@@ -83,12 +88,12 @@
         </div>
 
         <!-- View Statements Button -->
-        <a href="/Statements">
         <div class="mt-4">
             <button 
+                on:click={handleStatements}
                 class="px-6 py-2 bg-primary text-secondary font-semibold rounded-lg shadow-md hover:bg-gray-200">
                 View Statements
             </button>
-        </div></a>
+        </div>
     </div>
 </div>

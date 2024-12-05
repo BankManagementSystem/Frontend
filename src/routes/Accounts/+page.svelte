@@ -53,7 +53,7 @@
             if (response.ok) {
                 accounts = await response.json();
             } else {
-                console.error("Error fetching usernames:", await response.json());
+                console.error("Error fetching accounts:", await response.json());
             }
         } catch (error) {
             console.error("Fetch error:", error);

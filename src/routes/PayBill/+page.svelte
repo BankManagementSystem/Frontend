@@ -124,6 +124,23 @@
     import { onMount } from 'svelte';
     import jwt_decode from 'jwt-decode';
 
+    let cardNumber = "";
+    let accounts = [];
+    let customerId = '';
+    let amount = '';
+    let Account = '';
+    let showPassword1 = false;
+    let PIN = '';
+    let successMessage = '';
+    let selectedAccount = null;
+
+    onMount(() => {
+        const details = localStorage.getItem('creditcardNumber');
+        if (details) {
+            cardNumber = JSON.parse(details);
+        }
+    });
+
     function isTokenExpired(token: string): boolean {
         try {
             const decoded = jwt_decode<{ exp: number }>(token);
@@ -141,23 +158,15 @@
             if (isTokenExpired(token)) {
                 alert('Session expired. Please log in again.');
                 localStorage.removeItem('authToken');
-                goto('/login'); // Redirect to login
+                goto('/login');
             } else {
                 const decoded = jwt_decode<{ id: string }>(token);
-                customerId = decoded.id; // Extract the Customer ID
+                customerId = decoded.id;
             }
         } else {
             alert('No token found. Please log in.');
-            goto('/login'); // Redirect to login
+            goto('/login');
         }
-    });
-
-    onMount (() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            const decoded = jwt_decode(token);
-            customerId = decoded.id; // Extract the Customer ID
-    }
     });
 
     onMount(async () => {
@@ -166,85 +175,62 @@
             if (response.ok) {
                 accounts = await response.json();
             } else {
-                console.error("Error fetching usernames:", await response.json());
+                console.error("Error fetching accounts:", await response.text());
             }
         } catch (error) {
             console.error("Fetch error:", error);
         }
     });
 
-    let accounts = [];
-    let customerId = '';
-    let amount = '';
-    let Account = '';
-    let showPassword1 = false;
-    let PIN = '';
-    let successMessage = '';
-
-    // Utility function to hash PIN using SHA-256
-    async function hashPIN(pin: string): Promise<string> {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(pin);
-        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function handleSubmit() {
-        const selectedAccount = accounts.find(account => account.AccountId === Account);
-
+    async function updateBalances() {
         if (!PIN || !amount || !Account) {
             successMessage = "Please fill in all fields.";
-        } else if (!selectedAccount) {
-            successMessage = "Invalid account selected.";
-        } else if (parseFloat(amount) > selectedAccount.balance) {
+        } /*else if (parseFloat(amount) > balance) {
             successMessage = "Amount exceeds available balance.";
-        } else {
-            // Hash the PIN before sending it to the backend
-            const hashedPIN = await hashPIN(PIN);
+        }*/ else {
+            try {
+                const response = await fetch('/api/pay-bill', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardNumber,
+                        Account,
+                        amount, // Pass the balance to the backend
+                        PIN,
+                    }),
+                });
 
-            await updateBalances(customerId, Account, parseFloat(amount), hashedPIN);
+                const data = await response.json();
+
+                if (response.ok) {
+                    successMessage = data.message;
+                } else {
+                    successMessage = data.message || "Failed to update balances";
+                }
+
+                setTimeout(() => {
+                    successMessage = '';
+                }, 3000);
+            } catch (error) {
+                console.error("Error updating balances:", error);
+                alert("An error occurred. Please try again.");
+            }
         }
-
-        setTimeout(() => {
-            successMessage = ''; // Hide popup after 3 seconds
-        }, 3000);
     }
 
-    export async function updateBalances(customerId, accountId, amount, hashedPIN) {
-        try {
-            const response = await fetch('/api/pay-bill', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    customerId,
-                    accountId,
-                    amount,
-                    hashedPIN,
-                }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                successMessage  = data.message; // Show success message
-            } else {
-                successMessage = data.message || "Failed to update balances";
-            }
-        } catch (error) {
-            console.error("Error updating balances:", error);
-            alert("An error occurred. Please try again.");
-        }
+    function handleBack() {
+        localStorage.removeItem('creditcardNumber');
+        goto(`/CreditCards`);
     }
 </script>
 
 <div class="flex items-center justify-between bg-[#FDFDFD] text-[#772035] h-[10dvh] font-bold text-3xl border-2 border-black">
     <div class="ml-4">
-        <a href="/CreditCards">
+        <button on:click={handleBack}>
         <Icon src={BiSolidLeftArrow}/>
-        </a>
+        </button>
     </div>
     <div>Pay Bill</div>
     <div class="mr-4"></div>
@@ -256,11 +242,12 @@
         <div class="relative">
             <select required
                 bind:value={Account}
-                id = "account"
                 class="w-[41dvh] px-4 py-2 rounded-md bg-primary text-gray-900 hover:bg-primary focus:ring-2 focus:ring-[#A12A48]">
                 <option value="" disabled selected class="" >Select Account</option>
                 {#each accounts as account}
-                <option value={account.AccountId} class="bg-secondary text-primary">{account.AccountId}</option>                    
+                <option value={account.Id} class="bg-secondary text-primary">
+                    {account.Id}
+                </option>                    
                 {/each}
             </select>
         </div>
@@ -271,9 +258,9 @@
         <div class="relative">
             <input
                 type="number"
-                placeholder="Enter Payment Amount"
+                placeholder={"Enter Amount"}
                 class="w-[41dvh] px-4 py-2 rounded-md text-gray-900 border-2 border-secondary no-spinner"   
-                bind:value={amount}  
+                bind:value={amount}     
             />
         </div>
         <div class="mt-4">
@@ -300,7 +287,7 @@
             </button>
         </div>
         <div>
-            <button on:click={handleSubmit} class="bg-primary text-secondary hover:bg-gray-200 w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
+            <button on:click={updateBalances} class="bg-primary text-secondary hover:bg-gray-200 w-40 text-xl mt-6 py-2 rounded-lg font-semibold mx-auto block">
                 <span>Submit</span>
             </button>
         </div>

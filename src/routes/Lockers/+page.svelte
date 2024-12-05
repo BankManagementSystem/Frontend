@@ -169,7 +169,7 @@
 	</section>
 </div>
 
-<div class="bg-white flex flex-col items-center mt-20 py-8">
+<div class="bg-white flex flex-col items-center mt-10 py-8">
 	<h1 class="text-3xl font-bold text-[#772035] mb-5">FEES STRUCTURE</h1>
 </div>
 <div class=" flex justify-center items-center min-w-full">
