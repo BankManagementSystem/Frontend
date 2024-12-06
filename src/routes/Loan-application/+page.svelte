@@ -284,7 +284,7 @@
 					<p class="text-sm">
 						Thank you for banking with us. we'll get back to you soon. In order to track the
 						application status, please login to netbanking. <a
-							href="/home"
+							href="/Loans"
 							class="text-normal font-bold text-gray-300"><u>Continue</u></a
 						>
 					</p>
@@ -293,7 +293,7 @@
 					<h2 class="text-lg font-bold mb-2">Your Application Id is : {$loanApplicationId}</h2>
 					<p class="text-lg">
 						Thank you for applying,we'll get back to you soon!
-						<a href="/home" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
+						<a href="/Loans" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
 						Hey! It appears that you don't have an account with us. Would you like to open one?
 						<a href="/newAccount" class="text-normal font-bold text-gray-300"><u>Click here</u></a>
 					</p>

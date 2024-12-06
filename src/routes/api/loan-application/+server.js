@@ -9,7 +9,7 @@ export async function POST({ request }) {
             loanDetails
         } = await request.json();
 
-        const { FirstName, MiddleName, LastName, Email, MobileNo, AadhaarNo, PanCardNo} = userDetails;
+        const { FirstName, MiddleName, LastName, Email, MobileNo, AadhaarNo, PanCardNo, Status} = userDetails;
         const { LoanType, loanAmount, tenure, ROI } = loanDetails;
         console.log('Request body:', { FirstName, MiddleName, LastName, Email,
             MobileNo,
@@ -27,9 +27,9 @@ export async function POST({ request }) {
         // Insert data into the database
         const result = await db.execute(
             `INSERT INTO LoanApplication
-            (FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, IssuedAmount, Tenure, ROI)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
-            [FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, loanAmount, tenure, ROI]
+            (FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, IssuedAmount, Tenure, ROI, Status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, loanAmount, tenure, ROI, "Pending"]
         );
         
         

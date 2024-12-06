@@ -8,7 +8,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import ChangeLogin from '/Users/nidhi/Documents/Svelte/frontend_bank/src/routes/changeloginemp/+page.svelte';
+	import ChangeLogin from 'C:/Users/ADMIN/Desktop/DBMS_PRO/Frontend/src/routes/changeloginemp/+page.svelte';
 	// Tracks the currently active button
 
 	async function handleLogout() {
