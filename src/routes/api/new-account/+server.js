@@ -78,10 +78,9 @@ export async function POST({ request }) {
             if (!senderInfo) {
                 throw new Error("Not found");
             }
-
-            const accounttypeId =senderInfo[0].Id;
-
-            console.log("Account type inserted:", accountTypeResult);
+            console.log(senderInfo);
+            const accounttypeId = 2;
+            console.log("Account type inserted:", accounttypeId);
             // Step 3: Insert into AccountsTable
             const [accountResult] = await connection.execute(
                 `INSERT INTO accounts (AccountTypeId, CustomerId, BranchId, balance, status,  Date) VALUES (?, ?, ?, 0, "Active", CURDATE())`,

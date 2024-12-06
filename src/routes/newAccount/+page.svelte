@@ -88,7 +88,6 @@
     function validateAadhaar(event) {
         const aadhaarPattern = /^\d{4}-\d{4}-\d{4}$/;
         if (!aadhaarPattern.test(Aadhaar)) {
-            alert("Please enter a valid Aadhaar number in the format 1234-5678-9101");
             event.preventDefault(); // Prevent form submission
         }
     }
@@ -236,7 +235,7 @@
           >
               <option value="" disabled selected class="" >Select The Type</option>
               <option value="Savings" class="bg-secondary text-primary">Savings</option>
-              <option value="Checking" class="bg-secondary text-primary">Current</option>
+              <option value="Checking" class="bg-secondary text-primary">Checking</option>
           </select>
         </div>
         <div>

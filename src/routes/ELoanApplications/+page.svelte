@@ -41,7 +41,7 @@
 			const response = await fetch('/api/Rejectloans', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ LoanApplicationId: loan.Id })
+				body: JSON.stringify({ LoanApplicationId: loan.Id, Email: loan.Email })
 			});
 
 			if (!response.ok) {
@@ -68,7 +68,8 @@
 					Tenure: loan.Tenure,
 					ROI: loan.ROI,
 					IssuedAmount: loan.IssuedAmount,
-					RemainingAmount: loan.IssuedAmount // Assuming full amount initially
+					RemainingAmount: loan.IssuedAmount, // Assuming full amount initially
+					Email: loan.Email,
 				})
 			});
 

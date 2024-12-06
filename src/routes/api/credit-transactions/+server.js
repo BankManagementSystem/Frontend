@@ -7,7 +7,7 @@ export async function GET({url}) {
         console.log("User details fetched successfully:", card);
         const cardId = card.Id;
         const [transactions] = await db.execute(
-            `SELECT Date, Method, CP.Id, CB.Name, Amount
+            `SELECT Date, Method, CP.Id, CB.Name, Amount, Receiver
             FROM creditcardpayments CP, Cards C, CardBrands CB
             WHERE C.CardBrandId = CB.Id AND CP.CardId = C.Id AND C.Id = ?`,[cardId]);
         console.log(transactions)

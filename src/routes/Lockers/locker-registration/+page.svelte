@@ -74,7 +74,6 @@
 	let EndDate = '';
 	let Deposit = '';
 	let Rent = '';
-	let termsAccepted = false;
 	let balance = 0;
 	let amount = 0;
 	let validationError = '';
@@ -122,10 +121,6 @@
 
 	async function handleSubmit() {
 		validationError = '';
-		if (!termsAccepted) {
-			alert('Please accept the terms and conditions.');
-			return;
-		}
 
 		const lockerDetails = {
 			AccountId,
@@ -278,16 +273,6 @@
 			{#if errorMessage}
 				<div class="mt-2 text-red-600 text-sm font-medium">{errorMessage}</div>
 			{/if}
-		</div>
-		<div class="flex items-center">
-			<input
-				id="terms"
-				type="checkbox"
-				required
-				bind:checked={termsAccepted}
-				class="h-5 w-5 text-[#772035] focus:ring-[#772035]"
-			/>
-			<label for="terms" class="ml-2 text-white">I accept the terms and conditions</label>
 		</div>
 		<div class="flex flex-col justify-center ml-20 mr-20">
 			<button

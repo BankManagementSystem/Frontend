@@ -86,7 +86,7 @@
                 </div>
                 <div class="flex flex-row w-full items-center gap-2 ">
                     <div class="font-semibold">Manager:</div>
-                    <div>{branch.Manager}</div>
+                    <div>{branch.SupervisorId}</div>
                 </div>
                 <div class="flex flex-row w-full items-center gap-2 ">
                     <div class="font-semibold">Number of Employees:</div>

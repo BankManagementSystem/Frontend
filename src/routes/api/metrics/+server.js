@@ -5,7 +5,7 @@ export async function GET() {
 		// Fetch metrics
         const [activeAccounts] = await db.execute('SELECT COUNT(*) AS count FROM accounts');
 		const [activeLoans] = await db.execute('SELECT COUNT(*) AS count FROM loans');
-		const [pendingApprovals] = await db.execute('SELECT COUNT(*) AS count FROM loanapplication');
+		const [pendingApprovals] = await db.execute(`SELECT COUNT(*) AS count FROM loanapplication WHERE Status = "Pending"`);
 		const [transactions] = await db.execute('SELECT COUNT(*) AS count FROM transactions');
 
 		const metrics = {
