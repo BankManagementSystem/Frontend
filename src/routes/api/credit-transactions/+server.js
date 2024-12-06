@@ -10,7 +10,7 @@ export async function GET({url}) {
             `SELECT Date, Method, CP.Id, CB.Name, Amount
             FROM creditcardpayments CP, Cards C, CardBrands CB
             WHERE C.CardBrandId = CB.Id AND CP.CardId = C.Id AND C.Id = ?`,[cardId]);
-        
+        console.log(transactions)
         return new Response(JSON.stringify(transactions), { status: 200 });
     }catch (error) {
         console.error("Database query error:", error);
@@ -21,7 +21,7 @@ export async function GET({url}) {
 async function getCardById(Id) {
     try {
         const [rows] = await db.query(
-            `SELECT C.Id FROM Cards C, CardTypes CT WHERE C.CustomerId = ? AND CT.Name = "Credit" `,
+            `SELECT C.Id FROM Cards C, CardTypes CT WHERE C.CardTypeId = CT.Id AND C.CustomerId = ? AND CT.Name = "Credit"`,
             [Id]
         );
         console.log("Query result:", rows);

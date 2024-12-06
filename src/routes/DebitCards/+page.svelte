@@ -59,17 +59,19 @@
     let customerId = ''; // Id input from the user
     let cardid = ""; // Holds the fetched card data
     let accounts = [];
-    let Number = "";
+    let cardNumber = "";
 
     //const selectedAccount = accounts.find(account => account.AccountId === Account);
     let selectedAccount = null; // Holds the currently selected account details
 
     // Reactive statement to update selectedAccount based on the selected Account ID
     $: selectedAccount = accounts.find(account => account.AccountId === Account);
-    $: Number = selectedAccount ? selectedAccount.Number : 0;
+    $: cardNumber = selectedAccount ? selectedAccount.Number : 0;
+    $: SisChecked = selectedAccount ? selectedAccount.Status : false;
+    $: cardIsActive = selectedAccount ? selectedAccount.IsActive : false;
 
     function handleLimits(){
-        localStorage.setItem('debitcardNumber', JSON.stringify(Number));
+        localStorage.setItem('debitcardNumber', JSON.stringify(cardNumber));
         goto('/DebitControls');
     }
 
@@ -122,7 +124,36 @@
         }
     } 
 
+    async function handleBlock() {
+        
+        cardIsActive = !cardIsActive;
+        try {
+            // Send a POST request with the id and new username
+            const response = await fetch('/api/block', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cardNumber, cardIsActive })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                isSelected = !isSelected;
+                message = "Card is Blocked!";
+                alert(message);
+            } else {
+                message = result.message || "Failed to Block.";
+                alert(message);
+            }
+        } catch (error) {
+            console.error("Error blocking card:", error);
+            message = "An error occurred. Please try again.";
+        }
+    }
+
     let message = "";
+    let isSelected = false;
 </script>
 <Navbar/>
 <slot/>
@@ -214,8 +245,14 @@
         </div>
     </div>
     <div class="flex flex-row justify-between mt-4 w-[60dvh] ">
-        <div class="ml-4"> <Button variant="outline" class=" text-red-600 h-11 rounded-md px-6 text-lg font-bold bg-[#FDFDFD] shadow-xl">Block Card</Button> </div>
-        <div class="mr-4"> <button on:change={handleLimits} class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</button> </div>
+        <div class="ml-4"> <button on:click={handleBlock} class=" text-red-600 h-11 rounded-md px-6 text-lg font-bold bg-[#FDFDFD] shadow-xl">
+            {#if isSelected}
+                    UnBlock Card
+                {:else}
+                    Block Card
+            {/if}
+        </button> </div>
+        <div class="mr-4"> <button on:click={handleLimits} class=" text-black font-bold h-11 rounded-md px-6 text-lg bg-[#FDFDFD] hover:bg-gray-200 shadow-lg">Card Limits</button> </div>
     </div>
 </div>
 <div class="w-[132dvh] flex items-center justify-center">

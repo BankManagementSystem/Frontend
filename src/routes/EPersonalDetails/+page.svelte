@@ -36,7 +36,7 @@
     let person = {};
     onMount(async () => {
         try {
-            const response = await fetch(`/api/personal-details?id=${employeeId}`);
+            const response = await fetch(`/api/employee-personal?id=${employeeId}`);
             if (response.ok) {
                 personaldetails = await response.json();
                 person = personaldetails[0];

@@ -6,7 +6,7 @@ export async function POST({ request }) {
         console.log("Inside Block API");
         console.log(cardNumber, cardIsActive);
         // Update the username in the users table based on the provided id
-        const [result] = await db.execute('UPDATE cards SET IsActive = ? WHERE Number = ?', [cardIsActive, cardNumber]);
+        const [result] = await db.execute('UPDATE cards SET IsActive = false WHERE Number = ?', [cardNumber]);
         //UPDATE users SET username = ? WHERE id = ?
         if (result.affectedRows > 0) {
             console.log("Success");

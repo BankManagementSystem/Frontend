@@ -10,7 +10,7 @@ export async function GET({ url }) {
 
     try {
         // Query database based on the provided Id
-        const [rows] = await db.execute(`SELECT C.Number, C.balance, C.CVV, C.CardLimit, C.IsActive FROM cards C, cardtypes CT  WHERE C.CustomerId = ? AND C.CardTypeId = CT.Id AND CT.Name = 'Credit' AND C.IsActive = TRUE`, [id]);
+        const [rows] = await db.execute(`SELECT CU.FirstName, CU.LastName, C.Number, C.balance, C.CVV, C.CardLimit, C.IsActive, C.ExpiryDate FROM Customers CU, cards C, cardtypes CT  WHERE C.CustomerId = CU.Id AND C.CardTypeId = CT.Id AND CT.Name = 'Credit' AND C.CustomerId = ?`, [id]);
         
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {

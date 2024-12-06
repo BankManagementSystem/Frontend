@@ -37,7 +37,7 @@
         }
 
         try {
-            const response = await fetch('/api/login-pin', {
+            const response = await fetch('/api/set-pin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,14 +57,14 @@
                 confirmPIN = '';
                 successMessage = "Successfully changed the login PIN!"; 
             } else {
-                onmessage = result.message; // Error message from the backend
+                successMessage = result.message; // Error message from the backend
             }
             setTimeout(() => {
                     successMessage = ''; // Hide popup after 3 seconds
             }, 3000);
         } catch (error) {
             console.error('Error changing PIN:', error);
-            onmessage = 'An error occurred. Please try again later.';
+            successMessage = 'An error occurred. Please try again later.';
         }
     }
 
@@ -86,7 +86,7 @@
 
 <div class="flex justify-center items-center bg-gradient-to-b from-[#C73659] via-[#E4B9C2] to-[#C73659] h-[90dvh]"> <!-- bg-gradient-to-b from-[#B33150]  to-primary via-[#C73659]--> <!--bg-secondary bg-opacity-[90%]-->
     <div class ="flex flex-col gap-2 rounded-sm justify-center   items-center font-semibold text-lg bg-secondary text-white shadow-2xl h-[70dvh] w-[70dvh]">
-        <div >Enter PIN</div>
+        <div >Enter PIN </div>
         <div class="relative">
             <input
                 type={showPassword3 ? "text" : "password"}
@@ -109,7 +109,7 @@
         </div>
 
         <div class="mt-2">
-            Enter a new 4 digit PIN
+            Enter a new 4 digit PIN 
         </div>
         <div class="relative">
             <input
@@ -132,7 +132,7 @@
             </button>
         </div>
         <div class="mt-4">
-            Re-enter the 4 digit PIN
+            Re-enter the 4 digit PIN 
         </div>
         <div class="relative">
             <input

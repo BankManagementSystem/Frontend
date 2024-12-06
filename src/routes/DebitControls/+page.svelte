@@ -94,12 +94,12 @@
                 cards = await response.json();
                 card = cards[0];
                 cardid = card.Id;
-                Domi = card.domistic;
-                IisChecked = card.international;
-                CisChecked = card.contact;
-                OisChecked = card.onlinee;
+                Domi = card.DomesticAmount;
+                IisChecked = card.International;
+                CisChecked = card.Contactless;
+                OisChecked = card.Online;
                 AisChecked = card.ATM;
-                PisChecked = card.QR;
+                PisChecked = card.PosQr;
             } else {
                 console.error("Error fetching usernames:", await response.json());
             }
@@ -184,8 +184,7 @@
     <div>
         <!--<button type="submit"  class="bg-[#772035] text-[#FDFDFD] hover:bg-[#EEC1CC] rounded-xl w-36 h-10">Save Changes</button>-->
         <button 
-            variant="outline" 
-            class="bg-[#772035] text-[#FDFDFD] hover:bg-[#EEC1CC]"
+            class="bg-[#772035] text-[#FDFDFD] hover:bg-[#EEC1CC] w-28 h-10 rounded-lg"
             on:click={handleSave}
         > 
             Save Changes
@@ -199,6 +198,19 @@
         </div>
     {/if}
 </div>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+/* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+</style>
 <!--
 <style>
     @keyframes gradient-x {

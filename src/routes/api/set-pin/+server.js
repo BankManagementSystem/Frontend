@@ -11,10 +11,10 @@ const key = Buffer.from(SECRET_KEYC); // 32 bytes key for AES-256
 const iv = Buffer.alloc(16, 0);
 
 export async function POST({ request }) {
-    const {cardNumber, currentPin, newLoginPIN } = await request.json();
-    console.log("Received the credentials");
-    const current = encrypt(currentPin); 
-    if (!currentPin || !newLoginPIN) {
+    const {cardNumber, Pin, creditPin } = await request.json();
+    console.log("Received the credentials", cardNumber, Pin, creditPin);
+    const current = encrypt(Pin); 
+    if (!Pin || !creditPin) {
         return new Response(
             JSON.stringify({ success: false, message: 'Please fill in all fields.' }),
             { status: 400 }
@@ -33,7 +33,7 @@ export async function POST({ request }) {
             );
         }
 
-        const storedPin = rows[0].Pin;
+        const storedPin = rows[0].PIN;
         console.log(storedPin)
         // Validate current PIN
         if (storedPin != current) {
@@ -42,7 +42,7 @@ export async function POST({ request }) {
                 { status: 401 }
             );
         }
-        const newpass = encrypt(newLoginPIN);
+        const newpass = encrypt(creditPin);
         console.log(newpass);
         // Update the login PIN
         const [result] = await db.execute('UPDATE cards SET PIN = ? WHERE Number = ?', [newpass, cardNumber]);

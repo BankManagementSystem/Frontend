@@ -47,12 +47,17 @@
     let cardBalance = "Not Available";
     let cardLimit = "Not Available"
     let cardCVV = "123";
+    let FirstN = "NA";
+    let LastN = "NA";
+    let Expiry = "NA";
     let isBalanceVisible = false;
     let isCVVVisible = false;
     let cardIsActive = false;
     let inputId = 1; // Id input from the user
     let card = {}; // Holds the fetched card data
-
+    const formatCreditNumber = (number) => {
+        return number.replace(/(\d{4})(?=\d)/g, '$1 ');
+    };
     // Function to fetch credit card details based on Id
     onMount(async () => {
         if (!inputId) {
@@ -67,7 +72,10 @@
                 // Check if data is not empty
                 if (data.length > 0) {
                     card = data[0];
-                    cardNumber = card.accountno;
+                    cardNumber = card.Number;
+                    FirstN = card.FirstName;
+                    LastN = card.LastName;
+                    Expiry = card.ExpiryDate;
                     cardBalance = card.balance;
                     cardCVV = card.CVV;
                     cardLimit = card.CardLimit;
@@ -195,7 +203,7 @@
 		<div class="relative flex flex-col h-full">
 			<!-- Bank Logo -->
 			<div class="flex flex-row justify-between items-center h-[8dvh]">
-                <div class="text-2xl font-semibold">{cardNumber}</div>
+                <div class="text-2xl font-semibold">{formatCreditNumber(cardNumber)}</div>
 				<div class="text-lg font-bold">NITTE Bank</div>
             </div>
 			<div class="flex flex-row justify-between items-center mt-3 ml-3">
@@ -216,7 +224,6 @@
                         <div class="text-2xl font-bold">₹ {isBalanceVisible ? cardBalance : 'X,XX,XXX'}</div>
                         <div class="text-sm font-normal">Available Limit:  ₹{cardLimit}</div>
                     </div>
-        
                     <button
                     class="btn w-8 h-8 flex items-center justify-center bg-white rounded-full text-black hover:bg-gray-200 transition"
                     on:click={() => (isBalanceVisible = !isBalanceVisible)}

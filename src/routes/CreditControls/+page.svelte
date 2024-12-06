@@ -89,17 +89,17 @@
     
     onMount(async () => {
         try {
-            const response = await fetch(`/api/card-limits?${cardNumber}`);
+            const response = await fetch(`/api/card-limits?id=${cardNumber}`);
             if (response.ok) {
                 cards = await response.json();
                 card = cards[0];
                 cardid = card.Id;
-                Domi = card.domistic;
-                IisChecked = card.international;
-                CisChecked = card.contact;
-                OisChecked = card.onlinee;
+                Domi = card.DomesticAmount;
+                IisChecked = card.International;
+                CisChecked = card.Contactless;
+                OisChecked = card.Online;
                 AisChecked = card.ATM;
-                PisChecked = card.QR;
+                PisChecked = card.PosQr;
             } else {
                 console.error("Error fetching usernames:", await response.json());
             }
@@ -203,6 +203,19 @@
     {/if}
 </div>
 </form>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+/* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+</style>
 <!--
 <style>
     @keyframes gradient-x {

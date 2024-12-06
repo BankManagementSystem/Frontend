@@ -58,7 +58,7 @@ export async function POST({ request }) {
             return new Response(JSON.stringify({ success: false, message: "Card not found" }), { status: 404 });
         }
 
-        const storedHashedPIN = rows[0].TPin;
+        const storedHashedPIN = rows[0].TPIN;
         const balance = rows[0].Balance;
         const cardBalance = rows2[0].CardBalance;
         const Limit = rows2[0].CardLimit;

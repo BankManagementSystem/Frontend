@@ -7,9 +7,38 @@
     import { goto } from '$app/navigation';
     let employees = [];
     let employee = {};
+
+    function isTokenExpired(token: string): boolean {
+        try {
+            const decoded = jwt_decode<{ exp: number }>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decoded.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true; // Treat invalid tokens as expired
+        }
+    }
+
+    onMount(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            if (isTokenExpired(token)) {
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('authToken');
+                goto('/login'); // Redirect to login
+            } else {
+                const decoded = jwt_decode<{ id: string }>(token);
+                employeeId = decoded.id; // Extract the Customer ID
+            }
+        } else {
+            alert('No token found. Please log in.');
+            goto('/login'); // Redirect to login
+        }
+    });
+
     onMount(async () => {
         try {
-            const response = await fetch(`/api/get-employee?${employeeId}`);
+            const response = await fetch(`/api/get-employee?id=${employeeId}`);
             if (response.ok) {
                 employees = await response.json();
                 employee = employees[0];
@@ -251,7 +280,7 @@
 <slot />
 
 <main class="p-8 bg-gray-100 min-h-screen">
-    <div class="text-2xl font-semibold text-secondary ">Welcome back, {employee.FirstName} {employee.MiddleName} {employee.Lastname}, {employee.Designation} Here's your Dashboard</div>
+    <div class="text-3xl font-semibold text-secondary ">Welcome back, {employee.FirstName} {employee.MiddleName} {employee.Lastname}, {employee.Designation} !  </div>
     <h1 class="mt-10 text-2xl text-center font-bold text-secondary mb-4">Dashboard</h1>
     {#if error}
         <p class="text-red-600">{error}</p>

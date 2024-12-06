@@ -173,6 +173,17 @@ function closePopup() {
 		border: none;
 		border-radius: 4px;
 	}
+
+	input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+/* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
 </style>
 {#if showSuccessPopup}
 <div class="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center">

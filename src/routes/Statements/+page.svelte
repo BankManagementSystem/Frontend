@@ -45,14 +45,14 @@
             goto('/login'); // Redirect to login
         }
     });
-    let statements = [];
+    let transactions = [];
     let customerId = '';
     let accountId = '';
     async function fetchTransactions() {
         try {
             const response = await fetch(`/api/statements?id=${accountId}`);
             if (response.ok) {
-                statements = await response.json();
+                transactions = await response.json();
             } else {
                 console.error("Error fetching transactions:", await response.text());
             }
@@ -107,7 +107,7 @@
             </div>
         </div>
     </div>
-    {#each statements as transaction}
+    {#each transactions as transaction}
     <div class="flex flex-row border-2 border-black h-[15dvh] items-center font-bold justify-between">
         <div class="flex flex-col ml-4 items-center justify-center w-[20dvh]">
             <div>
@@ -118,11 +118,11 @@
             </div>
         </div>
         <div class="w-[90dvh] flex justify-center">
-            {transaction.Method}/{transaction.Id}/{transaction.Receiver}/{transaction.Name}
+            {transaction.Mode}/{transaction.Id}/{transaction.Description}/{transaction.ReceiverIFSC}/{transaction.Mode}
         </div>
         <div class="flex flex-row w-[28dvh] justify-start items-start gap-3 mr-8" >
             <div class=" w-[45dvh] flex justify-end">
-                ₹ {transaction.Amount.toFixed(2)}
+                ₹ {transaction.Amount}
             </div>  
             <div class="">
                 {transaction.Type}
@@ -131,3 +131,4 @@
     </div>
     {/each}
 </div>
+<!--formatDate(transaction.Date)-->

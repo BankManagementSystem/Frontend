@@ -102,11 +102,11 @@
             </div>
         </div>
         <div class="w-[90dvh] flex justify-center">
-            {transaction.Method}/{transaction.Id}/{transaction.Receiver}/{transaction.Name}
+            {transaction.Method}/{transaction.Id}/{transaction.Receiver}/{transaction.Name}/{transaction.Method}
         </div>
         <div class="flex flex-row w-[28dvh] justify-start items-start gap-3 mr-8" >
             <div class=" w-[45dvh] flex justify-end">
-                ₹ {transaction.Amount.toFixed(2)}
+                ₹ {transaction.Amount}
             </div>  
             <div class="">
                 DR

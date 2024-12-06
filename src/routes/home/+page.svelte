@@ -43,6 +43,7 @@
     const numbs = [1,2,3];
     let accountNumber = "Enter Id to fetch";
     let availableBalance = "Not Available";
+    let accountId = "";
     let type = "Null";
     let isBalanceVisible = false;
     let card = {}; // Holds the fetched card data
@@ -64,6 +65,7 @@
                 // Check if data is not empty
                 if (data.length > 0) {
                     card = data[0];
+                    accountId = card.AccountId;
                     accountNumber = card.Number;
                     availableBalance = card.Balance;
                     type = card.Type;
@@ -82,6 +84,11 @@
     const formatDebitNumber = (number) => {
         return number.replace(/(\d{4})(?=\d)/g, '$1 ');
     };
+
+    function handleStatements(){
+        localStorage.setItem('accountNumber', JSON.stringify(accountId));
+        goto('/Statements')
+    }
 
     const plugin = Autoplay({ delay: 3000, stopOnInteraction: true });
 </script>
@@ -119,11 +126,9 @@
                     </button></a>
                 </div>
                 <div>
-                    <a href="/Statements">
-                    <button class=" bg-[#FDFDFD] rounded-3xl w-[50dvh] h-[8dvh] text-black text-2xl font-semibold border-2 border-black shadow-lg hover:bg-gray-100 hover:text-[#772035]">
+                    <button on:click={handleStatements} class=" bg-[#FDFDFD] rounded-3xl w-[50dvh] h-[8dvh] text-black text-2xl font-semibold border-2 border-black shadow-lg hover:bg-gray-100 hover:text-[#772035]">
                         View statements
                     </button>
-                    </a>
                 </div>
         </div>
     </div>

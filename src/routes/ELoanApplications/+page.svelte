@@ -1,5 +1,4 @@
 <script lang="ts">
-<script lang="ts">
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar2.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
