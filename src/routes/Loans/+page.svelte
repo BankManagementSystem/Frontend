@@ -31,7 +31,7 @@
 					// Token has expired
 					alert('Session expired. Please log in again.');
 					localStorage.removeItem('authToken'); // Clear the expired token
-					goto('/'); // Redirect to login or home page
+					goto('/Home'); // Redirect to login or home page
 				} else {
 					// Token is valid
 					goto('/Home'); // Redirect to accounts page

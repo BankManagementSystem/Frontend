@@ -1,48 +1,74 @@
-import { db } from '$lib/db';
-import { User } from 'lucide-svelte';
-
-export async function GET() {
-    try {
-        // Query all usernames from the users table
-        const [rows] = await db.execute('SELECT * FROM Customer WHERE Id = 1');
-
-        return new Response(JSON.stringify(rows), { status: 200 });
-    } catch (error) {
-        console.error("Database query error:", error);
-        return new Response(JSON.stringify({ error: "Failed to fetch" }), { status: 500 });
-    }
-}
-
+import { json } from '@sveltejs/kit';
+import { db } from '$lib/db'; // Import the database connection
 
 export async function POST({ request }) {
     try {
+        // Parse the JSON data from the request
         const {
-            Firstname, Middlename, Lastname, email, phonenumber, aadhaar, Pancardno} = await request.json();
+            userDetails,
+            loanDetails
+        } = await request.json();
 
-        // User does not exist, insert new user data into the database
-        const [result] = await db.execute(
-            'INSERT INTO Loanapplication (Firstname, Middlename, Lastname, email, phonenumber, Aadhaarnumber, Pancard) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [Firstname, Middlename, Lastname, email, phonenumber, aadhaar, Pancardno]
+        const { FirstName, MiddleName, LastName, Email, MobileNo, AadhaarNo, PanCardNo, Status} = userDetails;
+        const { LoanType, loanAmount, tenure, ROI } = loanDetails;
+        console.log('Request body:', { FirstName, MiddleName, LastName, Email,
+            MobileNo,
+            AadhaarNo,
+            PanCardNo,
+        });
+
+        const senderInfo = await getId(LoanType);
+        if (!senderInfo) {
+            throw new Error("Not found");
+        }
+        const LoanTypeId =senderInfo.LoanTypeId;
+
+
+        // Insert data into the database
+        const result = await db.execute(
+            `INSERT INTO LoanApplication
+            (FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, IssuedAmount, Tenure, ROI, Status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [FirstName, MiddleName, LastName, MobileNo, Email, AadhaarNo, PanCardNo, LoanTypeId, loanAmount, tenure, ROI, "Pending"]
         );
-        if (result.affectedRows > 0) {
-            const loanApplicationId = result.insertId;
-            return new Response(
-            JSON.stringify({
-                success: true,
-                hasAccount: false,
-                message: 'New user details saved successfully',
-                loanApplicationId,
-            }),
-            { status: 200 }
-            );
+        
+        
+        const insertId = result?.[0]?.insertId || null;
+
+        if (!insertId) {
+            console.error('insertId is null or undefined');
+            return json({ success: false, message: 'Failed to retrieve insertId' });
+        }
+        
+        return json({
+            success: true,
+            message: 'Loan application saved successfully',
+            Id: insertId,
+        });
+    } catch (error) {
+        console.error('Error saving loan application:', error);
+        return json({
+            success: false,
+            message: 'Failed to save loan application',
+            error: error.message
+        });
+    }
+}
+async function getId(LoanType) {
+    try {
+        const [rows] = await db.query(
+            `SELECT Id AS LoanTypeId FROM LoanTypes WHERE Type=?`,[LoanType]
+        );
+        console.log("Query result:", rows);
+
+        if (rows && rows.length > 0) {
+            return rows[0]; // Return the first row
         } else {
-            return new Response(
-                JSON.stringify({ success: false, message: 'Failed to save new user details' }),
-                { status: 400 }
-            );
+            console.error("No user found with the provided ID:", LoanType);
+            return null; // No matching user
         }
     } catch (error) {
-        console.error('Database query error:', error);
-        return new Response(JSON.stringify({ error: 'Failed to fetch or save user details' }), { status: 500 });
+        console.error("Database error:", error);
+        throw new Error("Database query failed");
     }
 }

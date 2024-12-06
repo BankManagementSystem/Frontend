@@ -29,8 +29,6 @@ export async function POST({ request }) {
             'SELECT TPIN FROM Accounts WHERE Id = ? LIMIT 1',
             [SenderAccountId]
         );
-        console.log(rows[0].TPIN);
-        console.log(pass);
         if(rows[0].TPIN != pass){
             throw new Error("*Invalid Transaction Password*");
         }

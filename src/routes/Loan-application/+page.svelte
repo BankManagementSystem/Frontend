@@ -3,26 +3,73 @@
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import jwt_decode from 'jwt-decode';
+	import { Icon } from 'svelte-icons-pack';
+	import { BiSolidLeftArrow } from 'svelte-icons-pack/bi';
 
-	// State to manage the account status and pop-up visibility
+	let customerDetails = {};
+
+	// Fetch customer details when the user is logged in
+	async function fetchcustomer() {
+		const token = localStorage.getItem('authToken'); // Retrieve the token
+		if (token) {
+			try {
+				const decoded = jwt_decode<{ exp: number }>(token);
+				const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+				if (decoded.exp < currentTime) {
+					// Token has expired
+					alert('Session expired. Please log in again.');
+					localStorage.removeItem('authToken'); // Clear the expired token
+					goto('/'); // Redirect to login or home page
+				} else {
+					const decoded = jwt_decode<{ id: string }>(token);
+					customerId = decoded.id; // Extract the Customer ID
+					try {
+						const response = await fetch(`/api/get-customerdetails?customerId=${customerId}`);
+						if (response.ok) {
+							const data = await response.json();
+							if (data.length > 0) {
+								customerDetails = data[0];
+								FirstName = customerDetails.FirstName;
+								MiddleName = customerDetails.MiddleName;
+								LastName = customerDetails.LastName;
+								Email = customerDetails.Email;
+								MobileNo = customerDetails.MobileNo;
+								AadhaarNo = customerDetails.AadhaarNo;
+								PanCardNo = customerDetails.PanCardNo;
+							} else {
+								console.error('Failed to fetch customer details:', data.error);
+							}
+						} else {
+							console.error('Error fetching customer details:', await response.text());
+						}
+					} catch (error) {
+						console.error('Unexpected error:', error);
+					}
+				}
+			} catch (error) {
+				console.error('Error decoding token:', error);
+				alert('Invalid session. Please log in again.');
+				localStorage.removeItem('authToken'); // Clear invalid token
+				goto('/'); // Redirect to login or home page
+			}
+		}
+	}
+	let customerId = '';
 	let hasAccount = writable(false); // Adjust this value based on actual account status
 	let showPopup = writable(false);
 	let loanApplicationId = writable('');
 
 	let loanDetails = {};
 	onMount(() => {
-		// Fetch loan details passed from the previous page
-		if (history.state && history.state.typeofLoan) {
-			loanDetails = { ...history.state };
-		} else {
-			alert('No loan details found!');
-			goto('/emicalcperso'); // Redirect back if no data
+		const details = localStorage.getItem('emidetails');
+		if (details) {
+			loanDetails = JSON.parse(details);
 		}
 	});
-
-	function handleApplyNow() {
-		showPopup.set(true);
-	}
+	onMount(() => {
+		fetchcustomer();
+	});
 
 	function closePopup() {
 		showPopup.set(false);
@@ -59,94 +106,60 @@
 		}
 	}
 
-	interface UserDetails {
-		Firstname: string;
-		Middlename: string;
-		Lastname: string;
-		email: string;
-		phonenumber: string;
-		Aadhaarnumber: string;
-		Pancard: string;
-		Id: string;
-	}
-
-	// Declare variables
-	let loans: any[] = [];
-	let data: UserDetails = {
-		Firstname: '',
-		Middlename: '',
-		Lastname: '',
-		email: '',
-		phonenumber: '',
-		Aadhaarnumber: '',
-		Pancard: '',
-		Id: ''
-	};
-	let user = '';
-	let Firstname = '';
-	let Middlename = '';
-	let Lastname = '';
-	let email = '';
-	let phonenumber = '';
-	let aadhaar = '';
-	let Pancardno = '';
-
-	onMount(async () => {
-		try {
-			const response = await fetch('/api/loan-application');
-			if (response.ok) {
-				loans = await response.json();
-				data = loans[0];
-				Firstname = data.Firstname || '';
-				Middlename = data.Middlename || '';
-				Lastname = data.Lastname || '';
-				email = data.email || '';
-				phonenumber = data.phonenumber || '';
-				aadhaar = data.Aadhaarnumber || '';
-				Pancardno = data.Pancard || '';
-				user = data.Id || '';
-			} else {
-				console.error('Error fetching usernames:', await response.json());
-			}
-		} catch (error) {
-			console.error('Fetch error:', error);
-		}
-	});
+	let FirstName = '';
+	let MiddleName = '';
+	let LastName = '';
+	let Email = '';
+	let MobileNo = '';
+	let AadhaarNo = '';
+	let PanCardNo = '';
 
 	async function handleSave() {
 		try {
+			const loanappdetails = {
+				loanDetails,
+				userDetails: {
+					FirstName,
+					MiddleName,
+					LastName,
+					Email,
+					MobileNo,
+					AadhaarNo,
+					PanCardNo
+				}
+			};
 			const response = await fetch('/api/loan-application', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					user,
-					Firstname,
-					Middlename,
-					Lastname,
-					email,
-					phonenumber,
-					aadhaar,
-					Pancardno
-				})
+				body: JSON.stringify(loanappdetails)
 			});
 			const result = await response.json();
-			if (result.success) {
-				// Set loan application ID and show popup
-				loanApplicationId.set(result.loanApplicationId);
-				showPopup.set(true);
+			if (response.ok && result.success) {
+				console.log('Loan Application ID:', result.Id); // Debug ID
+				loanApplicationId.set(result.Id); // Set the ID
+				showPopup.set(true); // Show the popup
 			} else {
-				alert('Failed to submit application. Please try again.');
+				alert(result.message || 'Failed to submit application. Please try again.');
 			}
 		} catch (error) {
-			console.error('Error saving loan application:', error);
+			console.error('Error in handleSave:', error);
+			alert('An unexpected error occurred. Please try again.');
 		}
 	}
 </script>
 
-<form on:submit|preventDefault={handleSave}>
-	<div class="bg-gray-100p-8">
-		<h1 class="text-red-800 text-center text-3xl font-bold">Loan Application</h1>
+<div
+	class="flex items-center justify-between bg-[#D9D9D9] text-[#772035] h-[10dvh] font-bold text-3xl w-full"
+>
+	<div class="ml-4 cursor-pointer">
+		<button on:click={() => goto('/Loans')}>
+			<Icon src={BiSolidLeftArrow} />
+		</button>
 	</div>
+	<div>Loan Application Form</div>
+	<div class="mr-4"></div>
+</div>
+<form on:submit|preventDefault={handleSave}>
 	<!-- Container for the form -->
 	<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 		<div class="bg-[#772035] text-white w-96 p-8 rounded-lg shadow-lg">
@@ -156,7 +169,7 @@
 					>First name:
 					<input
 						required
-						bind:value={Firstname}
+						bind:value={FirstName}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
 					/>
@@ -168,8 +181,7 @@
 				<label class="block text-sm mb-1"
 					>Middle name:
 					<input
-						required
-						bind:value={Middlename}
+						bind:value={MiddleName}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
 					/>
@@ -182,7 +194,7 @@
 					>Last name:
 					<input
 						required
-						bind:value={Lastname}
+						bind:value={LastName}
 						type="text"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
 					/>
@@ -195,8 +207,8 @@
 					>Email:
 					<input
 						required
-						bind:value={email}
-						type="email"
+						bind:value={Email}
+						type="Email"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
 					/>
 				</label>
@@ -208,7 +220,7 @@
 					>Phone number:
 					<input
 						required
-						bind:value={phonenumber}
+						bind:value={MobileNo}
 						type="tel"
 						class="w-full p-2 text-black border rounded focus:outline-none focus:ring focus:ring-[#5A1323]"
 					/>
@@ -221,7 +233,7 @@
 					>Aadhaar number:
 					<input
 						required
-						bind:value={aadhaar}
+						bind:value={AadhaarNo}
 						id="Aadhaar"
 						type="text"
 						maxlength="14"
@@ -237,7 +249,7 @@
 					>Pan number:
 					<input
 						required
-						bind:value={Pancardno}
+						bind:value={PanCardNo}
 						id="PAN"
 						type="text"
 						maxlength="10"
@@ -251,8 +263,8 @@
 			<!-- Apply Now Button -->
 			<div class="flex justify-center items-center mt-4">
 				<button
+					type="submit"
 					class="bg-gray-300 text-black px-6 py-1 rounded-lg font-semibold text-sm"
-					on:click={handleApplyNow}
 				>
 					Apply now
 				</button>
@@ -272,7 +284,7 @@
 					<p class="text-sm">
 						Thank you for banking with us. we'll get back to you soon. In order to track the
 						application status, please login to netbanking. <a
-							href="/home"
+							href="/Loans"
 							class="text-normal font-bold text-gray-300"><u>Continue</u></a
 						>
 					</p>
@@ -281,7 +293,7 @@
 					<h2 class="text-lg font-bold mb-2">Your Application Id is : {$loanApplicationId}</h2>
 					<p class="text-lg">
 						Thank you for applying,we'll get back to you soon!
-						<a href="/home" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
+						<a href="/Loans" class="text-normal font-bold text-gray-300"><u>Continue</u></a><br />
 						Hey! It appears that you don't have an account with us. Would you like to open one?
 						<a href="/newAccount" class="text-normal font-bold text-gray-300"><u>Click here</u></a>
 					</p>

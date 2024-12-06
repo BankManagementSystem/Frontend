@@ -81,7 +81,7 @@
             //alert("Login Unsuccessful!")
             errorMessage = result.message || "Login failed.";
         }
-    } catch (error) {
+    }catch (error) {
         console.error("Login error:", error);
         alert("An error occurred. Please try again.");
     }finally{
